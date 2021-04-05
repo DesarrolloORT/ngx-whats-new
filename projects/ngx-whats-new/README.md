@@ -1,8 +1,12 @@
 # NgxWhatsNew
 
+![ngx-whats-new screencast](screencast.gif)
+
 Ngx-whats-new is an angular module with a multi-modal component that is typically used to present new features of your application.
 
 ## Usage example:
+
+[Codesandbox example](https://codesandbox.io/s/ngx-whats-new-demo-nxc8b?file=/src/main.ts)
 
 Import the module:
 
@@ -72,8 +76,6 @@ app.component.ts
         },
   ];
 ```
-
-Stackblitz example
 
 ## Available Options:
 
