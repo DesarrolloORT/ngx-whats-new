@@ -1,0 +1,52 @@
+<div class="modal">
+  <div class="modal-layout">
+    <div
+      class="modal-body"
+      [style.width]="_options.customStyle?.width"
+      [style.border-radius]="_options.customStyle?.borderRadius"
+      [style.border]="_options.customStyle?.borderSize"
+      [style.boxShadow]="_options.customStyle?.boxShadow"
+      [style.backgroundColor]="_options.customStyle?.backgroundColor"
+      [style.color]="_options.customStyle?.textColor"
+    >
+      <div
+        *ngIf="items[selected]?.imageSrc"
+        class="image"
+        [style.background-color]="items[selected]?.imageBgColor"
+        [style.height]="items[selected]?.imageHeight + 'px'"
+      >
+        <img [src]="items[selected]?.imageSrc" />
+      </div>
+      <div class="title" *ngIf="items[selected]?.title">
+        {{ items[selected]?.title }}
+      </div>
+      <div class="text" *ngIf="items[selected]?.text">
+        {{ items[selected]?.text }}
+      </div>
+      <div
+        class="button"
+        [style.text-align]="btn?.position || 'center'"
+        *ngIf="items[selected]?.button as btn"
+      >
+        <button
+          [style.background-color]="btn?.bgColor"
+          [style.color]="btn?.textColor"
+          (click)="goToNext()"
+        >
+          {{ btn.text }}
+        </button>
+      </div>
+    </div>
+    <ul class="navigation" *ngIf="items.length > 1">
+      <li
+        class="dot"
+        [class.clickable]="_options.clickableNavigationDots"
+        (click)="navigateTo(i)"
+        [class.active]="i === selected"
+        [class.inactive]="i !== selected"
+        *ngFor="let item of items; let i = index"
+      ></li>
+    </ul>
+  </div>
+</div>
+<div id="backdrop" (click)="close()"></div>

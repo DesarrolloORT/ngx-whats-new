@@ -1,0 +1,16 @@
+{
+  "name": "ngx-whats-new",
+  "version": "0.0.1",
+  "homepage": "https://github.com/4gray",
+  "author": "4gray",
+  "peerDependencies": {
+    "@angular/common": "^11.1.2",
+    "@angular/core": "^11.1.2"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}
