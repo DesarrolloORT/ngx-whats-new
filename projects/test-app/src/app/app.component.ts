@@ -22,8 +22,7 @@ export class AppComponent {
       imageHeight: 500,
       imageSrc: 'https://placeimg.com/500/500/arch',
       title: 'Whats new in v1.0.0',
-      text:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
+      html: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.<br /><a href="http://google.com">test</a> ',
       button: {
         text: 'Okay',
         textColor: '#fff',
@@ -31,8 +30,7 @@ export class AppComponent {
       },
     },
     {
-      text:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just. Spsum dolor sit amet, consectetur adipiscing el aspect et just',
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just. Spsum dolor sit amet, consectetur adipiscing el aspect et just',
       button: {
         text: 'Got it!',
         textColor: '#fff',
@@ -52,8 +50,7 @@ export class AppComponent {
       imageSrc:
         'https://cdn0.iconfinder.com/data/icons/bakery-10/512/Donut-256.png',
       imageBgColor: '#333',
-      text:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just. Spsum dolor sit amet, consectetur adipiscing el aspect et just.',
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just. Spsum dolor sit amet, consectetur adipiscing el aspect et just.',
       imageHeight: 350,
       button: {
         text: 'Lets go',

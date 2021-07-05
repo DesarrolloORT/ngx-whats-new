@@ -1,8 +1,12 @@
 # NgxWhatsNew
 
+Ngx-whats-new is an angular module with a multi-modal component that is typically used to present new features of your application.
+
 ![ngx-whats-new screencast](screencast.gif)
 
-Ngx-whats-new is an angular module with a multi-modal component that is typically used to present new features of your application.
+```
+    npm i ngx-whats-new
+```
 
 ## Usage example:
 
@@ -54,25 +58,24 @@ app.component.ts
     /** definition of all modals to show */
     modals = [
         {
-        imageHeight: 500,
-        imageSrc: 'https://placeimg.com/500/500/arch',
-        title: 'What is new in 5.0',
-        text:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
-        button: {
-            text: 'Okay',
-            textColor: '#fff',
-            bgColor: '#333',
-        },
+            imageHeight: 500,
+            imageSrc: 'https://placeimg.com/500/500/arch',
+            title: 'What is new in 5.0',
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
+            html: 'Hello <b>world!</b>',
+            button: {
+                text: 'Okay',
+                textColor: '#fff',
+                bgColor: '#333',
+            },
         },
         {
-        text:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just. Spsum dolor sit amet, consectetur adipiscing el aspect et just',
-        button: {
-            text: 'Got it!',
-            textColor: '#fff',
-            bgColor: '#333',
-        },
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just. Spsum dolor sit amet, consectetur adipiscing el aspect et just',
+            button: {
+                text: 'Got it!',
+                textColor: '#fff',
+                bgColor: '#333',
+            },
         },
   ];
 ```
