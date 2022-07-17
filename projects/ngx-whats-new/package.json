@@ -1,11 +1,11 @@
 {
   "name": "ngx-whats-new",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "homepage": "https://github.com/4gray/ngx-whats-new",
   "author": "4gray",
   "peerDependencies": {
-    "@angular/common": "^11.1.2",
-    "@angular/core": "^11.1.2"
+    "@angular/common": "^13.3.11",
+    "@angular/core": "^13.3.11"
   },
   "dependencies": {
     "tslib": "^2.0.0"
@@ -15,5 +15,10 @@
     "modal",
     "popup",
     "dialog"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/4gray/ngx-whats-new"
+  },
+  "license": "MIT"
 }
