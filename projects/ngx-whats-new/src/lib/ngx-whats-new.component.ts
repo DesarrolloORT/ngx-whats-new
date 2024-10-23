@@ -20,7 +20,7 @@ const DEFAULT_OPTIONS = {
 })
 export class NgxWhatsNewComponent {
   /** Global options */
-  _options: Options;
+  _options!: Options;
 
   /** Modals to show */
   @Input() items: ModalWindow[] = [];
