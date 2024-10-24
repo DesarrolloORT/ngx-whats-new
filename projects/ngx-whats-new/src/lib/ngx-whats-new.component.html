@@ -9,40 +9,40 @@
       [style.backgroundColor]="options.customStyle.backgroundColor"
       [style.color]="options.customStyle.textColor"
     >
+      @if (items[selected].imageSrc) {
       <div
-        *ngIf="items[selected]?.imageSrc"
         class="image"
         [style.background-color]="items[selected].imageBgColor"
         [style.height]="items[selected].imageHeight + 'px'"
       >
         <img [src]="items[selected].imageSrc" [alt]="items[selected].title" />
       </div>
-      <div class="title" *ngIf="items[selected].title">
+      } @if (items[selected].title) {
+      <div class="title">
         {{ items[selected].title }}
       </div>
-      <div class="text" *ngIf="items[selected].text">
+      } @if (items[selected].text) {
+      <div class="text">
         {{ items[selected].text }}
       </div>
-      <div
-        class="text"
-        *ngIf="items[selected].html"
-        [innerHTML]="items[selected].html"
-      ></div>
-      <div
-        class="button"
-        [style.text-align]="btn?.position ?? 'center'"
-        *ngIf="items[selected]?.button as btn"
-      >
+      } @if (items[selected].html) {
+      <div class="text" [innerHTML]="items[selected].html"></div>
+      } @if (items[selected].button) { @let btn = items[selected].button;
+      <div class="button" [style.text-align]="btn?.position ?? 'center'">
         <button
           [style.background-color]="btn?.bgColor"
           [style.color]="btn?.textColor"
+          (keypress)="goToNext()"
           (click)="goToNext()"
         >
-          {{ btn.text }}
+          {{ btn?.text }}
         </button>
       </div>
+      }
     </div>
-    <ul class="navigation" *ngIf="items.length > 1">
+    @if (items.length > 1) {
+    <ul class="navigation">
+      @for (item of items; track item.title; let i = $index;) {
       <li
         class="dot"
         [class.clickable]="options.clickableNavigationDots"
@@ -50,9 +50,10 @@
         (click)="navigateTo(i)"
         [class.active]="i === selected"
         [class.inactive]="i !== selected"
-        *ngFor="let item of items; let i = index"
       ></li>
+      }
     </ul>
+    }
   </div>
 </div>
 <div id="backdrop" (click)="close()" (keypress)="close()"></div>
