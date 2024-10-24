@@ -32,32 +32,93 @@ const DEFAULT_OPTIONS: DialogOptions = {
   styleUrls: ['./ngx-whats-new.component.scss'],
 })
 export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
+  // * -----------------------
+  // * Component's public API
+  // * -----------------------
+
+  /** Items to show in the dialog */
+  @Input() public set items(items: WhatsNewItem[]) {
+    if (items) {
+      this._items = items;
+    }
+  }
+  public get items(): WhatsNewItem[] {
+    return this._items;
+  }
+
+  /** DialogOptions for What's New dialog */
+  @Input() public set options(options: DialogOptions) {
+    this._options = { ...options };
+  }
+  public get options() {
+    return this._options;
+  }
+
+  /**
+   * Navigates to the item corresponding to the provided number.
+   * @param index number of the item
+   */
+  public navigateTo(index: number): void {
+    if (this._options.clickableNavigationDots) {
+      this.selectedIndex = index;
+      this.updateTabIndices();
+      this.focusButton(index);
+    }
+  }
+
+  /** Opens What's New dialog. */
+  public open(): void {
+    this.isVisible = true;
+    this.registerKeyboardListener();
+    this.resetState();
+  }
+
+  /** Closes What's New dialog. */
+  public close(): void {
+    if (!this._options.disableClose) {
+      this.unregisterKeyboardListener();
+      this.isVisible = false;
+      this.closeModal.emit();
+      this.resetState();
+    }
+  }
+
+  /**
+   * Sets focus to the close button when the component is initialized.
+   *
+   * **MANUAL EXECUTION OF THIS FUNCTION IS NOT RECOMMENDED**
+   */
+  ngAfterViewInit(): void {
+    if (this._closeButton) {
+      this._closeButton.nativeElement.focus(); // Set focus to the close button
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.unregisterKeyboardListener();
+  }
+
+  /** Navigates to the next item. Closes What's New dialog if it is the last one. */
+  public goToNext(): void {
+    if (this.selectedIndex < this.items.length - 1) {
+      this.selectedIndex = this.selectedIndex + 1;
+    } else {
+      this.closeModal.emit();
+    }
+  }
+
+  // * -------------------------------------------
+  // * Private or protected methods and properties
+  // * -------------------------------------------
+
   /** DialogOptions item initialized with default values. Accepts custom values. */
   private _options: DialogOptions = DEFAULT_OPTIONS;
 
   /** Items to show in the dialog */
   private _items: WhatsNewItem[] = [];
 
-  /** Items to show in the dialog */
-  @Input() set items(items: WhatsNewItem[]) {
-    if (items) {
-      this._items = items;
-    }
-  }
-  get items(): WhatsNewItem[] {
-    return this._items;
-  }
-
   /** Control whether the dialog is visible */
   protected isVisible = false;
-
-  /** DialogOptions for What's New dialog */
-  @Input() set options(options: DialogOptions) {
-    this._options = { ...options };
-  }
-  get options() {
-    return this._options;
-  }
 
   /** Event emitted on dialog close */
   @Output() private readonly closeModal = new EventEmitter<void>();
@@ -79,37 +140,14 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   private keyboardListener?: () => void;
 
   /**
-   * Registers keyboard event listener when the dialog opens.
-   */
-  private registerKeyboardListener(): void {
-    this.keyboardListener = this._renderer.listen(
-      'window',
-      'keydown',
-      (event: KeyboardEvent) => {
-        this.handleKeyboardNavigation(event);
-      }
-    );
-  }
-
-  /**
-   * Unregisters keyboard event listener when the dialog closes.
-   */
-  private unregisterKeyboardListener(): void {
-    if (this.keyboardListener) {
-      this.keyboardListener();
-      this.keyboardListener = undefined;
-    }
-  }
-
-  /**
-   * Sets focus to the close button when the component is initialized.
+   * Resets the component's state to its initial values.
    *
-   * **USE NOT RECOMMENDED**
+   * This method is called when the dialog is opened or closed to ensure that
+   * the component does not retain any state from previous interactions.
    */
-  ngAfterViewInit(): void {
-    if (this._closeButton) {
-      this._closeButton.nativeElement.focus(); // Set focus to the close button
-    }
+  private resetState(): void {
+    this.selectedIndex = 0;
+    this.updateTabIndices();
   }
 
   /**
@@ -192,56 +230,26 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  /** Navigates to the next item. Closes What's New dialog if it is the last one. */
-  public goToNext(): void {
-    if (this.selectedIndex < this.items.length - 1) {
-      this.selectedIndex = this.selectedIndex + 1;
-    } else {
-      this.closeModal.emit();
-    }
+  /**
+   * Registers keyboard event listener when the dialog opens.
+   */
+  private registerKeyboardListener(): void {
+    this.keyboardListener = this._renderer.listen(
+      'window',
+      'keydown',
+      (event: KeyboardEvent) => {
+        this.handleKeyboardNavigation(event);
+      }
+    );
   }
 
   /**
-   * Navigates to the item corresponding to the provided number.
-   * @param index number of the item
+   * Unregisters keyboard event listener when the dialog closes.
    */
-  public navigateTo(index: number): void {
-    if (this._options.clickableNavigationDots) {
-      this.selectedIndex = index;
-      this.updateTabIndices();
-      this.focusButton(index);
+  private unregisterKeyboardListener(): void {
+    if (this.keyboardListener) {
+      this.keyboardListener();
+      this.keyboardListener = undefined;
     }
-  }
-
-  /** Opens What's New dialog. */
-  public open(): void {
-    this.isVisible = true;
-    this.registerKeyboardListener();
-    this.resetState();
-  }
-
-  /** Closes What's New dialog. */
-  public close(): void {
-    if (!this._options.disableClose) {
-      this.unregisterKeyboardListener();
-      this.isVisible = false;
-      this.closeModal.emit();
-      this.resetState();
-    }
-  }
-
-  /**
-   * Resets the component's state to its initial values.
-   *
-   * This method is called when the dialog is opened or closed to ensure that
-   * the component does not retain any state from previous interactions.
-   */
-  private resetState(): void {
-    this.selectedIndex = 0;
-    this.updateTabIndices();
-  }
-
-  ngOnDestroy(): void {
-    this.unregisterKeyboardListener();
   }
 }
