@@ -29,3 +29,13 @@ export interface DialogOptions {
     borderSize?: string;
   };
 }
+
+export interface NavigationEvent {
+  previousItem: NavigationItem | undefined;
+  currentItem: NavigationItem;
+}
+
+interface NavigationItem {
+  index: number;
+  item: WhatsNewItem;
+}
