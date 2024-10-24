@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ModalWindow } from 'projects/ngx-whats-new/src/lib/modal-window.interface';
+import { NgxWhatsNewComponent } from 'projects/ngx-whats-new/src/lib/ngx-whats-new.component';
 import { Options } from 'projects/ngx-whats-new/src/lib/options.interface';
 
 @Component({
@@ -8,9 +9,11 @@ import { Options } from 'projects/ngx-whats-new/src/lib/options.interface';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  isDialogVisible = true;
+  @ViewChild('whatsNew') modal?: NgxWhatsNewComponent;
+  public isDialogVisible: boolean | undefined;
 
-  options: Options = {
+  /** Options for the modal */
+  public options: Options = {
     enableKeyboardNavigation: true,
     clickableNavigationDots: true,
     customStyle: {
@@ -20,7 +23,8 @@ export class AppComponent {
     },
   };
 
-  modals: ModalWindow[] = [
+  /** Modals to show */
+  public modals: ModalWindow[] = [
     {
       title: 'Whats new in v1.0.0',
       html: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.<br /><a href="http://google.com">test</a> ',
@@ -79,11 +83,11 @@ export class AppComponent {
     },
   ];
 
-  showDialog(): void {
-    this.isDialogVisible = true;
+  public showDialog(): void {
+    this.modal?.open();
   }
 
-  closeDialog(): void {
+  public closeDialog(): void {
     this.isDialogVisible = false;
   }
 }
