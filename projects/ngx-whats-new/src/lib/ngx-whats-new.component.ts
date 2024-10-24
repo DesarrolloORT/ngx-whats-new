@@ -5,6 +5,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
+
 import { ModalWindow } from './modal-window.interface';
 import { Options } from './options.interface';
 
