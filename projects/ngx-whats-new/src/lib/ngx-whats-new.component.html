@@ -15,14 +15,14 @@
       class="wn-close-modal-button"
       (click)="close()"
     >
-      Close
+      ⛌
     </button>
     }
     <div class="wn-modal-layout">
       <div
         class="wn-modal-body"
         aria-live="polite"
-        [style.padding-top]="items[selectedIndex].image ? '' : '1em'"
+        [style.padding-top]="items[selectedIndex].image ? '' : '1.4em'"
         [style.width]="options.customStyle.width"
         [style.border-radius]="options.customStyle.borderRadius"
         [style.border]="options.customStyle.borderSize"
@@ -39,28 +39,31 @@
         >
           <img [src]="img?.src" [alt]="img?.altText" />
         </div>
-        } @if (items[selectedIndex].title) {
-        <div class="wn-title">
-          {{ items[selectedIndex].title }}
-        </div>
-        } @if (items[selectedIndex].text) {
-        <div class="wn-text">
-          {{ items[selectedIndex].text }}
-        </div>
-        } @if (items[selectedIndex].html) {
-        <div class="wn-text" [innerHTML]="items[selectedIndex].html"></div>
-        } @if (items[selectedIndex].button) { @let btn =
-        items[selectedIndex].button;
-        <div class="wn-button" [style.text-align]="btn?.position ?? 'center'">
+        }
+        <div class="wn-info-body">
+          @if (items[selectedIndex].title) {
+          <div class="wn-title">
+            {{ items[selectedIndex].title }}
+          </div>
+          } @if (items[selectedIndex].text) {
+          <div class="wn-text">
+            {{ items[selectedIndex].text }}
+          </div>
+          } @if (items[selectedIndex].html) {
+          <div class="wn-text" [innerHTML]="items[selectedIndex].html"></div>
+          } @if (items[selectedIndex].button) { @let btn =
+          items[selectedIndex].button;
           <button
+            class="wn-button"
+            [style.align-self]="btn?.position ?? 'center'"
             [style.background-color]="btn?.bgColor"
             [style.color]="btn?.textColor"
             (click)="goToNext()"
           >
             {{ btn?.text }}
           </button>
+          }
         </div>
-        }
       </div>
       @if (items.length > 1) {
       <ul class="wn-navigation">
