@@ -1,61 +1,79 @@
-<div class="modal">
-  <div class="modal-layout">
-    <div
-      class="modal-body"
-      [style.width]="options.customStyle.width"
-      [style.border-radius]="options.customStyle.borderRadius"
-      [style.border]="options.customStyle.borderSize"
-      [style.boxShadow]="options.customStyle.boxShadow"
-      [style.backgroundColor]="options.customStyle.backgroundColor"
-      [style.color]="options.customStyle.textColor"
-    >
-      @if (items[selected].image) { @let img = items[selected].image;
+<div class="wn-modal-container">
+  <div
+    role="dialog"
+    class="wn-modal"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+    aria-describedby="modal-description"
+  >
+    <button aria-label="Close dialog" class="wn-close-modal" (click)="close()">
+      Close
+    </button>
+    <div class="wn-modal-layout">
       <div
-        class="image"
-        [style.background-color]="img?.bgColor"
-        [style.height]="img?.height + 'px'"
+        class="wn-modal-body"
+        [style.width]="options.customStyle.width"
+        [style.border-radius]="options.customStyle.borderRadius"
+        [style.border]="options.customStyle.borderSize"
+        [style.boxShadow]="options.customStyle.boxShadow"
+        [style.backgroundColor]="options.customStyle.backgroundColor"
+        [style.color]="options.customStyle.textColor"
       >
-        <img [src]="img?.src" [alt]="img?.altText" />
-      </div>
-      } @if (items[selected].title) {
-      <div class="title">
-        {{ items[selected].title }}
-      </div>
-      } @if (items[selected].text) {
-      <div class="text">
-        {{ items[selected].text }}
-      </div>
-      } @if (items[selected].html) {
-      <div class="text" [innerHTML]="items[selected].html"></div>
-      } @if (items[selected].button) { @let btn = items[selected].button;
-      <div class="button" [style.text-align]="btn?.position ?? 'center'">
-        <button
-          [style.background-color]="btn?.bgColor"
-          [style.color]="btn?.textColor"
-          (keypress)="goToNext()"
-          (click)="goToNext()"
+        @if (items[selected].image) { @let img = items[selected].image;
+        <div
+          class="wn-image"
+          [style.background-color]="img?.bgColor"
+          [style.height]="img?.height + 'px'"
         >
-          {{ btn?.text }}
-        </button>
+          <img [src]="img?.src" [alt]="img?.altText" />
+        </div>
+        } @if (items[selected].title) {
+        <div class="wn-title">
+          {{ items[selected].title }}
+        </div>
+        } @if (items[selected].text) {
+        <div class="wn-text">
+          {{ items[selected].text }}
+        </div>
+        } @if (items[selected].html) {
+        <div class="wn-text" [innerHTML]="items[selected].html"></div>
+        } @if (items[selected].button) { @let btn = items[selected].button;
+        <div class="wn-button" [style.text-align]="btn?.position ?? 'center'">
+          <button
+            [style.background-color]="btn?.bgColor"
+            [style.color]="btn?.textColor"
+            (click)="goToNext()"
+          >
+            {{ btn?.text }}
+          </button>
+        </div>
+        }
       </div>
+      @if (items.length > 1) {
+      <ul class="wn-navigation">
+        @for (item of items; track item.title; let i = $index;) {
+        <li
+          class="wn-dot"
+          [class.clickable]="options.clickableNavigationDots"
+          [class.active]="i === selected"
+          [class.inactive]="i !== selected"
+        >
+          <button
+            (click)="navigateTo(i)"
+            [ariaLabel]="'Navigate to item ' + (i + 1)"
+          >
+            Navigate to item {{ i + 1 }}
+          </button>
+        </li>
+        }
+      </ul>
       }
     </div>
-    @if (items.length > 1) {
-    <ul class="navigation">
-      @for (item of items; track item.title; let i = $index;) {
-      <li
-        class="dot"
-        [class.clickable]="options.clickableNavigationDots"
-        [class.active]="i === selected"
-        [class.inactive]="i !== selected"
-      >
-        <button (keypress)="navigateTo(i)" (click)="navigateTo(i)">
-          Navigate to item {{ i + 1 }}
-        </button>
-      </li>
-      }
-    </ul>
-    }
   </div>
+  <div class="wn-backdrop" aria-hidden="true" (click)="close()"></div>
+
+  <h1 class="sr-only" id="modal-title">Update information dialog</h1>
+  <p class="sr-only" id="modal-description">
+    This dialog contains information related to the latest features and fixes.
+  </p>
 </div>
-<div id="backdrop" (click)="close()" (keypress)="close()"></div>
