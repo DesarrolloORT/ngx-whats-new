@@ -70,6 +70,14 @@ export class NgxWhatsNewComponent {
   }
 
   /**
+   * Registers a listener for Escape key to close the modal
+   */
+  @HostListener('document:keydown.escape', ['$event'])
+  handleEscape() {
+    this.close();
+  }
+
+  /**
    * Navigates to the next modal
    */
   goToNext(): void {
