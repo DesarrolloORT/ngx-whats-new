@@ -11,7 +11,8 @@ export class AppComponent {
   isDialogVisible = true;
 
   options: Options = {
-    disableClose: true,
+    enableKeyboardNavigation: true,
+    clickableNavigationDots: true,
     customStyle: {
       width: '500px',
       borderRadius: '10px',
@@ -25,7 +26,7 @@ export class AppComponent {
       html: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.<br /><a href="http://google.com">test</a> ',
       image: {
         height: 500,
-        src: 'https://placeimg.com/500/500/arch',
+        src: 'https://picsum.photos/500',
         altText:
           'In v1.0.0, lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
       },
@@ -47,7 +48,7 @@ export class AppComponent {
     },
     {
       image: {
-        src: 'https://placeimg.com/500/500/nature',
+        src: 'https://picsum.photos/500/500',
         height: 500,
         altText:
           'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
