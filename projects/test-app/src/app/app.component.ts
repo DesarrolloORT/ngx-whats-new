@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import {
   DialogOptions,
+  NavigationEvent,
   WhatsNewItem,
 } from 'projects/ngx-whats-new/src/lib/interfaces';
-import { NavigationEvent } from 'projects/ngx-whats-new/src/lib/interfaces';
 import { NgxWhatsNewComponent } from 'projects/ngx-whats-new/src/lib/ngx-whats-new.component';
 
 @Component({
