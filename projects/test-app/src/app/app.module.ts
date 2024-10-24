@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgxWhatsNewComponent } from 'projects/ngx-whats-new/src/public-api';
 
-import { NgxWhatsNewModule } from '../../../ngx-whats-new/src/lib/ngx-whats-new.module';
 import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, NgxWhatsNewModule],
+  imports: [BrowserModule, NgxWhatsNewComponent],
   providers: [],
   bootstrap: [AppComponent],
 })
