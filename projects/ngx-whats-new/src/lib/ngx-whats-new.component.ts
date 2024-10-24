@@ -15,7 +15,7 @@ import {
   ViewChildren,
 } from '@angular/core';
 
-import { DialogOptions, WhatsNewItem } from './interfaces';
+import { DialogOptions, NavigationEvent, WhatsNewItem } from './interfaces';
 
 const DEFAULT_OPTIONS: DialogOptions = {
   customStyle: {
@@ -55,14 +55,28 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   }
 
   /**
+   * @output itemNavigation - Emits an event whenever the selected item changes.
+   * The event payload includes the previous and current index and the corresponding items.
+   */
+  @Output() public readonly navigation = new EventEmitter<NavigationEvent>();
+
+  /**
    * Navigates to the item corresponding to the provided number.
    * @param index number of the item
    */
   public navigateTo(index: number): void {
-    if (this._options.clickableNavigationDots) {
+    if (this._options.clickableNavigationDots && index !== this.selectedIndex) {
+      const previousIndex = this.selectedIndex;
+      const previousItem = this.items[previousIndex];
       this.selectedIndex = index;
       this.updateTabIndices();
       this.focusButton(index);
+      this.emitNavigationEvent(
+        previousIndex,
+        previousItem,
+        this.selectedIndex,
+        this.items[this.selectedIndex]
+      );
     }
   }
 
@@ -101,9 +115,18 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   /** Navigates to the next item. Closes What's New dialog if it is the last one. */
   public goToNext(): void {
     if (this.selectedIndex < this.items.length - 1) {
-      this.selectedIndex = this.selectedIndex + 1;
+      const previousIndex = this.selectedIndex;
+      const previousItem = this.items[previousIndex];
+      this.selectedIndex += 1;
+      this.updateTabIndices();
+      this.emitNavigationEvent(
+        previousIndex,
+        previousItem,
+        this.selectedIndex,
+        this.items[this.selectedIndex]
+      );
     } else {
-      this.closeModal.emit();
+      this.close();
     }
   }
 
@@ -120,7 +143,7 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   /** Control whether the dialog is visible */
   protected isVisible = false;
 
-  /** Event emitted on dialog close */
+  /** @output closeModal - Emits an event on dialog close */
   @Output() private readonly closeModal = new EventEmitter<void>();
 
   /** Reference to the close button */
@@ -162,6 +185,7 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   protected handleKeyboardNavigation($event: KeyboardEvent): void {
     if (this._options.enableKeyboardNavigation) {
       let nextIndex = this.selectedIndex;
+      let shouldNavigate = true;
       switch ($event.key) {
         case 'ArrowRight':
           if (this.selectedIndex < this.items.length - 1) {
@@ -179,15 +203,24 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
           break;
         case 'Escape':
           this.close();
+          shouldNavigate = false;
           return;
         default:
           break;
       }
 
-      if (nextIndex !== this.selectedIndex) {
+      if (shouldNavigate && nextIndex !== this.selectedIndex) {
+        const previousIndex = this.selectedIndex;
+        const previousItem = this.items[previousIndex];
         this.selectedIndex = nextIndex;
         this.updateTabIndices();
         this.focusButton(this.selectedIndex);
+        this.emitNavigationEvent(
+          previousIndex,
+          previousItem,
+          nextIndex,
+          this.items[nextIndex]
+        );
         $event.preventDefault();
       }
     }
@@ -228,6 +261,35 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
     if (button) {
       button.focus();
     }
+  }
+
+  /**
+   * Emits a navigation event with previous and current index and items.
+   *
+   * Allows external components to react to navigation changes with full context.
+   *
+   * @param previousIndex - The index before navigation.
+   * @param previousItem - The item before navigation.
+   * @param currentIndex - The index after navigation.
+   * @param currentItem - The item after navigation.
+   */
+  private emitNavigationEvent(
+    previousIndex: number,
+    previousItem: WhatsNewItem,
+    currentIndex: number,
+    currentItem: WhatsNewItem
+  ): void {
+    if (previousIndex !== currentIndex)
+      this.navigation.emit({
+        previousItem: {
+          index: previousIndex,
+          item: previousItem,
+        },
+        currentItem: {
+          index: currentIndex,
+          item: currentItem,
+        },
+      });
   }
 
   /**
