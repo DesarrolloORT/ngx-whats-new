@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ModalWindow } from 'projects/ngx-whats-new/src/lib/modal-window.interface';
+import { Options } from 'projects/ngx-whats-new/src/lib/options.interface';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +10,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   isDialogVisible = true;
 
-  options = {
+  options: Options = {
     disableClose: true,
     customStyle: {
       width: '500px',
@@ -17,7 +19,7 @@ export class AppComponent {
     },
   };
 
-  modals = [
+  modals: ModalWindow[] = [
     {
       imageHeight: 500,
       imageSrc: 'https://placeimg.com/500/500/arch',
@@ -27,6 +29,7 @@ export class AppComponent {
         text: 'Okay',
         textColor: '#fff',
         bgColor: '#333',
+        position: 'center',
       },
     },
     {
@@ -35,6 +38,7 @@ export class AppComponent {
         text: 'Got it!',
         textColor: '#fff',
         bgColor: '#333',
+        position: 'center',
       },
     },
     {
@@ -44,6 +48,7 @@ export class AppComponent {
         text: 'Got it',
         textColor: '#fff',
         bgColor: '#333',
+        position: 'center',
       },
     },
     {
@@ -55,6 +60,8 @@ export class AppComponent {
       button: {
         text: 'Lets go',
         position: 'center',
+        textColor: '#fff',
+        bgColor: '#333',
       },
     },
   ];
