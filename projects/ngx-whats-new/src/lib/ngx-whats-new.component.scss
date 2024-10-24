@@ -1,3 +1,10 @@
+:host {
+  * {
+    font-size: 14px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+}
+
 .wn-modal-container {
   position: fixed;
   z-index: 1000;
@@ -12,7 +19,7 @@
   left: 0;
 
   .wn-modal {
-    width: 500px;
+    width: 35em;
     height: auto;
     position: relative;
 
@@ -23,10 +30,11 @@
       }
     }
 
-    .wn-close-modal {
+    .wn-close-modal-button {
       position: absolute;
-      top: 8px;
-      right: 7px;
+      top: 0.5em;
+      right: 0.15em;
+      cursor: pointer;
     }
 
     .wn-modal-layout {
@@ -46,24 +54,24 @@
 
         .wn-title {
           font-size: 1.3em;
-          font-weight: 100;
-          margin: 20px 20px 0 20px;
+          font-weight: 600;
+          margin: 1.4em 1.4em 0 1.4em;
           color: #222;
           text-align: center;
         }
 
         .wn-text {
-          margin: 20px 20px 20px 20px;
+          margin: 1.4em 1.4em 1.4em 1.4em;
           color: #666;
           text-align: center;
         }
 
         .wn-button {
-          padding: 0 20px 20px 20px;
+          padding: 0 1.4em 1.4em 1.4em;
 
           button {
             border: none;
-            padding: 10px 35px;
+            padding: 0.7em 2.5em;
             text-transform: uppercase;
             cursor: pointer;
             outline: none;
@@ -81,13 +89,13 @@
         display: flex;
         justify-content: center;
         list-style-type: none;
-        margin: 20px;
+        margin: 1.4em;
         padding: 0;
 
         .wn-dot {
           border-radius: 100%;
-          height: 12px;
-          width: 12px;
+          height: 1em;
+          width: 1em;
           margin: 0 4px;
           position: relative;
 
