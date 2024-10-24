@@ -1,9 +1,10 @@
-<button (click)="showDialog()">Open Dialog</button>
+<button (click)="openDialog()">Open Dialog</button>
 
 <ngx-whats-new
   #whatsNew
-  (closed)="closeDialog()"
-  (navigation)="logNavigation($event)"
+  (opened)="onOpen()"
+  (closed)="onClose()"
+  (navigation)="onNavigation($event)"
   [items]="modals"
   [options]="options"
 />

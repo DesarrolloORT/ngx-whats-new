@@ -67,6 +67,9 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   /** @output closed - Emits an event on dialog close */
   @Output() public readonly closed = new EventEmitter<void>();
 
+  /** @output opened - Emits an event on dialog open */
+  @Output() public readonly opened = new EventEmitter<void>();
+
   /** Navigates to the next item. Closes What's New dialog if it is the last one. */
   public goToNext(): void {
     if (this.items.length === 0) {
@@ -118,6 +121,7 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   /** Opens What's New dialog. */
   public open(): void {
     this.isVisible = true;
+    this.opened.emit();
     this.registerKeyboardListener();
     this.resetState();
   }

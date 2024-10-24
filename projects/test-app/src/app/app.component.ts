@@ -13,7 +13,6 @@ import { NgxWhatsNewComponent } from 'projects/ngx-whats-new/src/lib/ngx-whats-n
 })
 export class AppComponent implements AfterViewInit {
   @ViewChild('whatsNew') private readonly modal?: NgxWhatsNewComponent;
-  public isDialogVisible: boolean | undefined;
 
   /** Options for the modal */
   public options: DialogOptions = {
@@ -87,18 +86,22 @@ export class AppComponent implements AfterViewInit {
   ];
 
   ngAfterViewInit(): void {
-    this.showDialog();
+    this.openDialog();
   }
 
-  public showDialog(): void {
+  public openDialog(): void {
     this.modal?.open();
   }
 
-  public closeDialog(): void {
-    this.isDialogVisible = false;
+  public onOpen(): void {
+    console.log('Dialog opened');
   }
 
-  public logNavigation($event: NavigationEvent) {
+  public onClose(): void {
+    console.log('Dialog closed');
+  }
+
+  public onNavigation($event: NavigationEvent) {
     console.info('Previous item:', $event.previousItem);
     console.info('Current item:', $event.currentItem);
   }
