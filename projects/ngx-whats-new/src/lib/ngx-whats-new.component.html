@@ -6,12 +6,15 @@
     aria-labelledby="modal-title"
     aria-describedby="modal-description"
   >
+    @if (!options.disableClose) {
     <button aria-label="Close dialog" class="wn-close-modal" (click)="close()">
       Close
     </button>
+    }
     <div class="wn-modal-layout">
       <div
         class="wn-modal-body"
+        aria-live="polite"
         [style.width]="options.customStyle.width"
         [style.border-radius]="options.customStyle.borderRadius"
         [style.border]="options.customStyle.borderSize"
@@ -60,7 +63,11 @@
         >
           <button
             (click)="navigateTo(i)"
-            [ariaLabel]="'Navigate to item ' + (i + 1)"
+            [attr.aria-label]="
+              (i === selected ? 'Current slide, ' : '') +
+              'Navigate to item ' +
+              (i + 1)
+            "
           >
             Navigate to item {{ i + 1 }}
           </button>
