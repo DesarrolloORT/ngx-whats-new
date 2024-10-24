@@ -46,11 +46,13 @@
       <li
         class="dot"
         [class.clickable]="options.clickableNavigationDots"
-        (keypress)="navigateTo(i)"
-        (click)="navigateTo(i)"
         [class.active]="i === selected"
         [class.inactive]="i !== selected"
-      ></li>
+      >
+        <button (keypress)="navigateTo(i)" (click)="navigateTo(i)">
+          Navigate to item {{ i + 1 }}
+        </button>
+      </li>
       }
     </ul>
     }
