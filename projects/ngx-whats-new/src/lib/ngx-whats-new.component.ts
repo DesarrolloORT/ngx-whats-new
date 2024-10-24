@@ -64,6 +64,32 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
    */
   @Output() public readonly navigation = new EventEmitter<NavigationEvent>();
 
+  /** @output closed - Emits an event on dialog close */
+  @Output() public readonly closed = new EventEmitter<void>();
+
+  /** Navigates to the next item. Closes What's New dialog if it is the last one. */
+  public goToNext(): void {
+    if (this.items.length === 0) {
+      console.warn('NgxWhatsNewComponent: No items to navigate.');
+      return;
+    }
+
+    if (this.selectedIndex < this.items.length - 1) {
+      const previousIndex = this.selectedIndex;
+      const previousItem = this.items[previousIndex];
+      this.selectedIndex += 1;
+      this.updateTabIndices();
+      this.emitNavigationEvent(
+        previousIndex,
+        previousItem,
+        this.selectedIndex,
+        this.items[this.selectedIndex]
+      );
+    } else {
+      this.close();
+    }
+  }
+
   /**
    * Navigates to the item corresponding to the provided number.
    * @param index number of the item
@@ -101,7 +127,7 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
     if (!this._options.disableClose) {
       this.unregisterKeyboardListener();
       this.isVisible = false;
-      this.closeModal.emit();
+      this.closed.emit();
       this.resetState();
     }
   }
@@ -121,29 +147,6 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
     this.unregisterKeyboardListener();
   }
 
-  /** Navigates to the next item. Closes What's New dialog if it is the last one. */
-  public goToNext(): void {
-    if (this.items.length === 0) {
-      console.warn('NgxWhatsNewComponent: No items to navigate.');
-      return;
-    }
-
-    if (this.selectedIndex < this.items.length - 1) {
-      const previousIndex = this.selectedIndex;
-      const previousItem = this.items[previousIndex];
-      this.selectedIndex += 1;
-      this.updateTabIndices();
-      this.emitNavigationEvent(
-        previousIndex,
-        previousItem,
-        this.selectedIndex,
-        this.items[this.selectedIndex]
-      );
-    } else {
-      this.close();
-    }
-  }
-
   // * -------------------------------------------
   // * Private or protected methods and properties
   // * -------------------------------------------
@@ -156,9 +159,6 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
 
   /** Control whether the dialog is visible */
   protected isVisible = false;
-
-  /** @output closeModal - Emits an event on dialog close */
-  @Output() private readonly closeModal = new EventEmitter<void>();
 
   /** Reference to the close button */
   @ViewChild('wnCloseButton') private readonly _closeButton?: ElementRef;
