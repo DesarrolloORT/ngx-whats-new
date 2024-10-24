@@ -9,13 +9,13 @@
       [style.backgroundColor]="options.customStyle.backgroundColor"
       [style.color]="options.customStyle.textColor"
     >
-      @if (items[selected].imageSrc) {
+      @if (items[selected].image) { @let img = items[selected].image;
       <div
         class="image"
-        [style.background-color]="items[selected].imageBgColor"
-        [style.height]="items[selected].imageHeight + 'px'"
+        [style.background-color]="img?.bgColor"
+        [style.height]="img?.height + 'px'"
       >
-        <img [src]="items[selected].imageSrc" [alt]="items[selected].title" />
+        <img [src]="img?.src" [alt]="img?.altText" />
       </div>
       } @if (items[selected].title) {
       <div class="title">
