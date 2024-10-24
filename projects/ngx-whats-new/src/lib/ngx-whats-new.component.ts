@@ -120,6 +120,7 @@ export class NgxWhatsNewComponent implements AfterViewInit {
         this.selectedIndex = nextIndex;
         this.updateTabIndices();
         this.focusButton(this.selectedIndex);
+        $event.preventDefault();
       }
     }
   }
