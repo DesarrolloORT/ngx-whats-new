@@ -7,6 +7,7 @@ import {
   EventEmitter,
   inject,
   Input,
+  OnDestroy,
   Output,
   QueryList,
   Renderer2,
@@ -30,7 +31,7 @@ const DEFAULT_OPTIONS: DialogOptions = {
   templateUrl: './ngx-whats-new.component.html',
   styleUrls: ['./ngx-whats-new.component.scss'],
 })
-export class NgxWhatsNewComponent implements AfterViewInit {
+export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   /** DialogOptions item initialized with default values. Accepts custom values. */
   private _options: DialogOptions = DEFAULT_OPTIONS;
 
@@ -238,5 +239,9 @@ export class NgxWhatsNewComponent implements AfterViewInit {
   private resetState(): void {
     this.selectedIndex = 0;
     this.updateTabIndices();
+  }
+
+  ngOnDestroy(): void {
+    this.unregisterKeyboardListener();
   }
 }
