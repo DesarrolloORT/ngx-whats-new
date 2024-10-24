@@ -9,8 +9,10 @@ import {
 import { ModalWindow } from './modal-window.interface';
 import { Options } from './options.interface';
 
-const DEFAULT_OPTIONS = {
-  width: '500px',
+const DEFAULT_OPTIONS: Options = {
+  customStyle: {
+    width: '500px',
+  },
   disableClose: false,
 };
 
@@ -21,14 +23,17 @@ const DEFAULT_OPTIONS = {
 })
 export class NgxWhatsNewComponent {
   /** Global options */
-  _options!: Options;
+  private _options: Options = DEFAULT_OPTIONS;
 
   /** Modals to show */
   @Input() items: ModalWindow[] = [];
 
   /** Set some default options */
   @Input() set options(options: Options) {
-    this._options = { ...DEFAULT_OPTIONS, ...options };
+    this._options = { ...options };
+  }
+  get options() {
+    return this._options;
   }
 
   /** Emits on close */

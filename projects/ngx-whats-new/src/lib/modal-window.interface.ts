@@ -3,12 +3,12 @@ export interface ModalWindow {
   title?: string;
   text?: string;
   html?: string;
-  imageHeight?: string;
+  imageHeight?: number;
   imageBgColor?: string;
   button?: {
     text: string;
     textColor: string;
     bgColor: string;
-    position: string;
+    position?: 'left' | 'center' | 'right';
   };
 }
