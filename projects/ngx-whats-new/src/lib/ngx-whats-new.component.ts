@@ -5,10 +5,11 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  HostListener,
+  inject,
   Input,
   Output,
   QueryList,
+  Renderer2,
   ViewChild,
   ViewChildren,
 } from '@angular/core';
@@ -70,6 +71,35 @@ export class NgxWhatsNewComponent implements AfterViewInit {
   /** Index of the selected modal item */
   protected selectedIndex = 0;
 
+  /** Instance of Renderer2 */
+  private readonly _renderer: Renderer2 = inject(Renderer2);
+
+  /** Function to register/unregister keyboard listener*/
+  private keyboardListener?: () => void;
+
+  /**
+   * Registers keyboard event listener when the dialog opens.
+   */
+  private registerKeyboardListener(): void {
+    this.keyboardListener = this._renderer.listen(
+      'window',
+      'keydown',
+      (event: KeyboardEvent) => {
+        this.handleKeyboardNavigation(event);
+      }
+    );
+  }
+
+  /**
+   * Unregisters keyboard event listener when the dialog closes.
+   */
+  private unregisterKeyboardListener(): void {
+    if (this.keyboardListener) {
+      this.keyboardListener();
+      this.keyboardListener = undefined;
+    }
+  }
+
   /**
    * Sets focus to the close button when the component is initialized.
    *
@@ -82,7 +112,7 @@ export class NgxWhatsNewComponent implements AfterViewInit {
   }
 
   /**
-   * Registers a listener for keyboard-based navigation between items.
+   * Handles keyboard-based navigation between items.
    *
    * Handled events:
    *  - ArrowRight: next item
@@ -90,7 +120,6 @@ export class NgxWhatsNewComponent implements AfterViewInit {
    *  - Escape: close dialog
    * @param $event keyboard event
    */
-  @HostListener('window:keydown', ['$event'])
   protected handleKeyboardNavigation($event: KeyboardEvent): void {
     if (this._options.enableKeyboardNavigation) {
       let nextIndex = this.selectedIndex;
@@ -186,12 +215,14 @@ export class NgxWhatsNewComponent implements AfterViewInit {
   /** Opens What's New dialog. */
   public open(): void {
     this.isVisible = true;
+    this.registerKeyboardListener();
     this.resetState();
   }
 
   /** Closes What's New dialog. */
   public close(): void {
     if (!this._options.disableClose) {
+      this.unregisterKeyboardListener();
       this.isVisible = false;
       this.closeModal.emit();
       this.resetState();
