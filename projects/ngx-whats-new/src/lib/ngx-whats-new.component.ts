@@ -29,7 +29,17 @@ export class NgxWhatsNewComponent implements AfterViewInit {
   private _options: Options = DEFAULT_OPTIONS;
 
   /** Items to show in the dialog */
-  @Input() items: ModalWindow[] = [];
+  private _items: ModalWindow[] = [];
+
+  /** Items to show in the dialog */
+  @Input() set items(items: ModalWindow[]) {
+    if (items) {
+      this._items = items;
+    }
+  }
+  get items(): ModalWindow[] {
+    return this._items;
+  }
 
   /** Control whether the dialog is visible */
   protected isVisible = false;
