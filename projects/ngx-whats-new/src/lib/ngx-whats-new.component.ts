@@ -203,7 +203,6 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   protected handleKeyboardNavigation($event: KeyboardEvent): void {
     if (this._options.enableKeyboardNavigation) {
       let nextIndex = this.selectedIndex;
-      let shouldNavigate = true;
       switch ($event.key) {
         case 'ArrowRight':
           if (this.selectedIndex < this.items.length - 1) {
@@ -221,13 +220,12 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
           break;
         case 'Escape':
           this.close();
-          shouldNavigate = false;
           return;
         default:
           break;
       }
 
-      if (shouldNavigate && nextIndex !== this.selectedIndex) {
+      if (nextIndex !== this.selectedIndex) {
         const previousIndex = this.selectedIndex;
         const previousItem = this.items[previousIndex];
         this.selectedIndex = nextIndex;
