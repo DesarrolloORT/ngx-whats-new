@@ -8,7 +8,12 @@
     cdkTrapFocus
   >
     @if (!options.disableClose) {
-    <button aria-label="Close dialog" class="wn-close-modal" (click)="close()">
+    <button
+      #wnCloseButton
+      aria-label="Close dialog"
+      class="wn-close-modal"
+      (click)="close()"
+    >
       Close
     </button>
     }
@@ -23,7 +28,8 @@
         [style.backgroundColor]="options.customStyle.backgroundColor"
         [style.color]="options.customStyle.textColor"
       >
-        @if (items[selected].image) { @let img = items[selected].image;
+        @if (items[selectedIndex].image) { @let img =
+        items[selectedIndex].image;
         <div
           class="wn-image"
           [style.background-color]="img?.bgColor"
@@ -31,17 +37,18 @@
         >
           <img [src]="img?.src" [alt]="img?.altText" />
         </div>
-        } @if (items[selected].title) {
+        } @if (items[selectedIndex].title) {
         <div class="wn-title">
-          {{ items[selected].title }}
+          {{ items[selectedIndex].title }}
         </div>
-        } @if (items[selected].text) {
+        } @if (items[selectedIndex].text) {
         <div class="wn-text">
-          {{ items[selected].text }}
+          {{ items[selectedIndex].text }}
         </div>
-        } @if (items[selected].html) {
-        <div class="wn-text" [innerHTML]="items[selected].html"></div>
-        } @if (items[selected].button) { @let btn = items[selected].button;
+        } @if (items[selectedIndex].html) {
+        <div class="wn-text" [innerHTML]="items[selectedIndex].html"></div>
+        } @if (items[selectedIndex].button) { @let btn =
+        items[selectedIndex].button;
         <div class="wn-button" [style.text-align]="btn?.position ?? 'center'">
           <button
             [style.background-color]="btn?.bgColor"
@@ -59,13 +66,13 @@
         <li
           class="wn-dot"
           [class.clickable]="options.clickableNavigationDots"
-          [class.active]="i === selected"
-          [class.inactive]="i !== selected"
+          [class.active]="i === selectedIndex"
+          [class.inactive]="i !== selectedIndex"
         >
           <button
             (click)="navigateTo(i)"
             [attr.aria-label]="
-              (i === selected ? 'Current slide, ' : '') +
+              (i === selectedIndex ? 'Current slide, ' : '') +
               'Navigate to item ' +
               (i + 1)
             "
