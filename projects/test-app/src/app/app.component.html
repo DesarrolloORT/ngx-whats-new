@@ -1,9 +1,8 @@
 <button (click)="showDialog()">Open Dialog</button>
 
-@if (isDialogVisible) {
 <ngx-whats-new
+  #whatsNew
   (closeModal)="closeDialog()"
   [items]="modals"
   [options]="options"
 />
-}
