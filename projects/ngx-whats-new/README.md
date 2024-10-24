@@ -30,8 +30,9 @@ Import the module:
 Use `<ngx-whats-new>` in your component:
 
 app.component.html
+
 ```
-    <button (click)="showDialog()">Open Dialog</button>
+    <button (click)="openDialog()">Open Dialog</button>
     <ngx-whats-new
         *ngIf="isDialogVisible"
         (closeModal)="closeDialog()"
@@ -41,8 +42,8 @@ app.component.html
     </ngx-whats-new>
 ```
 
-
 app.component.ts
+
 ```
     /** initial state of the modal */
     isDialogVisible = true;
