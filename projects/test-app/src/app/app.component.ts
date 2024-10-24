@@ -1,7 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { ModalWindow } from 'projects/ngx-whats-new/src/lib/modal-window.interface';
+import {
+  DialogOptions,
+  WhatsNewItem,
+} from 'projects/ngx-whats-new/src/lib/interfaces';
 import { NgxWhatsNewComponent } from 'projects/ngx-whats-new/src/lib/ngx-whats-new.component';
-import { Options } from 'projects/ngx-whats-new/src/lib/options.interface';
 
 @Component({
   selector: 'app-root',
@@ -9,11 +11,11 @@ import { Options } from 'projects/ngx-whats-new/src/lib/options.interface';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  @ViewChild('whatsNew') modal?: NgxWhatsNewComponent;
+  @ViewChild('whatsNew') private readonly modal?: NgxWhatsNewComponent;
   public isDialogVisible: boolean | undefined;
 
   /** Options for the modal */
-  public options: Options = {
+  public options: DialogOptions = {
     enableKeyboardNavigation: true,
     clickableNavigationDots: true,
     customStyle: {
@@ -24,7 +26,7 @@ export class AppComponent {
   };
 
   /** Modals to show */
-  public modals: ModalWindow[] = [
+  public modals: WhatsNewItem[] = [
     {
       title: 'Whats new in v1.0.0',
       html: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.<br /><a href="http://google.com">test</a> ',

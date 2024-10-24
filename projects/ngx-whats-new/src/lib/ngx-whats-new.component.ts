@@ -9,10 +9,9 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { ModalWindow } from './modal-window.interface';
-import { Options } from './options.interface';
+import { DialogOptions, WhatsNewItem } from './interfaces';
 
-const DEFAULT_OPTIONS: Options = {
+const DEFAULT_OPTIONS: DialogOptions = {
   customStyle: {
     width: '500px',
   },
@@ -25,27 +24,27 @@ const DEFAULT_OPTIONS: Options = {
   styleUrls: ['./ngx-whats-new.component.scss'],
 })
 export class NgxWhatsNewComponent implements AfterViewInit {
-  /** Options item initialized with default values. Accepts custom values. */
-  private _options: Options = DEFAULT_OPTIONS;
+  /** DialogOptions item initialized with default values. Accepts custom values. */
+  private _options: DialogOptions = DEFAULT_OPTIONS;
 
   /** Items to show in the dialog */
-  private _items: ModalWindow[] = [];
+  private _items: WhatsNewItem[] = [];
 
   /** Items to show in the dialog */
-  @Input() set items(items: ModalWindow[]) {
+  @Input() set items(items: WhatsNewItem[]) {
     if (items) {
       this._items = items;
     }
   }
-  get items(): ModalWindow[] {
+  get items(): WhatsNewItem[] {
     return this._items;
   }
 
   /** Control whether the dialog is visible */
   protected isVisible = false;
 
-  /** Options for What's New dialog */
-  @Input() set options(options: Options) {
+  /** DialogOptions for What's New dialog */
+  @Input() set options(options: DialogOptions) {
     this._options = { ...options };
   }
   get options() {
