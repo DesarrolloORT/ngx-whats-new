@@ -21,6 +21,7 @@
       <div
         class="wn-modal-body"
         aria-live="polite"
+        [style.padding-top]="items[selectedIndex].image ? '' : '1em'"
         [style.width]="options.customStyle.width"
         [style.border-radius]="options.customStyle.borderRadius"
         [style.border]="options.customStyle.borderSize"
