@@ -111,7 +111,7 @@ export class NgxWhatsNewComponent implements AfterViewInit {
           break;
         case 'Escape':
           this.close();
-          break;
+          return;
         default:
           break;
       }
