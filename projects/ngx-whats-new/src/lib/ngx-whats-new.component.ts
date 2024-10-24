@@ -1,3 +1,5 @@
+import { A11yModule } from '@angular/cdk/a11y';
+import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -20,6 +22,8 @@ const DEFAULT_OPTIONS: DialogOptions = {
 
 @Component({
   selector: 'ngx-whats-new',
+  standalone: true,
+  imports: [CommonModule, A11yModule],
   templateUrl: './ngx-whats-new.component.html',
   styleUrls: ['./ngx-whats-new.component.scss'],
 })

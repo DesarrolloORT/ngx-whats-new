@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import {
   DialogOptions,
   WhatsNewItem,
@@ -10,7 +10,7 @@ import { NgxWhatsNewComponent } from 'projects/ngx-whats-new/src/lib/ngx-whats-n
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   @ViewChild('whatsNew') private readonly modal?: NgxWhatsNewComponent;
   public isDialogVisible: boolean | undefined;
 
@@ -84,6 +84,10 @@ export class AppComponent {
       },
     },
   ];
+
+  ngAfterViewInit(): void {
+    this.showDialog();
+  }
 
   public showDialog(): void {
     this.modal?.open();
