@@ -1,10 +1,13 @@
 export interface ModalWindow {
-  imageSrc?: string;
   title?: string;
   text?: string;
   html?: string;
-  imageHeight?: number;
-  imageBgColor?: string;
+  image?: {
+    src: string;
+    height?: number;
+    bgColor?: string;
+    altText: string;
+  };
   button?: {
     text: string;
     textColor: string;
