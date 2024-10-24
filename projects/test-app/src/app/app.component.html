@@ -3,6 +3,7 @@
 <ngx-whats-new
   #whatsNew
   (closeModal)="closeDialog()"
+  (navigation)="logNavigation($event)"
   [items]="modals"
   [options]="options"
 />

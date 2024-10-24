@@ -3,6 +3,7 @@ import {
   DialogOptions,
   WhatsNewItem,
 } from 'projects/ngx-whats-new/src/lib/interfaces';
+import { NavigationEvent } from 'projects/ngx-whats-new/src/lib/interfaces';
 import { NgxWhatsNewComponent } from 'projects/ngx-whats-new/src/lib/ngx-whats-new.component';
 
 @Component({
@@ -95,5 +96,10 @@ export class AppComponent implements AfterViewInit {
 
   public closeDialog(): void {
     this.isDialogVisible = false;
+  }
+
+  public logNavigation($event: NavigationEvent) {
+    console.info('Previous item:', $event.previousItem);
+    console.info('Current item:', $event.currentItem);
   }
 }
