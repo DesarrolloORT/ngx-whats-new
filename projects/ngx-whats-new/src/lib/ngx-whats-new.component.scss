@@ -101,62 +101,64 @@
 
       /** Dot navigation **/
       .wn-navigation {
-        align-items: center;
-        display: flex;
-        justify-content: center;
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-        gap: 0.5em;
+        .wn-navigation-list {
+          align-items: center;
+          display: flex;
+          justify-content: center;
+          list-style-type: none;
+          padding: 0;
+          margin: 0;
+          gap: 0.5em;
 
-        .wn-dot {
-          border-radius: 100%;
-          height: 1em;
-          width: 1em;
-          position: relative;
-
-          &.clickable {
-            &:not(.active) {
-              button {
-                cursor: pointer;
-              }
-
-              &:hover {
-                background-color: rgba(0, 0, 0, 0.1);
-              }
-            }
-          }
-
-          button {
-            position: absolute;
-            top: 0;
-            bottom: 0;
+          .wn-dot {
             border-radius: 100%;
-            left: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            display: block;
-            border: none;
-            overflow: hidden;
-            background-color: transparent;
-            color: transparent;
-            user-select: none;
+            height: 1em;
+            width: 1em;
+            position: relative;
 
-            &:focus-visible {
-              outline: 2px solid blue;
-              outline-offset: 2px;
+            &.clickable {
+              &:not(.active) {
+                .wn-nav-button {
+                  cursor: pointer;
+                }
+
+                &:hover {
+                  background-color: rgba(0, 0, 0, 0.1);
+                }
+              }
             }
-          }
 
-          &.active {
-            background-color: rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(0, 0, 0, 0);
-          }
+            .wn-nav-button {
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              border-radius: 100%;
+              left: 0;
+              right: 0;
+              width: 100%;
+              height: 100%;
+              display: block;
+              border: none;
+              overflow: hidden;
+              background-color: transparent;
+              color: transparent;
+              user-select: none;
 
-          &.inactive {
-            background-color: transparent;
-            border: 1px solid rgba(0, 0, 0, 0.3);
+              &:focus-visible {
+                outline: 2px solid blue;
+                outline-offset: 2px;
+              }
+            }
+
+            &.active {
+              background-color: rgba(0, 0, 0, 0.8);
+              border: 1px solid rgba(0, 0, 0, 0);
+            }
+
+            &.inactive {
+              background-color: transparent;
+              border: 1px solid rgba(0, 0, 0, 0.3);
+            }
           }
         }
       }

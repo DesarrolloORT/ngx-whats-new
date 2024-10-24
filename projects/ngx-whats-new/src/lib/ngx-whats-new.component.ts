@@ -8,7 +8,9 @@ import {
   HostListener,
   Input,
   Output,
+  QueryList,
   ViewChild,
+  ViewChildren,
 } from '@angular/core';
 
 import { DialogOptions, WhatsNewItem } from './interfaces';
@@ -61,6 +63,10 @@ export class NgxWhatsNewComponent implements AfterViewInit {
   /** Reference to the close button */
   @ViewChild('wnCloseButton') private readonly _closeButton?: ElementRef;
 
+  /** Reference to the navigation buttons */
+  @ViewChildren('wnNavButton')
+  private readonly navButtons?: QueryList<ElementRef>;
+
   /** Index of the selected modal item */
   protected selectedIndex = 0;
 
@@ -87,16 +93,21 @@ export class NgxWhatsNewComponent implements AfterViewInit {
   @HostListener('window:keydown', ['$event'])
   protected handleKeyboardNavigation($event: KeyboardEvent): void {
     if (this._options.enableKeyboardNavigation) {
+      let nextIndex = this.selectedIndex;
       switch ($event.key) {
         case 'ArrowRight':
           if (this.selectedIndex < this.items.length - 1) {
-            this.selectedIndex = this.selectedIndex + 1;
+            nextIndex = this.selectedIndex + 1;
+          } else {
+            this.close();
+            return;
           }
           break;
         case 'ArrowLeft':
-          if ($event.key === 'ArrowLeft' && this.selectedIndex > 0) {
-            this.selectedIndex = this.selectedIndex - 1;
-          }
+          if (this.selectedIndex > 0) {
+            nextIndex = this.selectedIndex - 1;
+          } else return;
+
           break;
         case 'Escape':
           this.close();
@@ -104,6 +115,49 @@ export class NgxWhatsNewComponent implements AfterViewInit {
         default:
           break;
       }
+
+      if (nextIndex !== this.selectedIndex) {
+        this.selectedIndex = nextIndex;
+        this.updateTabIndices();
+        this.focusButton(this.selectedIndex);
+      }
+    }
+  }
+
+  /**
+   * Updates the `tabindex` and `aria-selected` attributes for all navigation buttons.
+   *
+   * This method ensures that only the currently selected button is focusable via keyboard navigation
+   * by setting its `tabindex` to `0`, while all other buttons have `tabindex` set to `-1`.
+   * Additionally, it updates the `aria-selected` attribute to reflect the current selection state,
+   * enhancing accessibility for assistive technologies.
+   */
+  private updateTabIndices(): void {
+    this.navButtons?.forEach((ref, index) => {
+      const button = ref.nativeElement;
+      button.tabIndex = index === this.selectedIndex ? 0 : -1;
+      button.setAttribute(
+        'aria-selected',
+        index === this.selectedIndex ? 'true' : 'false'
+      );
+    });
+  }
+
+  /**
+   * Sets focus to the navigation button at the specified index.
+   *
+   * This method programmatically focuses the button corresponding to the given index,
+   * ensuring that keyboard users receive visual and functional feedback when navigating
+   * through carousel items using arrow keys.
+   *
+   * @param index - The index of the button to focus within the navigation list.
+   */
+  private focusButton(index: number): void {
+    const buttons = this.navButtons?.toArray();
+
+    const button = buttons?.[index].nativeElement;
+    if (button) {
+      button.focus();
     }
   }
 
@@ -131,12 +185,15 @@ export class NgxWhatsNewComponent implements AfterViewInit {
   public navigateTo(index: number): void {
     if (this._options.clickableNavigationDots) {
       this.selectedIndex = index;
+      this.updateTabIndices();
+      this.focusButton(index);
     }
   }
 
   /** Opens What's New dialog. */
   public open(): void {
     this.isVisible = true;
+    this.resetState();
   }
 
   /** Closes What's New dialog. */
@@ -144,6 +201,18 @@ export class NgxWhatsNewComponent implements AfterViewInit {
     if (!this._options.disableClose) {
       this.isVisible = false;
       this.closeModal.emit();
+      this.resetState();
     }
+  }
+
+  /**
+   * Resets the component's state to its initial values.
+   *
+   * This method is called when the dialog is opened or closed to ensure that
+   * the component does not retain any state from previous interactions.
+   */
+  private resetState(): void {
+    this.selectedIndex = 0;
+    this.updateTabIndices();
   }
 }
