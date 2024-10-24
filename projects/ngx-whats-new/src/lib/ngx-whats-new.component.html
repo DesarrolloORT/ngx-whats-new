@@ -66,27 +66,37 @@
         </div>
       </div>
       @if (items.length > 1) {
-      <ul class="wn-navigation">
-        @for (item of items; track item.title; let i = $index;) {
-        <li
-          class="wn-dot"
-          [class.clickable]="options.clickableNavigationDots"
-          [class.active]="i === selectedIndex"
-          [class.inactive]="i !== selectedIndex"
-        >
-          <button
-            (click)="navigateTo(i)"
-            [attr.aria-label]="
-              (i === selectedIndex ? 'Current slide, ' : '') +
-              'Navigate to item ' +
-              (i + 1)
-            "
+      <nav aria-label="Carousel-like item navigation" class="wn-navigation">
+        <ul class="wn-navigation-list" role="tablist">
+          @for (item of items; track item.title; let i = $index;) {
+          <li
+            class="wn-dot"
+            role="tabpanel"
+            [class.clickable]="options.clickableNavigationDots"
+            [class.active]="i === selectedIndex"
+            [class.inactive]="i !== selectedIndex"
           >
-            Navigate to item {{ i + 1 }}
-          </button>
-        </li>
-        }
-      </ul>
+            <button
+              #wnNavButton
+              role="tab"
+              [attr.aria-selected]="i === selectedIndex"
+              [attr.aria-controls]="'tabpanel-' + i"
+              [id]="'tab-' + i"
+              [tabindex]="i === selectedIndex ? '0' : '-1'"
+              (click)="navigateTo(i)"
+              [attr.aria-label]="
+                (i === selectedIndex ? 'Current slide, ' : '') +
+                'Navigate to item ' +
+                (i + 1)
+              "
+              class="wn-nav-button"
+            >
+              Navigate to item {{ i + 1 }}
+            </button>
+          </li>
+          }
+        </ul>
+      </nav>
       }
     </div>
   </div>
