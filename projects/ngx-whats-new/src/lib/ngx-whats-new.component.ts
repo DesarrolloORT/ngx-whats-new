@@ -38,9 +38,13 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
 
   /** Items to show in the dialog */
   @Input() public set items(items: WhatsNewItem[]) {
-    if (items) {
+    if (items && items.length > 0) {
       this._items = items;
+    } else {
+      console.warn('NgxWhatsNewComponent: No items provided.');
+      this._items = [];
     }
+    this.resetState();
   }
   public get items(): WhatsNewItem[] {
     return this._items;
@@ -65,6 +69,11 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
    * @param index number of the item
    */
   public navigateTo(index: number): void {
+    if (this.items.length === 0) {
+      console.warn('NgxWhatsNewComponent: No items to navigate.');
+      return;
+    }
+
     if (this._options.clickableNavigationDots && index !== this.selectedIndex) {
       const previousIndex = this.selectedIndex;
       const previousItem = this.items[previousIndex];
@@ -114,6 +123,11 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
 
   /** Navigates to the next item. Closes What's New dialog if it is the last one. */
   public goToNext(): void {
+    if (this.items.length === 0) {
+      console.warn('NgxWhatsNewComponent: No items to navigate.');
+      return;
+    }
+
     if (this.selectedIndex < this.items.length - 1) {
       const previousIndex = this.selectedIndex;
       const previousItem = this.items[previousIndex];
