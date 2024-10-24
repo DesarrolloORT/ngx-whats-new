@@ -161,14 +161,6 @@ export class NgxWhatsNewComponent implements AfterViewInit {
     }
   }
 
-  /**
-   * Registers a listener for Escape key to close the modal
-   */
-  @HostListener('document:keydown.escape', ['$event'])
-  protected handleEscape() {
-    this.close();
-  }
-
   /** Navigates to the next item. Closes What's New dialog if it is the last one. */
   public goToNext(): void {
     if (this.selectedIndex < this.items.length - 1) {
