@@ -25,7 +25,10 @@
           "builder": "@angular-devkit/build-angular:jest",
           "options": {
             "tsConfig": "projects/ngx-whats-new/tsconfig.spec.json",
-            "polyfills": ["zone.js", "zone.js/testing"]
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
           }
         }
       }
@@ -48,10 +51,17 @@
               "base": "dist/test-app"
             },
             "index": "projects/test-app/src/index.html",
-            "polyfills": ["projects/test-app/src/polyfills.ts"],
+            "polyfills": [
+              "projects/test-app/src/polyfills.ts"
+            ],
             "tsConfig": "projects/test-app/tsconfig.app.json",
-            "assets": ["projects/test-app/src/favicon.ico", "projects/test-app/src/assets"],
-            "styles": ["projects/test-app/src/styles.scss"],
+            "assets": [
+              "projects/test-app/src/favicon.ico",
+              "projects/test-app/src/assets"
+            ],
+            "styles": [
+              "projects/test-app/src/styles.scss"
+            ],
             "scripts": [],
             "extractLicenses": false,
             "sourceMap": true,
@@ -108,7 +118,11 @@
         "test": {
           "builder": "@angular-devkit/build-angular:jest",
           "options": {
-            "polyfills": ["projects/test-app/src/polyfills.ts", "zone.js", "zone.js/testing"],
+            "polyfills": [
+              "projects/test-app/src/polyfills.ts",
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "projects/test-app/tsconfig.spec.json"
           }
         }
