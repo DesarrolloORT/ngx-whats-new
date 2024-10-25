@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NgxWhatsNewComponent } from './ngx-whats-new.component';
+import { NgxWhatsNewComponent } from '../src/lib/ngx-whats-new.component';
 
 describe('NgxWhatsNewComponent', () => {
   let component: NgxWhatsNewComponent;
