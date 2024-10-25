@@ -1,8 +1,5 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import {
-  DialogOptions,
-  WhatsNewItem,
-} from 'projects/ngx-whats-new/src/lib/interfaces';
+import { DialogOptions, WhatsNewItem } from 'projects/ngx-whats-new/src/lib/interfaces';
 import { NavigationEvent } from 'projects/ngx-whats-new/src/lib/interfaces';
 import { NgxWhatsNewComponent } from 'projects/ngx-whats-new/src/lib/ngx-whats-new.component';
 
@@ -33,8 +30,7 @@ export class AppComponent implements AfterViewInit {
       image: {
         height: 500,
         src: 'https://picsum.photos/500',
-        altText:
-          'In v1.0.0, lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
+        altText: 'In v1.0.0, lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
       },
       button: {
         text: 'Okay',
@@ -56,8 +52,7 @@ export class AppComponent implements AfterViewInit {
       image: {
         src: 'https://picsum.photos/500/500',
         height: 500,
-        altText:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
+        altText: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
       },
       text: 'Very interesting feature',
       button: {
@@ -73,8 +68,7 @@ export class AppComponent implements AfterViewInit {
         src: 'https://cdn0.iconfinder.com/data/icons/bakery-10/512/Donut-256.png',
         bgColor: '#333',
         height: 350,
-        altText:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
+        altText: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
       },
       button: {
         text: 'Lets go',

@@ -6,15 +6,13 @@
     aria-modal="true"
     aria-labelledby="modal-title"
     aria-describedby="modal-description"
-    cdkTrapFocus
-  >
+    cdkTrapFocus>
     @if (!options.disableClose) {
     <button
       #wnCloseButton
       aria-label="Close dialog"
       class="wn-close-modal-button"
-      (click)="close()"
-    >
+      (click)="close()">
       ⛌
     </button>
     }
@@ -28,38 +26,29 @@
         [style.border]="options.customStyle.borderSize"
         [style.boxShadow]="options.customStyle.boxShadow"
         [style.backgroundColor]="options.customStyle.backgroundColor"
-        [style.color]="options.customStyle.textColor"
-      >
-        @if (items[selectedIndex].image) { @let img =
-        items[selectedIndex].image;
+        [style.color]="options.customStyle.textColor">
+        @if (items[selectedIndex].image) { @let img = items[selectedIndex].image;
         <div
           class="wn-image"
           [style.background-color]="img?.bgColor"
-          [style.height]="img?.height + 'px'"
-        >
+          [style.height]="img?.height + 'px'">
           <img [src]="img?.src" [alt]="img?.altText" />
         </div>
         }
         <div class="wn-info-body">
           @if (items[selectedIndex].title) {
-          <div class="wn-title">
-            {{ items[selectedIndex].title }}
-          </div>
+          <div class="wn-title">{{ items[selectedIndex].title }}</div>
           } @if (items[selectedIndex].text) {
-          <div class="wn-text">
-            {{ items[selectedIndex].text }}
-          </div>
+          <div class="wn-text">{{ items[selectedIndex].text }}</div>
           } @if (items[selectedIndex].html) {
           <div class="wn-text" [innerHTML]="items[selectedIndex].html"></div>
-          } @if (items[selectedIndex].button) { @let btn =
-          items[selectedIndex].button;
+          } @if (items[selectedIndex].button) { @let btn = items[selectedIndex].button;
           <button
             class="wn-button"
             [style.align-self]="btn?.position ?? 'center'"
             [style.background-color]="btn?.bgColor"
             [style.color]="btn?.textColor"
-            (click)="goToNext()"
-          >
+            (click)="goToNext()">
             {{ btn?.text }}
           </button>
           }
@@ -74,8 +63,7 @@
             role="tabpanel"
             [class.clickable]="options.clickableNavigationDots"
             [class.active]="i === selectedIndex"
-            [class.inactive]="i !== selectedIndex"
-          >
+            [class.inactive]="i !== selectedIndex">
             <button
               #wnNavButton
               role="tab"
@@ -89,8 +77,7 @@
                 'Navigate to item ' +
                 (i + 1)
               "
-              class="wn-nav-button"
-            >
+              class="wn-nav-button">
               Navigate to item {{ i + 1 }}
             </button>
           </li>
