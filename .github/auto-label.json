@@ -1,0 +1,25 @@
+{
+  "rules": {
+    "docs": "*.md",
+    "test": [
+      "*.spec.ts",
+      "*.spec.ts.snap",
+      "jest.config.ts",
+      "tsconfig.spec.json",
+      "setup-jest.ts"
+    ],
+    "style": [
+      "*.scss",
+      "*.css"
+    ],
+    "build": [
+      "**/package.json",
+      "**/tsconfig.json",
+      "tsconfig.app.json",
+      "**/tsconfig.spec.json",
+      "angular.json"
+    ],
+    "dependencies": "package-lock.json",
+    "CI/CD": ".github/workflows/*"
+  }
+}

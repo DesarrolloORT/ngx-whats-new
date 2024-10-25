@@ -1,0 +1,102 @@
+[
+  {
+    "name": "wontfix",
+    "color": "FFFFFF",
+    "description": "This will not be worked on"
+  },
+  {
+    "name": "duplicate",
+    "color": "CCCCCC",
+    "description": "Already exists"
+  },
+  {
+    "name": "feature",
+    "color": "A2EEEF",
+    "description": "Contains a new feature or request"
+  },
+  {
+    "name": "help wanted",
+    "color": "5B0B79",
+    "description": "Needs extra attention"
+  },
+  {
+    "name": "docs",
+    "color": "0075CA",
+    "description": "Contains improvements or additions to documentation"
+  },
+  {
+    "name": "bug",
+    "color": "D93F0B",
+    "description": "Issue for a bug"
+  },
+  {
+    "name": "fix",
+    "color": "FBCA04",
+    "description": "Contains a fix for a bug"
+  },
+  {
+    "name": "needs triage",
+    "color": "C5DEF5",
+    "description": "Needs to be triaged"
+  },
+  {
+    "name": "stale",
+    "color": "D3D3D3",
+    "description": "Issue or PR is stale"
+  },
+  {
+    "name": "build",
+    "color": "7C5B3A",
+    "description": "Changes related to configuration files or project build"
+  },
+  {
+    "name": "release",
+    "color": "1D2699",
+    "description": "PR for a new release"
+  },
+  {
+    "name": "CI/CD",
+    "color": "A379A4",
+    "description": "Related to DevOps processes"
+  },
+  {
+    "name": "dependencies",
+    "color": "1D2699",
+    "description": "PR updates a dependency"
+  },
+  {
+    "name": "test",
+    "color": "A379A4",
+    "description": "PR contains changes related to test files"
+  },
+  {
+    "name": "style",
+    "color": "CC5AD7",
+    "description": "Contains changes related visual styling"
+  },
+  {
+    "name": "refactor",
+    "color": "CCF6C3",
+    "description": "Contains changes related to refactoring"
+  },
+  {
+    "name": "priority: critical",
+    "color": "D73A4A",
+    "description": "Requires immediate attention and should be addressed as soon as possible."
+  },
+  {
+    "name": "priority: high",
+    "color": "D7693A",
+    "description": "Requires prompt attention and should be addressed after critical issues."
+  },
+  {
+    "name": "priority: medium",
+    "color": "D7C23A",
+    "description": "Requires attention but can be addressed after high-priority issues."
+  },
+  {
+    "name": "priority: low",
+    "color": "B5D73A",
+    "description": "Requires attention, but can be addressed at a later time when higher priorities are resolved."
+  }
+]
