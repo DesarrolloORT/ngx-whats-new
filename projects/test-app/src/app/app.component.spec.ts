@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
+import { NgxWhatsNewComponent } from 'projects/ngx-whats-new/src/public-api';
 
 import { AppComponent } from './app.component';
-import { NgxWhatsNewComponent } from 'projects/ngx-whats-new/src/public-api';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AppComponent],
-      imports: [NgxWhatsNewComponent]
+      imports: [NgxWhatsNewComponent],
     }).compileComponents();
   });
 
