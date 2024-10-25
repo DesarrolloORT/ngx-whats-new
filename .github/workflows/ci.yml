@@ -3,7 +3,7 @@ name: Continuous Integration and Static Analysis
 on:
   pull_request:
     branches:
-      - develop
+      - main
 
 jobs:
   CI:
@@ -22,23 +22,75 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.cache/jest
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install dependencies
         run: npm ci
 
       - name: Run ESLint
-        run: npm run lint
+        run: npm run lint:check
 
       - name: Run Prettier
         run: npm run format:check
 
-      - name: Run Tests
+      - name: Run tests
         run: npm run test:ci
 
-      - name: Build
-        run: npm run build ngx-whats-new
+      - name: Build library
+        run: npm run build
+
+      - name: Build test app
+        run: npm run build:app
+
+  coverage:
+    name: Generate coverage results
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.cache/jest
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate coverage
+        run: npm run test:sonar
+
+      - name: Upload coverage files
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage
 
   sonar-scan:
     name: SonarQube Scan
+    needs: coverage
     runs-on: sonar-runner
     steps:
       - name: Checkout repository
@@ -46,9 +98,14 @@ jobs:
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0
 
-      #TODO: setup like funcionarios
+      - name: Download coverage files
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage
+          path: coverage
+
       - name: SonarQube Scan
         shell: powershell
         run: |
@@ -58,6 +115,11 @@ jobs:
             -D "sonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}" `
             -D "sonar.scm.disabled=true" `
             -D "sonar.sources=projects" `
+            -D "sonar.inclusions=projects/**/src/**/*" `
+            -D "sonar.exclusions=**/node_modules/**,**/dist/**" `
+            -D "sonar.tests=projects" `
+            -D "sonar.test.inclusions=projects/**/tests/**/*.spec.ts" `
+            -D "sonar.javascript.lcov.reportPaths=coverage/lcov.info" `
             -D "sonar.sourceEncoding=UTF-8"
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
