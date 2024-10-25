@@ -1,0 +1,135 @@
+name: Continuous Integration and Static Analysis
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  CI:
+    name: CI Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.cache/jest
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint:check
+
+      - name: Run Prettier
+        run: npm run format:check
+
+      - name: Run tests
+        run: npm run test:ci
+
+      - name: Build library
+        run: npm run build
+
+      - name: Build test app
+        run: npm run build:app
+
+  coverage:
+    name: Generate coverage results
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.cache/jest
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate coverage
+        run: npm run test:sonar
+
+      - name: Upload coverage files
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage
+
+  sonar-scan:
+    name: SonarQube Scan
+    needs: coverage
+    runs-on: sonar-runner
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Download coverage files
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage
+          path: coverage
+
+      - name: SonarQube Scan
+        shell: powershell
+        run: |
+          C:\sonar-scanner-5.0.1.3006-windows\bin\sonar-scanner.bat `
+            -D "sonar.host.url=${{ secrets.SONAR_HOST_URL }}" `
+            -D "sonar.token=${{ secrets.SONAR_TOKEN }}" `
+            -D "sonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}" `
+            -D "sonar.scm.disabled=true" `
+            -D "sonar.sources=projects" `
+            -D "sonar.inclusions=projects/**/src/**/*" `
+            -D "sonar.exclusions=**/node_modules/**,**/dist/**" `
+            -D "sonar.tests=projects" `
+            -D "sonar.test.inclusions=projects/**/tests/**/*.spec.ts" `
+            -D "sonar.javascript.lcov.reportPaths=coverage/lcov.info" `
+            -D "sonar.sourceEncoding=UTF-8"
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      - name: Deliver Quality Gate Result
+        uses: DesarrolloORT/sonarqube-quality-gate-action@v1
+        with:
+          sonar-project-key: ${{ secrets.SONAR_PROJECT_KEY }}
+          sonar-host-url: ${{ secrets.SONAR_HOST_URL }}
+          sonar-token: ${{ secrets.SONAR_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          fail-on-quality-gate-error: true

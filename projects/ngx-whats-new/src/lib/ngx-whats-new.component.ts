@@ -231,12 +231,7 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
         this.selectedIndex = nextIndex;
         this.updateTabIndices();
         this.focusButton(this.selectedIndex);
-        this.emitNavigationEvent(
-          previousIndex,
-          previousItem,
-          nextIndex,
-          this.items[nextIndex]
-        );
+        this.emitNavigationEvent(previousIndex, previousItem, nextIndex, this.items[nextIndex]);
         $event.preventDefault();
       }
     }
@@ -254,10 +249,7 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
     this.navButtons?.forEach((ref, index) => {
       const button = ref.nativeElement;
       button.tabIndex = index === this.selectedIndex ? 0 : -1;
-      button.setAttribute(
-        'aria-selected',
-        index === this.selectedIndex ? 'true' : 'false'
-      );
+      button.setAttribute('aria-selected', index === this.selectedIndex ? 'true' : 'false');
     });
   }
 
@@ -312,13 +304,9 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
    * Registers keyboard event listener when the dialog opens.
    */
   private registerKeyboardListener(): void {
-    this.keyboardListener = this._renderer.listen(
-      'window',
-      'keydown',
-      (event: KeyboardEvent) => {
-        this.handleKeyboardNavigation(event);
-      }
-    );
+    this.keyboardListener = this._renderer.listen('window', 'keydown', (event: KeyboardEvent) => {
+      this.handleKeyboardNavigation(event);
+    });
   }
 
   /**
