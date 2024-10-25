@@ -1,7 +1,7 @@
 name: Documentation request
 description: Suggest a change to the documentation
-title: "docs(SCOPE): TITLE"
-labels: ["docs", "needs triage"]
+title: 'docs(SCOPE): TITLE'
+labels: ['docs', 'needs triage']
 body:
   - type: textarea
     id: description

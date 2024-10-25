@@ -1,9 +1,9 @@
-feature: ["feature/*", "feat/*"]
-fix: ["fix/*", "hotfix/*"]
-docs: ["docs/*"]
-refactor: ["refactor/*"]
-test: ["test/*"]
-style: ["style/*"]
-build: ["build/*"]
-release: "release/*"
-dependencies: "dependabot/*"
+feature: ['feature/*', 'feat/*']
+fix: ['fix/*', 'hotfix/*']
+docs: ['docs/*']
+refactor: ['refactor/*']
+test: ['test/*']
+style: ['style/*']
+build: ['build/*']
+release: 'release/*'
+dependencies: 'dependabot/*'

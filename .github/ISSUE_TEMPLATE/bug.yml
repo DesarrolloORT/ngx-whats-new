@@ -1,7 +1,7 @@
 name: Bug report
 description: File a bug or error report
-title: "fix(SCOPE): TITLE"
-labels: ["bug", "needs triage"]
+title: 'fix(SCOPE): TITLE'
+labels: ['bug', 'needs triage']
 body:
   - type: textarea
     id: description

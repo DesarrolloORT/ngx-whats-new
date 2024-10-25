@@ -15,9 +15,9 @@ Ngx-whats-new is an angular module with a multi-modal component that is typicall
 Import the component:
 
 ```typescript
-import { NgModule } from "@angular/core";
-import { NgxWhatsNewComponent } from "ngx-whats-new";
-import { AppComponent } from "./app.component";
+import { NgModule } from '@angular/core';
+import { NgxWhatsNewComponent } from 'ngx-whats-new';
+import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -40,8 +40,7 @@ app.component.html
   (closed)="onClose()"
   (navigation)="onNavigation($event)"
   [items]="modals"
-  [options]="options"
-/>
+  [options]="options" />
 ```
 
 app.component.ts
@@ -110,14 +109,13 @@ app.component.ts
 >
 > ```html
 > @if (isDialogVisible) {
->   <ngx-whats-new
->     #whatsNew
->     (opened)="onOpen()"
->     (closed)="onClose()"
->     (navigation)="onNavigation($event)"
->     [items]="modals"
->     [options]="options"
->   />
+> <ngx-whats-new
+>   #whatsNew
+>   (opened)="onOpen()"
+>   (closed)="onClose()"
+>   (navigation)="onNavigation($event)"
+>   [items]="modals"
+>   [options]="options" />
 > }
 > ```
 >
@@ -172,7 +170,7 @@ interface WhatsNewItem {
     text: string;
     textColor: string;
     bgColor: string;
-    position?: "left" | "center" | "right";
+    position?: 'left' | 'center' | 'right';
   };
 }
 ```

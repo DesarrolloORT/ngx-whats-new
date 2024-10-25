@@ -1,10 +1,10 @@
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-import { FlatCompat } from "@eslint/eslintrc";
-import js from "@eslint/js";
+import { FlatCompat } from '@eslint/eslintrc';
+import js from '@eslint/js';
 import eslintPluginPrettier from 'eslint-plugin-prettier';
-import simpleImportSort from "eslint-plugin-simple-import-sort";
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,75 +16,66 @@ const compat = new FlatCompat({
 
 export default [
   {
-    ignores: [
-      "**/coverage/",
-      "**/dist/",
-      "**/node_modules/",
-      "**/.angular/",
-      "**/index.html",
-    ],
+    ignores: ['**/coverage/', '**/dist/', '**/node_modules/', '**/.angular/', '**/index.html'],
   },
   {
     plugins: {
-      "simple-import-sort": simpleImportSort,
+      'simple-import-sort': simpleImportSort,
       prettier: eslintPluginPrettier,
     },
 
     rules: {
-      "simple-import-sort/imports": "error",
-      "simple-import-sort/exports": "error",
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
     },
   },
   ...compat
     .extends(
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:@angular-eslint/recommended",
-      "plugin:@angular-eslint/template/process-inline-templates",
+      'eslint:recommended',
+      'plugin:@typescript-eslint/recommended',
+      'plugin:@angular-eslint/recommended',
+      'plugin:@angular-eslint/template/process-inline-templates',
       'plugin:prettier/recommended'
     )
-    .map((config) => ({
+    .map(config => ({
       ...config,
-      files: ["**/*.ts", "**/*.html"],
+      files: ['**/*.ts', '**/*.html'],
     })),
   {
-    files: [
-      "projects/ngx-whats-new/src/**/*.ts",
-      "projects/ngx-whats-new/src/**/*.html",
-    ],
+    files: ['projects/ngx-whats-new/src/**/*.ts', 'projects/ngx-whats-new/src/**/*.html'],
 
     rules: {
-      "@angular-eslint/directive-selector": [
-        "error",
+      '@angular-eslint/directive-selector': [
+        'error',
         {
-          type: "attribute",
-          style: "camelCase",
+          type: 'attribute',
+          style: 'camelCase',
         },
       ],
 
-      "@angular-eslint/component-selector": [
-        "error",
+      '@angular-eslint/component-selector': [
+        'error',
         {
-          type: "element",
-          prefix: "ngx",
-          style: "kebab-case",
+          type: 'element',
+          prefix: 'ngx',
+          style: 'kebab-case',
         },
       ],
     },
   },
   ...compat
     .extends(
-      "plugin:@angular-eslint/template/recommended",
-      "plugin:@angular-eslint/template/accessibility"
+      'plugin:@angular-eslint/template/recommended',
+      'plugin:@angular-eslint/template/accessibility'
     )
-    .map((config) => ({
+    .map(config => ({
       ...config,
-      files: ["**/*component.html"],
+      files: ['**/*component.html'],
     })),
   {
-    files: ["**/*.component.html"],
+    files: ['**/*.component.html'],
     rules: {
-      "@typescript-eslint/ban-ts-comment": ["off"],
+      '@typescript-eslint/ban-ts-comment': ['off'],
     },
   },
 ];

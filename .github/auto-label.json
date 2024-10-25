@@ -8,10 +8,7 @@
       "tsconfig.spec.json",
       "setup-jest.ts"
     ],
-    "style": [
-      "*.scss",
-      "*.css"
-    ],
+    "style": ["*.scss", "*.css"],
     "build": [
       "**/package.json",
       "**/tsconfig.json",

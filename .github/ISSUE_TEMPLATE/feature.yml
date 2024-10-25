@@ -1,7 +1,7 @@
 name: Feature request
 description: Describe a desired functionality or change
-title: "feat(SCOPE): TITLE"
-labels: ["feature", "needs triage"]
+title: 'feat(SCOPE): TITLE'
+labels: ['feature', 'needs triage']
 body:
   - type: textarea
     id: description
