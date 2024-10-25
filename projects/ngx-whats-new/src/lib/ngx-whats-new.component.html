@@ -56,7 +56,7 @@
       </div>
       @if (items.length > 1) {
       <nav aria-label="Carousel-like item navigation" class="wn-navigation">
-        <ul class="wn-navigation-list" role="tablist">
+        <ul class="wn-navigation-list" aria-label="Carousel Tabs">
           @for (item of items; track item.title; let i = $index;) {
           <li
             class="wn-dot"
@@ -87,7 +87,7 @@
       }
     </div>
   </div>
-  <div class="wn-backdrop" aria-hidden="true" (click)="close()"></div>
+  <div class="wn-backdrop" aria-hidden="true" (keydown)="close()" (click)="close()"></div>
 
   <h1 class="sr-only" id="modal-title">Update information dialog</h1>
   <p class="sr-only" id="modal-description">
