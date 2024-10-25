@@ -8,7 +8,7 @@ describe('NgxWhatsNewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [NgxWhatsNewComponent],
+      imports: [NgxWhatsNewComponent],
     }).compileComponents();
   });
 
