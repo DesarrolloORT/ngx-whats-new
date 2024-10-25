@@ -4,6 +4,7 @@
   "scripts": {
     "start": "ng serve",
     "build": "ng build ngx-whats-new",
+    "release": "npm run build && cd dist/ngx-whats-new && npm publish",
     "build:app": "ng build test-app",
     "test": "jest",
     "test:ci": "jest --ci --silent --maxWorkers=3 --no-watchman",
