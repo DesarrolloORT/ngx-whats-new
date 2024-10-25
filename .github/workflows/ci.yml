@@ -1,0 +1,73 @@
+name: Continuous Integration and Static Analysis
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  CI:
+    name: CI Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run Prettier
+        run: npm run format:check
+
+      - name: Run Tests
+        run: npm run test:ci
+
+      - name: Build
+        run: npm run build ngx-whats-new
+
+  sonar-scan:
+    name: SonarQube Scan
+    runs-on: sonar-runner
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+
+      #TODO: setup like funcionarios
+      - name: SonarQube Scan
+        shell: powershell
+        run: |
+          C:\sonar-scanner-5.0.1.3006-windows\bin\sonar-scanner.bat `
+            -D "sonar.host.url=${{ secrets.SONAR_HOST_URL }}" `
+            -D "sonar.token=${{ secrets.SONAR_TOKEN }}" `
+            -D "sonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}" `
+            -D "sonar.scm.disabled=true" `
+            -D "sonar.sources=projects" `
+            -D "sonar.sourceEncoding=UTF-8"
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      - name: Deliver Quality Gate Result
+        uses: DesarrolloORT/sonarqube-quality-gate-action@v1
+        with:
+          sonar-project-key: ${{ secrets.SONAR_PROJECT_KEY }}
+          sonar-host-url: ${{ secrets.SONAR_HOST_URL }}
+          sonar-token: ${{ secrets.SONAR_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          fail-on-quality-gate-error: true
