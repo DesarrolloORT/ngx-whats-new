@@ -33,7 +33,7 @@ jobs:
       - name: Upload tarball to release
         uses: AButler/upload-release-assets@v3.0
         with:
-          files: "dist/ngx-whats-new/*.tgz"
+          files: 'dist/ngx-whats-new/*.tgz'
           release-tag: ${{ github.event.release.tag_name }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -58,4 +58,4 @@ jobs:
           to: ${{ secrets.NOTIFY_EMAIL }}
           subject: ${{ github.event.release.name }}
           body: ${{env.RELEASE_NOTES}}
-          type: "text/html"
+          type: 'text/html'
