@@ -1,0 +1,43 @@
+name: Bug report
+description: File a bug or error report
+title: "fix(SCOPE): TITLE"
+labels: ["bug", "needs triage"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the bug or error encountered.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: |
+        Provide a set of reproducible steps to reproduce this bug.
+      value: |
+        Steps to reproduce the behavior:
+        1.
+        2.
+    validations:
+      required: false
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: Describe the expected behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: Describe the actual behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Aditional information
+      description: Add any other information about the problem here (screenshots, etc.).

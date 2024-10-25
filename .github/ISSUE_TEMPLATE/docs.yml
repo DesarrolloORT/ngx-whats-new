@@ -1,0 +1,13 @@
+name: Documentation request
+description: Suggest a change to the documentation
+title: "docs(SCOPE): TITLE"
+labels: ["docs", "needs triage"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: |
+        Provide a short description of what you want to add or improve in the documentation.
+    validations:
+      required: true

@@ -1,0 +1,21 @@
+name: Feature request
+description: Describe a desired functionality or change
+title: "feat(SCOPE): TITLE"
+labels: ["feature", "needs triage"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Provide a short description of the desired functionality or change.
+    validations:
+      required: true
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case
+      description: Describe the use case(s) for this feature to fully understand the requirements.
+      placeholder: |
+        Example: When [...] the [...] should do [...]
+    validations:
+      required: true
