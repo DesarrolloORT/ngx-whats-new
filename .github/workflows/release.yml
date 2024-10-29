@@ -72,12 +72,12 @@ jobs:
           body: ${{env.RELEASE_NOTES}}
           type: 'text/html'
 
-      - name: Microsoft Teams Notification
-        if: always()
-        uses: jdcargile/ms-teams-notification@v1.4
-        with:
-          github-token: ${{ github.token }}
-          ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_RELEASE_CHANNEL_WEBHOOK_URI }}
-          notification-summary: 'ngx-whats-new release: ${{ github.event.release.name }}'
-          notification-color: #4cb765
-          timezone: America/Montevideo
+      # - name: Microsoft Teams Notification
+      #   if: always()
+      #   uses: jdcargile/ms-teams-notification@v1.4
+      #   with:
+      #     github-token: ${{ github.token }}
+      #     ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_RELEASE_CHANNEL_WEBHOOK_URI }}
+      #     notification-summary: 'ngx-whats-new release: ${{ github.event.release.name }}'
+      #     notification-color: #4cb765
+      #     timezone: America/Montevideo
