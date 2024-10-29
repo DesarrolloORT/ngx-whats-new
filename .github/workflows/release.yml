@@ -36,7 +36,10 @@ jobs:
         working-directory: dist/ngx-whats-new
 
       - name: Generate tarball
-        run: npm pack
+        run: |
+          npm pack
+          VERSION=$(jq -r .version package.json)
+          mv desarrolloort-ngx-whats-new-$VERSION.tgz ngx-whats-new-$VERSION.tgz
         working-directory: dist/ngx-whats-new
 
       - name: Upload tarball to release
