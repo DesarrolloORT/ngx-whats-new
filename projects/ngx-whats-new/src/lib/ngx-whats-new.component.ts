@@ -120,10 +120,12 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
 
   /** Opens What's New dialog. */
   public open(): void {
-    this.isVisible = true;
-    this.opened.emit();
-    this.registerKeyboardListener();
-    this.resetState();
+    Promise.resolve().then(() => {
+      this.isVisible = true;
+      this.opened.emit();
+      this.registerKeyboardListener();
+      this.resetState();
+    });
   }
 
   /** Closes What's New dialog. */
