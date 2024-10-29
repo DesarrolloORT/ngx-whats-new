@@ -37,6 +37,7 @@ jobs:
 
       - name: Generate tarball
         run: npm pack
+        working-directory: dist/ngx-whats-new
 
       - name: Upload tarball to release
         uses: AButler/upload-release-assets@v3.0
