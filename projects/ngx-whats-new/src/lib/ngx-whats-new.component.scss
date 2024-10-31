@@ -7,6 +7,9 @@
   --body-spacing: 1em;
   --image-max-height: 40dvh;
   --title-font-size: 1.3em;
+  --layout-spacing: 1.5em;
+  --dot-size: 1.2em;
+  --dot-spacing: 1.5em;
 
   * {
     font-size: 16px;
@@ -58,7 +61,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: var(--body-spacing);
+      gap: var(--layout-spacing);
 
       .wn-modal-body {
         background: #fff;
@@ -120,12 +123,12 @@
           list-style-type: none;
           padding: 0;
           margin: 0;
-          gap: 0.5em;
+          gap: var(--dot-spacing);
 
           .wn-dot {
             border-radius: 100%;
-            height: 1em;
-            width: 1em;
+            width: var(--dot-size);
+            aspect-ratio: 1/1;
             position: relative;
 
             &.clickable {
@@ -209,6 +212,7 @@
     --body-spacing: 1.4em;
     --image-max-height: 50dvh;
     --title-font-size: 1.5em;
+    --dot-spacing: 1.5em;
   }
 }
 
@@ -217,6 +221,8 @@
   :host {
     --modal-max-width: 75%;
     --image-max-height: 55dvh;
+    --layout-spacing: 1.1em;
+    --dot-spacing: 1.2em;
   }
 }
 
@@ -225,6 +231,9 @@
   :host {
     --modal-max-width: 60%;
     --title-font-size: 2em;
+    --layout-spacing: 1em;
+    --dot-size: 1em;
+    --dot-spacing: 1em;
 
     * {
       font-size: 14px;
