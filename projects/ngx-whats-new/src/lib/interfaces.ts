@@ -4,7 +4,6 @@ export interface WhatsNewItem {
   html?: string;
   image?: {
     src: string;
-    height?: number;
     bgColor?: string;
     altText: string;
   };
@@ -21,7 +20,7 @@ export interface DialogOptions {
   enableKeyboardNavigation?: boolean;
   clickableNavigationDots?: boolean;
   customStyle: {
-    width?: string;
+    maxWidth?: string;
     boxShadow?: string;
     backgroundColor?: string;
     textColor?: string;
