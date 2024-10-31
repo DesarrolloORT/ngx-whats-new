@@ -19,7 +19,7 @@ export interface DialogOptions {
   disableClose?: boolean;
   enableKeyboardNavigation?: boolean;
   clickableNavigationDots?: boolean;
-  customStyle: {
+  customStyle?: {
     maxWidth?: string;
     boxShadow?: string;
     backgroundColor?: string;
