@@ -19,7 +19,6 @@ export class AppComponent implements AfterViewInit {
     enableKeyboardNavigation: true,
     clickableNavigationDots: true,
     customStyle: {
-      width: '500px',
       borderRadius: '10px',
       boxShadow: '0px 0px 10px 5px #999',
     },
@@ -31,7 +30,6 @@ export class AppComponent implements AfterViewInit {
       title: 'Whats new in v1.0.0',
       html: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.<br /><a href="http://google.com">test</a> ',
       image: {
-        height: 500,
         src: 'https://picsum.photos/500',
         altText: 'In v1.0.0, lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
       },
@@ -54,7 +52,6 @@ export class AppComponent implements AfterViewInit {
     {
       image: {
         src: 'https://picsum.photos/500/500',
-        height: 500,
         altText: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
       },
       text: 'Very interesting feature',
@@ -70,7 +67,6 @@ export class AppComponent implements AfterViewInit {
       image: {
         src: 'https://cdn0.iconfinder.com/data/icons/bakery-10/512/Donut-256.png',
         bgColor: '#333',
-        height: 350,
         altText: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
       },
       button: {
