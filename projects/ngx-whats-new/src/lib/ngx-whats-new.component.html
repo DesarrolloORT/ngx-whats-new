@@ -57,7 +57,7 @@
       @if (items.length > 1) {
       <nav aria-label="Carousel-like item navigation" class="wn-navigation">
         <ul class="wn-navigation-list" aria-label="Carousel Tabs">
-          @for (item of items; track item.title; let i = $index;) {
+          @for (item of items; track i; let i = $index;) {
           <li
             class="wn-dot"
             role="tabpanel"
