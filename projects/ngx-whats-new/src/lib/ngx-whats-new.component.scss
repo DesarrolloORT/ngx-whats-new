@@ -3,6 +3,10 @@
   position: fixed;
   top: 0;
   left: 0;
+  --modal-max-width: 95%;
+  --body-spacing: 1em;
+  --image-max-height: 40dvh;
+  --title-font-size: 1.3em;
 
   * {
     font-size: 16px;
@@ -24,7 +28,7 @@
   left: 0;
 
   .wn-modal {
-    max-width: 95%;
+    max-width: var(--modal-max-width);
     width: 100%;
     position: relative;
     margin: auto;
@@ -54,7 +58,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1em;
+      gap: var(--body-spacing);
 
       .wn-modal-body {
         background: #fff;
@@ -71,18 +75,18 @@
           justify-content: center;
           height: auto;
           background-color: #ddd; //TODO: add better color
-          max-height: 40dvh;
+          max-height: var(--image-max-height);
         }
 
         .wn-info-body {
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 1em;
-          gap: 1em;
+          padding: var(--body-spacing);
+          gap: var(--body-spacing);
 
           .wn-title {
-            font-size: 1.3em;
+            font-size: var(--title-font-size);
             font-weight: 600;
             color: #222;
             text-align: center;
@@ -200,79 +204,37 @@
 
 /* SM - Small devices */
 @media only screen and (min-width: 600px) {
-  .wn-modal-container {
-    .wn-modal {
-      max-width: 85%;
-      .wn-modal-layout {
-        gap: 1.4em;
-        .wn-modal-body {
-          .wn-image {
-            max-height: 50dvh;
-          }
-
-          .wn-info-body {
-            padding: 1.4em;
-            gap: 1.4em;
-
-            .wn-title {
-              font-size: 1.5em;
-            }
-          }
-        }
-      }
-    }
+  :host {
+    --modal-max-width: 85%;
+    --body-spacing: 1.4em;
+    --image-max-height: 50dvh;
+    --title-font-size: 1.5em;
   }
 }
 
 /* MD - Medium devices */
 @media only screen and (min-width: 768px) {
-  .wn-modal-container {
-    .wn-modal {
-      max-width: 75%;
-      .wn-modal-layout {
-        .wn-modal-body {
-          .wn-image {
-            max-height: 55dvh;
-          }
-        }
-      }
-    }
+  :host {
+    --modal-max-width: 75%;
+    --image-max-height: 55dvh;
   }
 }
 
 /* LG - Large devices */
 @media only screen and (min-width: 1280px) {
   :host {
+    --modal-max-width: 60%;
+    --title-font-size: 2em;
+
     * {
       font-size: 14px;
-    }
-  }
-
-  .wn-modal-container {
-    .wn-modal {
-      max-width: 60%;
-      .wn-modal-layout {
-        .wn-modal-body {
-          .wn-image {
-            max-height: 55dvh;
-          }
-
-          .wn-info-body {
-            .wn-title {
-              font-size: 2em;
-            }
-          }
-        }
-      }
     }
   }
 }
 
 /* XLG - Extra large devices */
 @media only screen and (min-width: 1440px) {
-  .wn-modal-container {
-    .wn-modal {
-      max-width: 45%;
-    }
+  :host {
+    --modal-max-width: 45%;
   }
 }
