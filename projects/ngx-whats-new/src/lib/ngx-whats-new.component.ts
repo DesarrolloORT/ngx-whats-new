@@ -220,7 +220,6 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
           if (this.selectedIndex > 0) {
             nextIndex = this.selectedIndex - 1;
           } else return;
-
           break;
         case 'Escape':
           this.close();
