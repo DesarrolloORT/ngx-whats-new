@@ -1,10 +1,11 @@
+/* XS - Extra small devices */
 :host {
   position: fixed;
   top: 0;
   left: 0;
 
   * {
-    font-size: 14px;
+    font-size: 16px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
 }
@@ -23,9 +24,10 @@
   left: 0;
 
   .wn-modal {
-    width: 35em;
-    height: auto;
+    max-width: 95%;
+    width: 100%;
     position: relative;
+    margin: auto;
 
     button {
       &:focus-visible {
@@ -37,7 +39,7 @@
     .wn-close-modal-button {
       position: absolute;
       top: 0.5em;
-      right: 0.15em;
+      right: 0.5em;
       cursor: pointer;
       background-color: rgba($color: #222, $alpha: 0.5);
       color: #fff;
@@ -47,31 +49,37 @@
     }
 
     .wn-modal-layout {
+      width: 100%;
+      height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1.4em;
-      width: fit-content;
+      gap: 1em;
 
       .wn-modal-body {
         background: #fff;
         overflow: hidden;
         display: flex;
         flex-direction: column;
+        border-radius: 4px;
+        width: 100%;
 
         .wn-image {
           overflow: hidden;
           align-items: center;
           display: flex;
           justify-content: center;
+          height: auto;
+          background-color: #ddd; //TODO: add better color
+          max-height: 40dvh;
         }
 
         .wn-info-body {
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 1.4em;
-          gap: 1.4em;
+          padding: 1em;
+          gap: 1em;
 
           .wn-title {
             font-size: 1.3em;
@@ -187,5 +195,84 @@
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     border: 0;
+  }
+}
+
+/* SM - Small devices */
+@media only screen and (min-width: 600px) {
+  .wn-modal-container {
+    .wn-modal {
+      max-width: 85%;
+      .wn-modal-layout {
+        gap: 1.4em;
+        .wn-modal-body {
+          .wn-image {
+            max-height: 50dvh;
+          }
+
+          .wn-info-body {
+            padding: 1.4em;
+            gap: 1.4em;
+
+            .wn-title {
+              font-size: 1.5em;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* MD - Medium devices */
+@media only screen and (min-width: 768px) {
+  .wn-modal-container {
+    .wn-modal {
+      max-width: 75%;
+      .wn-modal-layout {
+        .wn-modal-body {
+          .wn-image {
+            max-height: 55dvh;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* LG - Large devices */
+@media only screen and (min-width: 1280px) {
+  :host {
+    * {
+      font-size: 14px;
+    }
+  }
+
+  .wn-modal-container {
+    .wn-modal {
+      max-width: 60%;
+      .wn-modal-layout {
+        .wn-modal-body {
+          .wn-image {
+            max-height: 55dvh;
+          }
+
+          .wn-info-body {
+            .wn-title {
+              font-size: 2em;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* XLG - Extra large devices */
+@media only screen and (min-width: 1440px) {
+  .wn-modal-container {
+    .wn-modal {
+      max-width: 45%;
+    }
   }
 }
