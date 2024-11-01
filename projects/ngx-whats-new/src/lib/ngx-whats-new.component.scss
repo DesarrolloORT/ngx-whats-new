@@ -3,13 +3,16 @@
   position: fixed;
   top: 0;
   left: 0;
-  --modal-max-width: 95%;
-  --body-spacing: 1em;
-  --image-max-height: 40dvh;
-  --title-font-size: 1.3em;
-  --layout-spacing: 1.5em;
-  --dot-size: 1.2em;
-  --dot-spacing: 1.5em;
+
+  // These variables are for internal use of the component and should not be overridden
+  // They are modified for different breakpoints and modifying them may break the layout
+  --_modal-max-width: 95%;
+  --_body-spacing: 1em;
+  --_image-max-height: 40dvh;
+  --_title-font-size: 1.3em;
+  --_layout-spacing: 1.5em;
+  --_dot-size: 1.2em;
+  --_dot-spacing: 1.5em;
 
   * {
     font-size: 16px;
@@ -31,7 +34,7 @@
   left: 0;
 
   .wn-modal {
-    max-width: var(--modal-max-width);
+    max-width: var(--_modal-max-width);
     width: 100%;
     position: relative;
     margin: auto;
@@ -61,7 +64,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: var(--layout-spacing);
+      gap: var(--_layout-spacing);
 
       .wn-modal-body {
         background: #fff;
@@ -78,18 +81,18 @@
           justify-content: center;
           height: auto;
           background-color: #ddd; //TODO: add better color
-          max-height: var(--image-max-height);
+          max-height: var(--_image-max-height);
         }
 
         .wn-info-body {
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: var(--body-spacing);
-          gap: var(--body-spacing);
+          padding: var(--_body-spacing);
+          gap: var(--_body-spacing);
 
           .wn-title {
-            font-size: var(--title-font-size);
+            font-size: var(--_title-font-size);
             font-weight: 600;
             color: #222;
             text-align: center;
@@ -123,11 +126,11 @@
           list-style-type: none;
           padding: 0;
           margin: 0;
-          gap: var(--dot-spacing);
+          gap: var(--_dot-spacing);
 
           .wn-dot {
             border-radius: 100%;
-            width: var(--dot-size);
+            width: var(--_dot-size);
             aspect-ratio: 1/1;
             position: relative;
 
@@ -208,42 +211,38 @@
 /* SM - Small devices */
 @media only screen and (min-width: 600px) {
   :host {
-    --modal-max-width: 85%;
-    --body-spacing: 1.4em;
-    --image-max-height: 50dvh;
-    --title-font-size: 1.5em;
-    --dot-spacing: 1.5em;
+    --_modal-max-width: 85%;
+    --_body-spacing: 1.4em;
+    --_image-max-height: 50dvh;
+    --_title-font-size: 1.5em;
+    --_dot-spacing: 1.5em;
   }
 }
 
 /* MD - Medium devices */
 @media only screen and (min-width: 768px) {
   :host {
-    --modal-max-width: 75%;
-    --image-max-height: 55dvh;
-    --layout-spacing: 1.1em;
-    --dot-spacing: 1.2em;
+    --_modal-max-width: 75%;
+    --_image-max-height: 55dvh;
+    --_layout-spacing: 1.1em;
+    --_dot-spacing: 1.2em;
   }
 }
 
 /* LG - Large devices */
 @media only screen and (min-width: 1280px) {
   :host {
-    --modal-max-width: 60%;
-    --title-font-size: 2em;
-    --layout-spacing: 1em;
-    --dot-size: 1em;
-    --dot-spacing: 1em;
-
-    * {
-      font-size: 14px;
-    }
+    --_modal-max-width: 60%;
+    --_title-font-size: 1.8em;
+    --_layout-spacing: 1em;
+    --_dot-size: 1em;
+    --_dot-spacing: 1em;
   }
 }
 
 /* XLG - Extra large devices */
 @media only screen and (min-width: 1440px) {
   :host {
-    --modal-max-width: 45%;
+    --_modal-max-width: 45%;
   }
 }
