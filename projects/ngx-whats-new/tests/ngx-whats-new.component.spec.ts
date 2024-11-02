@@ -16,8 +16,6 @@ const mockItems: WhatsNewItem[] = [
     },
     button: {
       text: 'Okay',
-      textColor: '#fff',
-      bgColor: '#333',
       position: 'center',
     },
   },
@@ -25,8 +23,6 @@ const mockItems: WhatsNewItem[] = [
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just. Spsum dolor sit amet, consectetur adipiscing el aspect et just',
     button: {
       text: 'Got it!',
-      textColor: '#fff',
-      bgColor: '#333',
       position: 'center',
     },
   },
@@ -38,8 +34,6 @@ const mockItems: WhatsNewItem[] = [
     text: 'Very interesting feature',
     button: {
       text: 'Got it',
-      textColor: '#fff',
-      bgColor: '#333',
       position: 'center',
     },
   },
@@ -47,14 +41,12 @@ const mockItems: WhatsNewItem[] = [
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just. Spsum dolor sit amet, consectetur adipiscing el aspect et just.',
     image: {
       src: 'https://cdn0.iconfinder.com/data/icons/bakery-10/512/Donut-256.png',
-      bgColor: '#333',
+      background: '#333',
       altText: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
     },
     button: {
       text: 'Lets go',
       position: 'center',
-      textColor: '#fff',
-      bgColor: '#333',
     },
   },
 ];
@@ -90,9 +82,6 @@ describe('NgxWhatsNewComponent', () => {
 
   it('should use default options if none are provided', () => {
     expect(component.options).toEqual({
-      customStyle: {
-        maxWidth: '500px',
-      },
       clickableNavigationDots: true,
       enableKeyboardNavigation: true,
       disableClose: true,
@@ -103,7 +92,6 @@ describe('NgxWhatsNewComponent', () => {
     const customOptions: DialogOptions = {
       customStyle: {
         maxWidth: '600px',
-        backgroundColor: '#fff',
       },
       clickableNavigationDots: false,
       enableKeyboardNavigation: false,
