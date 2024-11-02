@@ -205,6 +205,7 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
    */
   private resetState(): void {
     this.selectedIndex = 0;
+    this.imageHasLoaded = false;
     this.updateTabIndices();
   }
 
@@ -262,6 +263,8 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
    * enhancing accessibility for assistive technologies.
    */
   private updateTabIndices(): void {
+    this.imageHasLoaded = false;
+
     this.navButtons?.forEach((ref, index) => {
       const button = ref.nativeElement;
       button.tabIndex = index === this.selectedIndex ? 0 : -1;
