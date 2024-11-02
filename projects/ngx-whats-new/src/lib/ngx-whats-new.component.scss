@@ -98,7 +98,6 @@
         .wn-info-body {
           display: flex;
           flex-direction: column;
-          align-items: center;
           padding: var(--_body-spacing);
           gap: var(--_body-spacing);
 
@@ -107,19 +106,25 @@
             font-weight: var(--wn-title-font-weight);
             color: var(--wn-title-color);
             text-align: var(--wn-title-text-align);
+            margin: 0;
           }
 
-          .wn-text {
+          .wn-paragraph {
             color: var(--wn-text-color);
             text-align: var(--wn-text-text-align);
             font-weight: var(--wn-text-font-weight);
+            margin: 0;
 
-            ::ng-deep a {
-              color: var(--wn-text-link-color);
-              text-decoration: var(--wn-text-link-text-decoration);
+            &.html {
+              // * Add here any styles for html embedded content
 
-              &:hover {
-                color: var(--wn-text-link-hover-color);
+              a {
+                color: var(--wn-text-link-color);
+                text-decoration: var(--wn-text-link-text-decoration);
+
+                &:hover {
+                  color: var(--wn-text-link-hover-color);
+                }
               }
             }
           }
