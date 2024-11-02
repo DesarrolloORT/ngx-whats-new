@@ -1,0 +1,5 @@
+@mixin generate-css-variables($variables-map) {
+  @each $name, $value in $variables-map {
+    --#{$name}: #{$value};
+  }
+}

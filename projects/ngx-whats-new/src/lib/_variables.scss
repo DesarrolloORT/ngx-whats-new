@@ -1,0 +1,84 @@
+$wn-variables: (
+  // Global variables
+  wn-base-font-size: 16px,
+  wn-base-font-family: "'Segoe UI',Tahoma,Geneva,Verdana,sans-serif",
+
+  // Button focus outline
+  wn-button-focus-outline-color: blue,
+  wn-button-focus-outline-width: 2px,
+  wn-button-focus-outline-style: solid,
+  wn-button-focus-outline-offset: 2px,
+
+  // Main button
+  wn-main-button-background-color: #222,
+  wn-main-button-color: #fff,
+  wn-main-button-border: none,
+  wn-main-button-padding: 0.7em 2.5em,
+  wn-main-button-border-radius: 4px,
+  wn-main-button-text-transform: uppercase,
+  // hover state
+  wn-main-button-hover-opacity: 0.9,
+  wn-main-button-hover-color: #fff,
+  wn-main-button-hover-background-color: #222,
+  // active state
+  wn-main-button-active-opacity: 0.9,
+  wn-main-button-active-color: #ccc,
+  wn-main-button-active-background-color: #444,
+
+  // Close button
+  wn-close-button-background-color:
+    rgba(
+      $color: #222,
+      $alpha: 0.5,
+    ),
+  wn-close-button-color: #fff,
+  wn-close-button-border: none,
+  wn-close-button-border-radius: 100%,
+  wn-close-button-top: 0.5em,
+  wn-close-button-right: 0.5em,
+  wn-close-button-left: auto,
+  wn-close-button-bottom: auto,
+  wn-close-button-z-index: 10,
+
+  // Image
+  wn-image-background-color: #ddd,
+
+  // Modal container
+  wn-modal-container-z-index: 1000,
+
+  // Modal
+  wn-modal-background-color: #fff,
+  wn-modal-box-shadow: 0 0 1em rgba(0, 0, 0, 0.3),
+  wn-modal-border-radius: 4px,
+
+  // Navigation dots
+  wn-nav-dot-color: #222,
+  wn-nav-dot-background-color: transparent,
+  wn-nav-dot-border-radius: 100%,
+  wn-nav-dot-border: 1px solid rgba(0, 0, 0, 0.3),
+  //hover state
+  wn-nav-dot-hover-background-color: rgba(0, 0, 0, 0.1),
+  //active state
+  wn-nav-dot-active-background-color: #222,
+  wn-nav-dot-active-border: 1px solid #222,
+
+  // Title
+  wn-title-font-weight: 600,
+  wn-title-color: #222,
+  wn-title-text-align: center,
+
+  // Text
+  wn-text-color: #666,
+  wn-text-text-align: center,
+  wn-text-font-weight: 400,
+
+  // Link
+  wn-text-link-color: #222,
+  wn-text-link-text-decoration: underline,
+  wn-text-link-hover-color: #222,
+
+  // Backdrop
+  wn-backdrop-filter: blur(3px),
+  wn-backdrop-z-index: -1,
+  wn-backdrop-color: rgba(0, 0, 0, 0.3)
+);
