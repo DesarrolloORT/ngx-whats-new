@@ -34,11 +34,11 @@
         }
         <div class="wn-info-body">
           @if (items[selectedIndex].title) {
-          <div class="wn-title">{{ items[selectedIndex].title }}</div>
+          <h2 class="wn-title">{{ items[selectedIndex].title }}</h2>
           } @if (items[selectedIndex].text) {
-          <div class="wn-text">{{ items[selectedIndex].text }}</div>
+          <p class="wn-paragraph">{{ items[selectedIndex].text }}</p>
           } @if (items[selectedIndex].html) {
-          <div class="wn-text" [innerHTML]="items[selectedIndex].html"></div>
+          <div class="wn-paragraph html" [innerHTML]="items[selectedIndex].html"></div>
           } @if (items[selectedIndex].button) { @let btn = items[selectedIndex].button;
           <button
             class="wn-button"
