@@ -15,6 +15,10 @@ export interface WhatsNewItem {
     background?: string;
     /** Alternative text for the image */
     altText: string;
+    /** Aspect ratio of the image. Useful for responsive images */
+    aspectRatio?: string;
+    /** Object fit property of the image. Value is `cover` by default to fill image container. Set to contain to keep the aspect ratio. If `contain` is set, it is recommended to set the `background` property as the image won't fit completely the container */
+    objectFit?: string;
   };
   /** Main action button show on the bottom of the dialog */
   button?: {
