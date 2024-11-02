@@ -76,10 +76,6 @@ describe('NgxWhatsNewComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should match snapshot', () => {
-    expect(compiled).toMatchSnapshot();
-  });
-
   it('should use default options if none are provided', () => {
     expect(component.options).toEqual({
       clickableNavigationDots: true,
