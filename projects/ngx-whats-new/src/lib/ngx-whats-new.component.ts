@@ -13,6 +13,7 @@ import {
   Renderer2,
   ViewChild,
   ViewChildren,
+  ViewEncapsulation,
 } from '@angular/core';
 
 import { DialogOptions, NavigationEvent, WhatsNewItem } from './interfaces';
@@ -32,6 +33,7 @@ const DEFAULT_OPTIONS: DialogOptions = {
   imports: [CommonModule, A11yModule],
   templateUrl: './ngx-whats-new.component.html',
   styleUrls: ['./ngx-whats-new.component.scss'],
+  encapsulation: ViewEncapsulation.ShadowDom,
 })
 export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   // * -----------------------
