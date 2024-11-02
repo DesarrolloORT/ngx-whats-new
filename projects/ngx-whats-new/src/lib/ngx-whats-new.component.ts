@@ -19,9 +19,6 @@ import {
 import { DialogOptions, NavigationEvent, WhatsNewItem } from './interfaces';
 
 const DEFAULT_OPTIONS: DialogOptions = {
-  customStyle: {
-    maxWidth: '500px',
-  },
   clickableNavigationDots: true,
   enableKeyboardNavigation: true,
   disableClose: true,
