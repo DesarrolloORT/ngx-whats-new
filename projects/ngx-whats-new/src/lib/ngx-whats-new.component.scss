@@ -82,6 +82,7 @@
         overflow: hidden;
         display: flex;
         flex-direction: column;
+        box-shadow: var(--wn-modal-box-shadow);
         border-radius: var(--wn-modal-border-radius);
         width: 100%;
 
