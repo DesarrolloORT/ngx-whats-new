@@ -167,6 +167,9 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   /** Control whether the dialog is visible */
   protected isVisible = false;
 
+  /** Tracks image loading status */
+  protected imageHasLoaded = false;
+
   /** Reference to the close button */
   @ViewChild('wnCloseButton') private readonly _closeButton?: ElementRef;
 
@@ -182,6 +185,17 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
 
   /** Function to register/unregister keyboard listener*/
   private keyboardListener?: () => void;
+
+  /** Handles image load event */
+  protected onImageLoad() {
+    this.imageHasLoaded = true;
+  }
+
+  /** Handles image error event */
+  protected onImageError() {
+    this.imageHasLoaded = false;
+    console.warn('NgxWhatsNewComponent: Image failed to load.');
+  }
 
   /**
    * Resets the component's state to its initial values.
