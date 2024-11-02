@@ -54,7 +54,6 @@ const mockItems: WhatsNewItem[] = [
 describe('NgxWhatsNewComponent', () => {
   let component: NgxWhatsNewComponent;
   let fixture: ComponentFixture<NgxWhatsNewComponent>;
-  let compiled: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -66,7 +65,6 @@ describe('NgxWhatsNewComponent', () => {
     fixture = TestBed.createComponent(NgxWhatsNewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    compiled = fixture.nativeElement;
 
     component.items = mockItems;
     fixture.detectChanges();
