@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`NgxWhatsNewComponent should match snapshot 1`] = `
-<div
-  id="root1"
->
-  
-</div>
-`;
