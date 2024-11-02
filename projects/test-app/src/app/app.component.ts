@@ -57,6 +57,7 @@ export class AppComponent implements AfterViewInit {
       image: {
         src: 'https://cdn0.iconfinder.com/data/icons/bakery-10/512/Donut-256.png',
         background: '#333',
+        objectFit: 'contain',
         altText: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
       },
       button: {
