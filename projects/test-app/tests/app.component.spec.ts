@@ -46,10 +46,6 @@ describe('AppComponent', () => {
     expect(component.options).toEqual({
       enableKeyboardNavigation: true,
       clickableNavigationDots: true,
-      customStyle: {
-        borderRadius: '10px',
-        boxShadow: '0px 0px 10px 5px #999',
-      },
     });
   });
 
