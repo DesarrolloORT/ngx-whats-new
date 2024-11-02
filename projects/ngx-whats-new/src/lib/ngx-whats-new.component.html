@@ -21,14 +21,10 @@
       <div
         class="wn-modal-body"
         aria-live="polite"
-        [style.padding-top]="items[selectedIndex].image ? '' : '1.4em'"
-        [style.border-radius]="options.customStyle?.borderRadius"
-        [style.border]="options.customStyle?.borderSize"
-        [style.boxShadow]="options.customStyle?.boxShadow"
-        [style.backgroundColor]="options.customStyle?.backgroundColor"
-        [style.color]="options.customStyle?.textColor">
+        [style.padding-top]="items[selectedIndex].image ? '' : 'calc(2 * var(--_body-spacing))'"
+        [style.border]="options.customStyle?.border">
         @if (items[selectedIndex].image) { @let img = items[selectedIndex].image;
-        <div class="wn-image" [style.background-color]="img?.bgColor">
+        <div class="wn-image" [style.background]="img?.background">
           <img [src]="img?.src" [alt]="img?.altText" />
         </div>
         }
@@ -43,8 +39,6 @@
           <button
             class="wn-button"
             [style.align-self]="btn?.position ?? 'center'"
-            [style.background-color]="btn?.bgColor"
-            [style.color]="btn?.textColor"
             (click)="goToNext()">
             {{ btn?.text }}
           </button>
