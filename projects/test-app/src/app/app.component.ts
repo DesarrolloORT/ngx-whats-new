@@ -18,10 +18,6 @@ export class AppComponent implements AfterViewInit {
   public options: DialogOptions = {
     enableKeyboardNavigation: true,
     clickableNavigationDots: true,
-    customStyle: {
-      borderRadius: '10px',
-      boxShadow: '0px 0px 10px 5px #999',
-    },
   };
 
   /** Modals to show */
@@ -35,8 +31,6 @@ export class AppComponent implements AfterViewInit {
       },
       button: {
         text: 'Okay',
-        textColor: '#fff',
-        bgColor: '#333',
         position: 'center',
       },
     },
@@ -44,8 +38,6 @@ export class AppComponent implements AfterViewInit {
       text: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just. Spsum dolor sit amet, consectetur adipiscing el aspect et just',
       button: {
         text: 'Got it!',
-        textColor: '#fff',
-        bgColor: '#333',
         position: 'center',
       },
     },
@@ -57,8 +49,6 @@ export class AppComponent implements AfterViewInit {
       text: 'Very interesting feature',
       button: {
         text: 'Got it',
-        textColor: '#fff',
-        bgColor: '#333',
         position: 'center',
       },
     },
@@ -66,14 +56,12 @@ export class AppComponent implements AfterViewInit {
       text: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just. Spsum dolor sit amet, consectetur adipiscing el aspect et just.',
       image: {
         src: 'https://cdn0.iconfinder.com/data/icons/bakery-10/512/Donut-256.png',
-        bgColor: '#333',
+        background: '#333',
         altText: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
       },
       button: {
         text: 'Lets go',
         position: 'center',
-        textColor: '#fff',
-        bgColor: '#333',
       },
     },
   ];
