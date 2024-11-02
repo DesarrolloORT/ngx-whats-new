@@ -45,7 +45,7 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
       console.warn('NgxWhatsNewComponent: No items provided.');
       this._items = [];
     }
-    this.resetState();
+    this._resetState();
   }
   public get items(): WhatsNewItem[] {
     return this._items;
@@ -78,16 +78,16 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    if (this.selectedIndex < this.items.length - 1) {
-      const previousIndex = this.selectedIndex;
+    if (this._selectedIndex < this.items.length - 1) {
+      const previousIndex = this._selectedIndex;
       const previousItem = this.items[previousIndex];
-      this.selectedIndex += 1;
-      this.updateTabIndices();
-      this.emitNavigationEvent(
+      this._selectedIndex += 1;
+      this._updateTabIndices();
+      this._emitNavigationEvent(
         previousIndex,
         previousItem,
-        this.selectedIndex,
-        this.items[this.selectedIndex]
+        this._selectedIndex,
+        this.items[this._selectedIndex]
       );
     } else {
       this.close();
@@ -104,17 +104,17 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    if (this._options.clickableNavigationDots && index !== this.selectedIndex) {
-      const previousIndex = this.selectedIndex;
+    if (this._options.clickableNavigationDots && index !== this._selectedIndex) {
+      const previousIndex = this._selectedIndex;
       const previousItem = this.items[previousIndex];
-      this.selectedIndex = index;
-      this.updateTabIndices();
-      this.focusButton(index);
-      this.emitNavigationEvent(
+      this._selectedIndex = index;
+      this._updateTabIndices();
+      this._focusButton(index);
+      this._emitNavigationEvent(
         previousIndex,
         previousItem,
-        this.selectedIndex,
-        this.items[this.selectedIndex]
+        this._selectedIndex,
+        this.items[this._selectedIndex]
       );
     }
   }
@@ -122,20 +122,20 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   /** Opens What's New dialog. */
   public open(): void {
     Promise.resolve().then(() => {
-      this.isVisible = true;
+      this._isVisible = true;
       this.opened.emit();
-      this.registerKeyboardListener();
-      this.resetState();
+      this._registerKeyboardListener();
+      this._resetState();
     });
   }
 
   /** Closes What's New dialog. */
   public close(): void {
     if (!this._options.disableClose) {
-      this.unregisterKeyboardListener();
-      this.isVisible = false;
+      this._unregisterKeyboardListener();
+      this._isVisible = false;
       this.closed.emit();
-      this.resetState();
+      this._resetState();
     }
   }
 
@@ -151,7 +151,7 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.unregisterKeyboardListener();
+    this._unregisterKeyboardListener();
   }
 
   // * -------------------------------------------
@@ -165,35 +165,35 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   private _items: WhatsNewItem[] = [];
 
   /** Control whether the dialog is visible */
-  protected isVisible = false;
+  protected _isVisible = false;
 
   /** Tracks image loading status */
-  protected imageHasLoaded = false;
+  protected _imageHasLoaded = false;
 
   /** Reference to the close button */
   @ViewChild('wnCloseButton') private readonly _closeButton?: ElementRef;
 
   /** Reference to the navigation buttons */
   @ViewChildren('wnNavButton')
-  private readonly navButtons?: QueryList<ElementRef>;
+  private readonly _navButtons?: QueryList<ElementRef>;
 
   /** Index of the selected modal item */
-  protected selectedIndex = 0;
+  protected _selectedIndex = 0;
 
   /** Instance of Renderer2 */
   private readonly _renderer: Renderer2 = inject(Renderer2);
 
   /** Function to register/unregister keyboard listener*/
-  private keyboardListener?: () => void;
+  private _keyboardListener?: () => void;
 
   /** Handles image load event */
-  protected onImageLoad() {
-    this.imageHasLoaded = true;
+  protected _onImageLoad() {
+    this._imageHasLoaded = true;
   }
 
   /** Handles image error event */
-  protected onImageError() {
-    this.imageHasLoaded = false;
+  protected _onImageError() {
+    this._imageHasLoaded = false;
     console.warn('NgxWhatsNewComponent: Image failed to load.');
   }
 
@@ -203,10 +203,10 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
    * This method is called when the dialog is opened or closed to ensure that
    * the component does not retain any state from previous interactions.
    */
-  private resetState(): void {
-    this.selectedIndex = 0;
-    this.imageHasLoaded = false;
-    this.updateTabIndices();
+  private _resetState(): void {
+    this._selectedIndex = 0;
+    this._imageHasLoaded = false;
+    this._updateTabIndices();
   }
 
   /**
@@ -218,21 +218,21 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
    *  - Escape: close dialog
    * @param $event keyboard event
    */
-  protected handleKeyboardNavigation($event: KeyboardEvent): void {
+  protected _handleKeyboardNavigation($event: KeyboardEvent): void {
     if (this._options.enableKeyboardNavigation) {
-      let nextIndex = this.selectedIndex;
+      let nextIndex = this._selectedIndex;
       switch ($event.key) {
         case 'ArrowRight':
-          if (this.selectedIndex < this.items.length - 1) {
-            nextIndex = this.selectedIndex + 1;
+          if (this._selectedIndex < this.items.length - 1) {
+            nextIndex = this._selectedIndex + 1;
           } else {
             this.close();
             return;
           }
           break;
         case 'ArrowLeft':
-          if (this.selectedIndex > 0) {
-            nextIndex = this.selectedIndex - 1;
+          if (this._selectedIndex > 0) {
+            nextIndex = this._selectedIndex - 1;
           } else return;
           break;
         case 'Escape':
@@ -242,13 +242,13 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
           break;
       }
 
-      if (nextIndex !== this.selectedIndex) {
-        const previousIndex = this.selectedIndex;
+      if (nextIndex !== this._selectedIndex) {
+        const previousIndex = this._selectedIndex;
         const previousItem = this.items[previousIndex];
-        this.selectedIndex = nextIndex;
-        this.updateTabIndices();
-        this.focusButton(this.selectedIndex);
-        this.emitNavigationEvent(previousIndex, previousItem, nextIndex, this.items[nextIndex]);
+        this._selectedIndex = nextIndex;
+        this._updateTabIndices();
+        this._focusButton(this._selectedIndex);
+        this._emitNavigationEvent(previousIndex, previousItem, nextIndex, this.items[nextIndex]);
         $event.preventDefault();
       }
     }
@@ -262,13 +262,13 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
    * Additionally, it updates the `aria-selected` attribute to reflect the current selection state,
    * enhancing accessibility for assistive technologies.
    */
-  private updateTabIndices(): void {
-    this.imageHasLoaded = false;
+  private _updateTabIndices(): void {
+    this._imageHasLoaded = false;
 
-    this.navButtons?.forEach((ref, index) => {
+    this._navButtons?.forEach((ref, index) => {
       const button = ref.nativeElement;
-      button.tabIndex = index === this.selectedIndex ? 0 : -1;
-      button.setAttribute('aria-selected', index === this.selectedIndex ? 'true' : 'false');
+      button.tabIndex = index === this._selectedIndex ? 0 : -1;
+      button.setAttribute('aria-selected', index === this._selectedIndex ? 'true' : 'false');
     });
   }
 
@@ -281,8 +281,8 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
    *
    * @param index - The index of the button to focus within the navigation list.
    */
-  private focusButton(index: number): void {
-    const buttons = this.navButtons?.toArray();
+  private _focusButton(index: number): void {
+    const buttons = this._navButtons?.toArray();
 
     const button = buttons?.[index].nativeElement;
     if (button) {
@@ -300,7 +300,7 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
    * @param currentIndex - The index after navigation.
    * @param currentItem - The item after navigation.
    */
-  private emitNavigationEvent(
+  private _emitNavigationEvent(
     previousIndex: number,
     previousItem: WhatsNewItem,
     currentIndex: number,
@@ -322,19 +322,19 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   /**
    * Registers keyboard event listener when the dialog opens.
    */
-  private registerKeyboardListener(): void {
-    this.keyboardListener = this._renderer.listen('window', 'keydown', (event: KeyboardEvent) => {
-      this.handleKeyboardNavigation(event);
+  private _registerKeyboardListener(): void {
+    this._keyboardListener = this._renderer.listen('window', 'keydown', (event: KeyboardEvent) => {
+      this._handleKeyboardNavigation(event);
     });
   }
 
   /**
    * Unregisters keyboard event listener when the dialog closes.
    */
-  private unregisterKeyboardListener(): void {
-    if (this.keyboardListener) {
-      this.keyboardListener();
-      this.keyboardListener = undefined;
+  private _unregisterKeyboardListener(): void {
+    if (this._keyboardListener) {
+      this._keyboardListener();
+      this._keyboardListener = undefined;
     }
   }
 }

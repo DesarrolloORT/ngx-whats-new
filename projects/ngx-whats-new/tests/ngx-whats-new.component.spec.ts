@@ -106,7 +106,7 @@ describe('NgxWhatsNewComponent', () => {
     component.open();
     tick(); // Resolve the Promise in open()
     fixture.detectChanges();
-    expect(component['isVisible']).toBe(true);
+    expect(component['_isVisible']).toBe(true);
     expect(component.opened.emit).toHaveBeenCalled();
   }));
 
@@ -116,7 +116,7 @@ describe('NgxWhatsNewComponent', () => {
     jest.spyOn(component.closed, 'emit');
     component.close();
     fixture.detectChanges();
-    expect(component['isVisible']).toBe(false);
+    expect(component['_isVisible']).toBe(false);
     expect(component.closed.emit).toHaveBeenCalled();
   });
 
@@ -126,9 +126,9 @@ describe('NgxWhatsNewComponent', () => {
     component.open();
     jest.spyOn(component.navigation, 'emit');
 
-    expect(component['selectedIndex']).toBe(0);
+    expect(component['_selectedIndex']).toBe(0);
     component.goToNext();
-    expect(component['selectedIndex']).toBe(1);
+    expect(component['_selectedIndex']).toBe(1);
     expect(component.navigation.emit).toHaveBeenCalledWith({
       previousItem: { index: 0, item: items[0] },
       currentItem: { index: 1, item: items[1] },
@@ -155,7 +155,7 @@ describe('NgxWhatsNewComponent', () => {
     jest.spyOn(component.navigation, 'emit');
 
     component.navigateTo(2);
-    expect(component['selectedIndex']).toBe(2);
+    expect(component['_selectedIndex']).toBe(2);
     expect(component.navigation.emit).toHaveBeenCalledWith({
       previousItem: { index: 0, item: items[0] },
       currentItem: { index: 2, item: items[2] },
@@ -172,7 +172,7 @@ describe('NgxWhatsNewComponent', () => {
     jest.spyOn(component.navigation, 'emit');
 
     component.navigateTo(1);
-    expect(component['selectedIndex']).toBe(0); // Should not change
+    expect(component['_selectedIndex']).toBe(0); // Should not change
     expect(component.navigation.emit).not.toHaveBeenCalled();
   }));
 
@@ -189,7 +189,7 @@ describe('NgxWhatsNewComponent', () => {
     window.dispatchEvent(event);
     fixture.detectChanges();
 
-    expect(component['selectedIndex']).toBe(1);
+    expect(component['_selectedIndex']).toBe(1);
     expect(component.navigation.emit).toHaveBeenCalledWith({
       previousItem: { index: 0, item: items[0] },
       currentItem: { index: 1, item: items[1] },
@@ -202,7 +202,7 @@ describe('NgxWhatsNewComponent', () => {
     component.options = { disableClose: false, enableKeyboardNavigation: true };
     component.open();
     tick(); // Resolve any pending Promises
-    component['selectedIndex'] = 1;
+    component['_selectedIndex'] = 1;
     fixture.detectChanges();
     jest.spyOn(component.navigation, 'emit');
 
@@ -210,7 +210,7 @@ describe('NgxWhatsNewComponent', () => {
     window.dispatchEvent(event);
     fixture.detectChanges();
 
-    expect(component['selectedIndex']).toBe(0);
+    expect(component['_selectedIndex']).toBe(0);
     expect(component.navigation.emit).toHaveBeenCalledWith({
       previousItem: { index: 1, item: items[1] },
       currentItem: { index: 0, item: items[0] },
@@ -248,7 +248,7 @@ describe('NgxWhatsNewComponent', () => {
   it('should unregister keyboard listener on ngOnDestroy', () => {
     component.open();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const unregisterSpy = jest.spyOn(component as any, 'unregisterKeyboardListener');
+    const unregisterSpy = jest.spyOn(component as any, '_unregisterKeyboardListener');
 
     component.ngOnDestroy();
 
@@ -264,8 +264,8 @@ describe('NgxWhatsNewComponent', () => {
 
     jest.spyOn(component, 'close');
 
-    // Set selectedIndex to the last item
-    component['selectedIndex'] = items.length - 1;
+    // Set _selectedIndex to the last item
+    component['_selectedIndex'] = items.length - 1;
     fixture.detectChanges();
 
     // Simulate ArrowRight keypress
@@ -286,16 +286,16 @@ describe('NgxWhatsNewComponent', () => {
 
     jest.spyOn(component.navigation, 'emit');
 
-    // Ensure selectedIndex is 0
-    component['selectedIndex'] = 0;
+    // Ensure _selectedIndex is 0
+    component['_selectedIndex'] = 0;
 
     // Simulate ArrowLeft keypress
     const event = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
     window.dispatchEvent(event);
     fixture.detectChanges();
 
-    // selectedIndex should remain 0
-    expect(component['selectedIndex']).toBe(0);
+    // _selectedIndex should remain 0
+    expect(component['_selectedIndex']).toBe(0);
     // Navigation event should not be emitted
     expect(component.navigation.emit).not.toHaveBeenCalled();
   }));
@@ -311,14 +311,14 @@ describe('NgxWhatsNewComponent', () => {
     jest.spyOn(component.navigation, 'emit');
     jest.spyOn(component, 'close');
 
-    const initialIndex = component['selectedIndex'];
+    const initialIndex = component['_selectedIndex'];
 
     // Simulate an unhandled keypress (e.g., 'Enter')
     const event = new KeyboardEvent('keydown', { key: 'Enter' });
     window.dispatchEvent(event);
     fixture.detectChanges();
 
-    expect(component['selectedIndex']).toBe(initialIndex);
+    expect(component['_selectedIndex']).toBe(initialIndex);
     expect(component.navigation.emit).not.toHaveBeenCalled();
     expect(component.close).not.toHaveBeenCalled();
   }));
@@ -330,7 +330,7 @@ describe('NgxWhatsNewComponent', () => {
     component.navigateTo(0);
 
     expect(console.warn).toHaveBeenCalledWith('NgxWhatsNewComponent: No items to navigate.');
-    expect(component['selectedIndex']).toBe(0);
+    expect(component['_selectedIndex']).toBe(0);
   });
 
   it('should warn and not navigate when goToNext is called with no items', () => {
@@ -340,7 +340,7 @@ describe('NgxWhatsNewComponent', () => {
     component.goToNext();
 
     expect(console.warn).toHaveBeenCalledWith('NgxWhatsNewComponent: No items to navigate.');
-    expect(component['selectedIndex']).toBe(0);
+    expect(component['_selectedIndex']).toBe(0);
   });
 
   it('should warn and set items to empty array when items is null', () => {

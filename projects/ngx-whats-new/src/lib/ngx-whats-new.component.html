@@ -1,4 +1,4 @@
-@if (isVisible) {
+@if (_isVisible) {
 <div class="wn-modal-container">
   <div
     role="dialog"
@@ -21,14 +21,14 @@
       <div
         class="wn-modal-body"
         aria-live="polite"
-        [style.padding-top]="items[selectedIndex].image ? '' : 'calc(2 * var(--_body-spacing))'"
+        [style.padding-top]="items[_selectedIndex].image ? '' : 'calc(2 * var(--_body-spacing))'"
         [style.border]="options.customStyle?.border">
-        @if (items[selectedIndex].image) { @let img = items[selectedIndex].image;
+        @if (items[_selectedIndex].image) { @let img = items[_selectedIndex].image;
         <div
           class="wn-image"
           [style.background]="img?.background"
           [style.aspect-ratio]="img?.aspectRatio">
-          @if (!imageHasLoaded) {
+          @if (!_imageHasLoaded) {
           <div class="wn-image-placeholder">
             <div class="wn-image-loader"></div>
           </div>
@@ -36,21 +36,21 @@
           <img
             [src]="img?.src"
             [alt]="img?.altText"
-            (load)="onImageLoad()"
-            (error)="onImageError()"
+            (load)="_onImageLoad()"
+            (error)="_onImageError()"
             [style.object-fit]="img?.objectFit"
-            [class.wn-image-loaded]="imageHasLoaded"
-            [class.wn-image-not-loaded]="!imageHasLoaded" />
+            [class.wn-image-loaded]="_imageHasLoaded"
+            [class.wn-image-not-loaded]="!_imageHasLoaded" />
         </div>
         }
         <div class="wn-info-body">
-          @if (items[selectedIndex].title) {
-          <h2 class="wn-title">{{ items[selectedIndex].title }}</h2>
-          } @if (items[selectedIndex].text) {
-          <p class="wn-paragraph">{{ items[selectedIndex].text }}</p>
-          } @if (items[selectedIndex].html) {
-          <div class="wn-paragraph html" [innerHTML]="items[selectedIndex].html"></div>
-          } @if (items[selectedIndex].button) { @let btn = items[selectedIndex].button;
+          @if (items[_selectedIndex].title) {
+          <h2 class="wn-title">{{ items[_selectedIndex].title }}</h2>
+          } @if (items[_selectedIndex].text) {
+          <p class="wn-paragraph">{{ items[_selectedIndex].text }}</p>
+          } @if (items[_selectedIndex].html) {
+          <div class="wn-paragraph html" [innerHTML]="items[_selectedIndex].html"></div>
+          } @if (items[_selectedIndex].button) { @let btn = items[_selectedIndex].button;
           <button
             class="wn-button"
             [style.align-self]="btn?.position ?? 'center'"
@@ -68,18 +68,18 @@
             class="wn-dot"
             role="tabpanel"
             [class.clickable]="options.clickableNavigationDots"
-            [class.active]="i === selectedIndex"
-            [class.inactive]="i !== selectedIndex">
+            [class.active]="i === _selectedIndex"
+            [class.inactive]="i !== _selectedIndex">
             <button
               #wnNavButton
               role="tab"
-              [attr.aria-selected]="i === selectedIndex"
+              [attr.aria-selected]="i === _selectedIndex"
               [attr.aria-controls]="'tabpanel-' + i"
               [id]="'tab-' + i"
-              [tabindex]="i === selectedIndex ? '0' : '-1'"
+              [tabindex]="i === _selectedIndex ? '0' : '-1'"
               (click)="navigateTo(i)"
               [attr.aria-label]="
-                (i === selectedIndex ? 'Current slide, ' : '') +
+                (i === _selectedIndex ? 'Current slide, ' : '') +
                 'Navigate to item ' +
                 (i + 1)
               "
