@@ -78,16 +78,17 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    if (this._selectedIndex < this.items.length - 1) {
-      const previousIndex = this._selectedIndex;
+    const selectedIndex = this._getSelectedIndex();
+    if (selectedIndex < this.items.length - 1) {
+      const previousIndex = selectedIndex;
       const previousItem = this.items[previousIndex];
-      this._selectedIndex += 1;
+      this._setSelectedIndex(selectedIndex + 1);
       this._updateTabIndices();
       this._emitNavigationEvent(
         previousIndex,
         previousItem,
-        this._selectedIndex,
-        this.items[this._selectedIndex]
+        selectedIndex,
+        this.items[selectedIndex]
       );
     } else {
       this.close();
@@ -104,17 +105,18 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    if (this._options.clickableNavigationDots && index !== this._selectedIndex) {
-      const previousIndex = this._selectedIndex;
+    const selectedIndex = this._getSelectedIndex();
+    if (this._options.clickableNavigationDots && index !== selectedIndex) {
+      const previousIndex = selectedIndex;
       const previousItem = this.items[previousIndex];
-      this._selectedIndex = index;
+      this._setSelectedIndex(index);
       this._updateTabIndices();
       this._focusButton(index);
       this._emitNavigationEvent(
         previousIndex,
         previousItem,
-        this._selectedIndex,
-        this.items[this._selectedIndex]
+        selectedIndex,
+        this.items[selectedIndex]
       );
     }
   }
@@ -178,7 +180,18 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   private readonly _navButtons?: QueryList<ElementRef>;
 
   /** Index of the selected modal item */
-  protected _selectedIndex = 0;
+  private _selectedIndex = 0;
+
+  /** Getter for the selected index */
+  protected _getSelectedIndex(): number {
+    return this._selectedIndex;
+  }
+
+  /** Setter for the selected index */
+  protected _setSelectedIndex(index: number): void {
+    this._selectedIndex = index;
+    this._imageHasLoaded = false;
+  }
 
   /** Instance of Renderer2 */
   private readonly _renderer: Renderer2 = inject(Renderer2);
@@ -204,8 +217,7 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
    * the component does not retain any state from previous interactions.
    */
   private _resetState(): void {
-    this._selectedIndex = 0;
-    this._imageHasLoaded = false;
+    this._setSelectedIndex(0);
     this._updateTabIndices();
   }
 
@@ -220,19 +232,19 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
    */
   protected _handleKeyboardNavigation($event: KeyboardEvent): void {
     if (this._options.enableKeyboardNavigation) {
-      let nextIndex = this._selectedIndex;
+      let nextIndex = this._getSelectedIndex();
       switch ($event.key) {
         case 'ArrowRight':
-          if (this._selectedIndex < this.items.length - 1) {
-            nextIndex = this._selectedIndex + 1;
+          if (nextIndex < this.items.length - 1) {
+            nextIndex++;
           } else {
             this.close();
             return;
           }
           break;
         case 'ArrowLeft':
-          if (this._selectedIndex > 0) {
-            nextIndex = this._selectedIndex - 1;
+          if (nextIndex > 0) {
+            nextIndex--;
           } else return;
           break;
         case 'Escape':
@@ -242,12 +254,12 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
           break;
       }
 
-      if (nextIndex !== this._selectedIndex) {
-        const previousIndex = this._selectedIndex;
+      if (nextIndex !== this._getSelectedIndex()) {
+        const previousIndex = this._getSelectedIndex();
         const previousItem = this.items[previousIndex];
-        this._selectedIndex = nextIndex;
+        this._setSelectedIndex(nextIndex);
         this._updateTabIndices();
-        this._focusButton(this._selectedIndex);
+        this._focusButton(this._getSelectedIndex());
         this._emitNavigationEvent(previousIndex, previousItem, nextIndex, this.items[nextIndex]);
         $event.preventDefault();
       }
@@ -263,12 +275,10 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
    * enhancing accessibility for assistive technologies.
    */
   private _updateTabIndices(): void {
-    this._imageHasLoaded = false;
-
     this._navButtons?.forEach((ref, index) => {
       const button = ref.nativeElement;
-      button.tabIndex = index === this._selectedIndex ? 0 : -1;
-      button.setAttribute('aria-selected', index === this._selectedIndex ? 'true' : 'false');
+      button.tabIndex = index === this._getSelectedIndex() ? 0 : -1;
+      button.setAttribute('aria-selected', index === this._getSelectedIndex() ? 'true' : 'false');
     });
   }
 
