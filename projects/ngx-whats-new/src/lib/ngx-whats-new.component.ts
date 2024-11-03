@@ -33,6 +33,8 @@ const DEFAULT_OPTIONS: DialogOptions = {
   encapsulation: ViewEncapsulation.ShadowDom,
 })
 export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
+  constructor(private readonly _renderer: Renderer2) {}
+
   // * -----------------------
   // * Component's public API
   // * -----------------------
@@ -188,9 +190,6 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
     this._selectedIndex = index;
     this._imageHasLoaded = false;
   }
-
-  /** Instance of Renderer2 */
-  private readonly _renderer: Renderer2 = inject(Renderer2);
 
   /** Function to register/unregister keyboard listener*/
   private _keyboardListener?: () => void;
