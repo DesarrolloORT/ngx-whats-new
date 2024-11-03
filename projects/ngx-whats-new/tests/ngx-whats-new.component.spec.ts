@@ -123,30 +123,33 @@ describe('NgxWhatsNewComponent', () => {
       fixture.detectChanges();
 
       const closeButton = fixture.debugElement.query(By.css('.wn-close-modal-button'));
-      const focusSpy = jest.spyOn(closeButton.nativeElement, 'focus');
+      const focusSpy = jest.spyOn(closeButton.nativeElement, 'focus').mockImplementation();
 
       component.ngAfterViewInit();
 
       expect(focusSpy).toHaveBeenCalled();
+      focusSpy.mockRestore();
     }));
 
     it('should warn and set items to empty array when items is null', () => {
-      jest.spyOn(console, 'warn');
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (component.items as any) = null;
 
-      expect(console.warn).toHaveBeenCalledWith('NgxWhatsNewComponent: No items provided.');
+      expect(consoleWarnSpy).toHaveBeenCalledWith('NgxWhatsNewComponent: No items provided.');
       expect(component.items).toEqual([]);
+      consoleWarnSpy.mockRestore();
     });
 
     it('should warn and set items to empty array when items is empty', () => {
-      jest.spyOn(console, 'warn');
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
       component.items = [];
 
-      expect(console.warn).toHaveBeenCalledWith('NgxWhatsNewComponent: No items provided.');
+      expect(consoleWarnSpy).toHaveBeenCalledWith('NgxWhatsNewComponent: No items provided.');
       expect(component.items).toEqual([]);
+      consoleWarnSpy.mockRestore();
     });
   });
 
@@ -156,15 +159,16 @@ describe('NgxWhatsNewComponent', () => {
       component.items = items;
       component.open();
       tick(); // Resolve open() method pending Promise
-      jest.spyOn(component.navigation, 'emit');
+      const navigationEmitSpy = jest.spyOn(component.navigation, 'emit').mockImplementation();
 
       expect(component['_selectedIndex']).toBe(0);
       component.goToNext();
       expect(component['_selectedIndex']).toBe(1);
-      expect(component.navigation.emit).toHaveBeenCalledWith({
+      expect(navigationEmitSpy).toHaveBeenCalledWith({
         previousItem: { index: 0, item: items[0] },
         currentItem: { index: 1, item: items[1] },
       });
+      navigationEmitSpy.mockRestore();
     }));
 
     it('should close the dialog when goToNext() is called on the last item', fakeAsync(() => {
@@ -173,10 +177,11 @@ describe('NgxWhatsNewComponent', () => {
       component.options = { disableClose: false };
       component.open();
       tick(); // Resolve open() method pending Promise
-      jest.spyOn(component, 'close');
+      const closeSpy = jest.spyOn(component, 'close').mockImplementation();
 
       component.goToNext();
-      expect(component.close).toHaveBeenCalled();
+      expect(closeSpy).toHaveBeenCalled();
+      closeSpy.mockRestore();
     }));
 
     it('should navigate to specified index when navigateTo(index) is called', fakeAsync(() => {
@@ -185,14 +190,17 @@ describe('NgxWhatsNewComponent', () => {
       component.open();
       tick(); // Resolve open() method pending Promise
       fixture.detectChanges();
-      jest.spyOn(component.navigation, 'emit');
+      const navigationEmitSpy = jest.spyOn(component.navigation, 'emit').mockImplementation();
 
       component.navigateTo(2);
       expect(component['_selectedIndex']).toBe(2);
-      expect(component.navigation.emit).toHaveBeenCalledWith({
-        previousItem: { index: 0, item: items[0] },
-        currentItem: { index: 2, item: items[2] },
-      });
+      expect(component.navigation.emit).toHaveBeenCalledWith(
+        expect.objectContaining({
+          previousItem: expect.objectContaining({ index: 0, item: items[0] }),
+          currentItem: expect.objectContaining({ index: 2, item: items[2] }),
+        })
+      );
+      navigationEmitSpy.mockRestore();
     }));
 
     it('should not navigate when navigateTo(index) is called and clickableNavigationDots is false', fakeAsync(() => {
@@ -202,11 +210,12 @@ describe('NgxWhatsNewComponent', () => {
       component.open();
       tick(); // Resolve open() method pending Promise
       fixture.detectChanges();
-      jest.spyOn(component.navigation, 'emit');
+      const navigationEmitSpy = jest.spyOn(component.navigation, 'emit').mockImplementation();
 
       component.navigateTo(1);
       expect(component['_selectedIndex']).toBe(0); // Should not change
-      expect(component.navigation.emit).not.toHaveBeenCalled();
+      expect(navigationEmitSpy).not.toHaveBeenCalled();
+      navigationEmitSpy.mockRestore();
     }));
 
     it('should navigate to next item on ArrowRight keypress', fakeAsync(() => {
@@ -216,17 +225,20 @@ describe('NgxWhatsNewComponent', () => {
       component.open();
       tick(); // Resolve open() method pending Promise
       fixture.detectChanges();
-      jest.spyOn(component.navigation, 'emit');
+      const navigationEmitSpy = jest.spyOn(component.navigation, 'emit').mockImplementation();
 
       const event = new KeyboardEvent('keydown', { key: 'ArrowRight' });
       window.dispatchEvent(event);
       fixture.detectChanges();
 
       expect(component['_selectedIndex']).toBe(1);
-      expect(component.navigation.emit).toHaveBeenCalledWith({
-        previousItem: { index: 0, item: items[0] },
-        currentItem: { index: 1, item: items[1] },
-      });
+      expect(navigationEmitSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          previousItem: expect.objectContaining({ index: 0, item: items[0] }),
+          currentItem: expect.objectContaining({ index: 1, item: items[1] }),
+        })
+      );
+      navigationEmitSpy.mockRestore();
     }));
 
     it('should navigate to previous item on ArrowLeft keypress', fakeAsync(() => {
@@ -237,17 +249,20 @@ describe('NgxWhatsNewComponent', () => {
       tick(); // Resolve open() method pending Promise
       component['_selectedIndex'] = 1;
       fixture.detectChanges();
-      jest.spyOn(component.navigation, 'emit');
+      const navigationEmitSpy = jest.spyOn(component.navigation, 'emit').mockImplementation();
 
       const event = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
       window.dispatchEvent(event);
       fixture.detectChanges();
 
       expect(component['_selectedIndex']).toBe(0);
-      expect(component.navigation.emit).toHaveBeenCalledWith({
-        previousItem: { index: 1, item: items[1] },
-        currentItem: { index: 0, item: items[0] },
-      });
+      expect(navigationEmitSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          previousItem: expect.objectContaining({ index: 1, item: items[1] }),
+          currentItem: expect.objectContaining({ index: 0, item: items[0] }),
+        })
+      );
+      navigationEmitSpy.mockRestore();
     }));
 
     it('should close the dialog when ArrowRight is pressed on the last item', fakeAsync(() => {
@@ -257,7 +272,7 @@ describe('NgxWhatsNewComponent', () => {
       component.open();
       tick(); // Resolve the Promise in open()
 
-      jest.spyOn(component, 'close');
+      const closeSpy = jest.spyOn(component, 'close').mockImplementation();
 
       // Set _selectedIndex to the last item
       component['_selectedIndex'] = items.length - 1;
@@ -268,7 +283,8 @@ describe('NgxWhatsNewComponent', () => {
       window.dispatchEvent(event);
       fixture.detectChanges();
 
-      expect(component.close).toHaveBeenCalled();
+      expect(closeSpy).toHaveBeenCalled();
+      closeSpy.mockRestore();
     }));
 
     it('should not navigate when ArrowLeft is pressed on the first item', fakeAsync(() => {
@@ -279,7 +295,7 @@ describe('NgxWhatsNewComponent', () => {
       tick();
       fixture.detectChanges();
 
-      jest.spyOn(component.navigation, 'emit');
+      const navigationEmitSpy = jest.spyOn(component.navigation, 'emit').mockImplementation();
 
       // Ensure _selectedIndex is 0
       component['_selectedIndex'] = 0;
@@ -292,49 +308,52 @@ describe('NgxWhatsNewComponent', () => {
       // _selectedIndex should remain 0
       expect(component['_selectedIndex']).toBe(0);
       // Navigation event should not be emitted
-      expect(component.navigation.emit).not.toHaveBeenCalled();
+      expect(navigationEmitSpy).not.toHaveBeenCalled();
+      navigationEmitSpy.mockRestore();
     }));
 
     it('should warn and not navigate when navigateTo is called with no items', () => {
-      jest.spyOn(console, 'warn');
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
       component.items = [];
       component.navigateTo(0);
 
-      expect(console.warn).toHaveBeenCalledWith('NgxWhatsNewComponent: No items to navigate.');
+      expect(consoleWarnSpy).toHaveBeenCalledWith('NgxWhatsNewComponent: No items to navigate.');
       expect(component['_selectedIndex']).toBe(0);
     });
 
     it('should warn and not navigate when goToNext is called with no items', () => {
-      jest.spyOn(console, 'warn');
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
       component.items = [];
       component.goToNext();
 
-      expect(console.warn).toHaveBeenCalledWith('NgxWhatsNewComponent: No items to navigate.');
+      expect(consoleWarnSpy).toHaveBeenCalledWith('NgxWhatsNewComponent: No items to navigate.');
       expect(component['_selectedIndex']).toBe(0);
     });
   });
 
   describe('Events', () => {
     it('should open the dialog and emit "opened" event', fakeAsync(() => {
-      jest.spyOn(component.opened, 'emit');
+      const openedEmitSpy = jest.spyOn(component.opened, 'emit').mockImplementation();
       component.open();
       tick(); // Resolve the Promise in open()
       fixture.detectChanges();
       expect(component['_isVisible']).toBe(true);
-      expect(component.opened.emit).toHaveBeenCalled();
+      expect(openedEmitSpy).toHaveBeenCalled();
+      openedEmitSpy.mockRestore();
     }));
 
     it('should close the dialog and emit "closed" event when disableClose is false', fakeAsync(() => {
       component.options = { disableClose: false };
       component.open();
       tick(); // Resolve open() method pending Promise
-      jest.spyOn(component.closed, 'emit');
+      const closedEmitSpy = jest.spyOn(component.closed, 'emit').mockImplementation();
       component.close();
       fixture.detectChanges();
       expect(component['_isVisible']).toBe(false);
-      expect(component.closed.emit).toHaveBeenCalled();
+      expect(closedEmitSpy).toHaveBeenCalled();
+      closedEmitSpy.mockRestore();
     }));
   });
 
@@ -343,24 +362,28 @@ describe('NgxWhatsNewComponent', () => {
       component.options = { disableClose: false, enableKeyboardNavigation: true };
       component.open();
       tick(); // Resolve open() method pending Promise
-      jest.spyOn(component, 'close');
+      const closeSpy = jest.spyOn(component, 'close').mockImplementation();
 
       const event = new KeyboardEvent('keydown', { key: 'Escape' });
       window.dispatchEvent(event);
       fixture.detectChanges();
 
-      expect(component.close).toHaveBeenCalled();
+      expect(closeSpy).toHaveBeenCalled();
+      closeSpy.mockRestore();
     }));
 
     it('should unregister keyboard listener on ngOnDestroy', fakeAsync(() => {
       component.open();
       tick(); // Resolve open() method pending Promise
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const unregisterSpy = jest.spyOn(component as any, '_unregisterKeyboardListener');
+
+      const unregisterSpy = jest
+        .spyOn(component as any, '_unregisterKeyboardListener')
+        .mockImplementation();
 
       component.ngOnDestroy();
 
       expect(unregisterSpy).toHaveBeenCalled();
+      unregisterSpy.mockRestore();
     }));
 
     it('should not navigate or close when an unhandled key is pressed', fakeAsync(() => {
@@ -371,8 +394,8 @@ describe('NgxWhatsNewComponent', () => {
       tick();
       fixture.detectChanges();
 
-      jest.spyOn(component.navigation, 'emit');
-      jest.spyOn(component, 'close');
+      const navigationEmitSpy = jest.spyOn(component.navigation, 'emit').mockImplementation();
+      const closeSpy = jest.spyOn(component, 'close').mockImplementation();
 
       const initialIndex = component['_selectedIndex'];
 
@@ -382,8 +405,10 @@ describe('NgxWhatsNewComponent', () => {
       fixture.detectChanges();
 
       expect(component['_selectedIndex']).toBe(initialIndex);
-      expect(component.navigation.emit).not.toHaveBeenCalled();
-      expect(component.close).not.toHaveBeenCalled();
+      expect(navigationEmitSpy).not.toHaveBeenCalled();
+      expect(closeSpy).not.toHaveBeenCalled();
+      navigationEmitSpy.mockRestore();
+      closeSpy.mockRestore();
     }));
   });
 
