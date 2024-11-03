@@ -5,7 +5,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  inject,
   Input,
   OnDestroy,
   Output,
