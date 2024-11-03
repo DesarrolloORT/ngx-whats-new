@@ -9,7 +9,6 @@ import {
   OnDestroy,
   Output,
   QueryList,
-  Renderer2,
   ViewChild,
   ViewChildren,
   ViewEncapsulation,
@@ -191,9 +190,6 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
     this._selectedIndex = index;
     this._imageHasLoaded = false;
   }
-
-  /** Function to register/unregister keyboard listener*/
-  private _keyboardListener?: () => void;
 
   /** Handles image load event */
   protected _onImageLoad() {
