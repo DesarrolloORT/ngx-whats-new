@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { of } from 'rxjs';
 
 import { DialogOptions, WhatsNewItem } from '../src/lib/interfaces';
 import { NgxWhatsNewComponent } from '../src/lib/ngx-whats-new.component';
@@ -52,6 +53,16 @@ const mockItems: WhatsNewItem[] = [
   },
 ];
 
+jest.mock('rxjs', () => {
+  const originalModule = jest.requireActual('rxjs');
+
+  return {
+    __esModule: true,
+    ...originalModule,
+    fromEvent: jest.fn(() => of()),
+  };
+});
+
 describe('NgxWhatsNewComponent', () => {
   let component: NgxWhatsNewComponent;
   let fixture: ComponentFixture<NgxWhatsNewComponent>;
@@ -73,6 +84,7 @@ describe('NgxWhatsNewComponent', () => {
 
   afterEach(() => {
     if (component) {
+      component.close();
       component.ngOnDestroy();
     }
 
@@ -228,7 +240,7 @@ describe('NgxWhatsNewComponent', () => {
       const navigationEmitSpy = jest.spyOn(component.navigation, 'emit').mockImplementation();
 
       const event = new KeyboardEvent('keydown', { key: 'ArrowRight' });
-      window.dispatchEvent(event);
+      component['_handleKeyboardNavigation'](event);
       fixture.detectChanges();
 
       expect(component['_selectedIndex']).toBe(1);
@@ -252,7 +264,7 @@ describe('NgxWhatsNewComponent', () => {
       const navigationEmitSpy = jest.spyOn(component.navigation, 'emit').mockImplementation();
 
       const event = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
-      window.dispatchEvent(event);
+      component['_handleKeyboardNavigation'](event);
       fixture.detectChanges();
 
       expect(component['_selectedIndex']).toBe(0);
@@ -280,7 +292,7 @@ describe('NgxWhatsNewComponent', () => {
 
       // Simulate ArrowRight keypress
       const event = new KeyboardEvent('keydown', { key: 'ArrowRight' });
-      window.dispatchEvent(event);
+      component['_handleKeyboardNavigation'](event);
       fixture.detectChanges();
 
       expect(closeSpy).toHaveBeenCalled();
@@ -302,7 +314,7 @@ describe('NgxWhatsNewComponent', () => {
 
       // Simulate ArrowLeft keypress
       const event = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
-      window.dispatchEvent(event);
+      component['_handleKeyboardNavigation'](event);
       fixture.detectChanges();
 
       // _selectedIndex should remain 0
@@ -365,7 +377,7 @@ describe('NgxWhatsNewComponent', () => {
       const closeSpy = jest.spyOn(component, 'close').mockImplementation();
 
       const event = new KeyboardEvent('keydown', { key: 'Escape' });
-      window.dispatchEvent(event);
+      component['_handleKeyboardNavigation'](event);
       fixture.detectChanges();
 
       expect(closeSpy).toHaveBeenCalled();
@@ -402,7 +414,7 @@ describe('NgxWhatsNewComponent', () => {
 
       // Simulate an unhandled keypress (e.g., 'Enter')
       const event = new KeyboardEvent('keydown', { key: 'Enter' });
-      window.dispatchEvent(event);
+      component['_handleKeyboardNavigation'](event);
       fixture.detectChanges();
 
       expect(component['_selectedIndex']).toBe(initialIndex);
