@@ -1,5 +1,6 @@
 import { A11yModule } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
+import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -372,5 +373,59 @@ describe('NgxWhatsNewComponent', () => {
       expect(component.navigation.emit).not.toHaveBeenCalled();
       expect(component.close).not.toHaveBeenCalled();
     }));
+  });
+
+  describe('Image events', () => {
+    let debugElement: DebugElement;
+    beforeEach(fakeAsync(() => {
+      // Sample items with an image URL
+      const items: WhatsNewItem[] = [
+        { title: 'Item 1', image: { src: 'valid-image-url.jpg', altText: 'Valid image URL' } },
+        { title: 'Item 2', image: { src: 'invalid-image-url.jpg', altText: 'Invalid image URL' } },
+      ];
+      component.items = items;
+      component.open();
+      tick(); // Resolve open() method pending Promise
+
+      debugElement = fixture.debugElement;
+      fixture.detectChanges();
+    }));
+
+    it('should set _imageHasLoaded to true when the image loads successfully', () => {
+      // Find the image element in the template
+      const imageElement = debugElement.query(By.css('img'));
+
+      // Simulate the image load event
+      imageElement.triggerEventHandler('load', {});
+
+      // Run change detection to update bindings
+      fixture.detectChanges();
+
+      // Assert that _imageHasLoaded is true
+      expect(component['_imageHasLoaded']).toBeTruthy();
+    });
+
+    it('should set _imageHasLoaded to false and log a warning when the image fails to load', () => {
+      // Spy on console.warn
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+
+      // Find the image element in the template
+      const imageElement = debugElement.query(By.css('img'));
+
+      // Simulate the image error event
+      imageElement.triggerEventHandler('error', {});
+
+      // Run change detection to update bindings
+      fixture.detectChanges();
+
+      // Assert that _imageHasLoaded is false
+      expect(component['_imageHasLoaded']).toBeFalsy();
+
+      // Assert that console.warn was called with the correct message
+      expect(consoleWarnSpy).toHaveBeenCalledWith('NgxWhatsNewComponent: Image failed to load.');
+
+      // Restore the original console.warn implementation
+      consoleWarnSpy.mockRestore();
+    });
   });
 });
