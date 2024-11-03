@@ -78,18 +78,16 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    const selectedIndex = this._getSelectedIndex();
-    if (selectedIndex < this.items.length - 1) {
-      const previousIndex = selectedIndex;
-      const previousItem = this.items[previousIndex];
-      this._setSelectedIndex(selectedIndex + 1);
+    const previousIndex = this._getSelectedIndex();
+    const previousItem = this.items[previousIndex];
+
+    if (previousIndex < this.items.length - 1) {
+      this._setSelectedIndex(previousIndex + 1);
+      const currentIndex = this._getSelectedIndex();
+      const currentItem = this.items[currentIndex];
+
       this._updateTabIndices();
-      this._emitNavigationEvent(
-        previousIndex,
-        previousItem,
-        selectedIndex,
-        this.items[selectedIndex]
-      );
+      this._emitNavigationEvent(previousIndex, previousItem, currentIndex, currentItem);
     } else {
       this.close();
     }
@@ -105,19 +103,17 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    const selectedIndex = this._getSelectedIndex();
-    if (this._options.clickableNavigationDots && index !== selectedIndex) {
-      const previousIndex = selectedIndex;
-      const previousItem = this.items[previousIndex];
+    const previousIndex = this._getSelectedIndex();
+    const previousItem = this.items[previousIndex];
+
+    if (this._options.clickableNavigationDots && index !== previousIndex) {
       this._setSelectedIndex(index);
+      const currentIndex = this._getSelectedIndex();
+      const currentItem = this.items[currentIndex];
+
       this._updateTabIndices();
       this._focusButton(index);
-      this._emitNavigationEvent(
-        previousIndex,
-        previousItem,
-        selectedIndex,
-        this.items[selectedIndex]
-      );
+      this._emitNavigationEvent(previousIndex, previousItem, currentIndex, currentItem);
     }
   }
 
