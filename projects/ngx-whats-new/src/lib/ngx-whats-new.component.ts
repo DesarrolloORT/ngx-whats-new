@@ -14,6 +14,7 @@ import {
   ViewChildren,
   ViewEncapsulation,
 } from '@angular/core';
+import { fromEvent, Subscription } from 'rxjs';
 
 import { DialogOptions, NavigationEvent, WhatsNewItem } from './interfaces';
 
@@ -32,8 +33,6 @@ const DEFAULT_OPTIONS: DialogOptions = {
   encapsulation: ViewEncapsulation.ShadowDom,
 })
 export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
-  constructor(private readonly _renderer: Renderer2) {}
-
   // * -----------------------
   // * Component's public API
   // * -----------------------
@@ -168,6 +167,9 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
 
   /** Tracks image loading status */
   protected _imageHasLoaded = false;
+
+  /** Subscription to keyboard event listener */
+  private keyboardEventSubscription?: Subscription;
 
   /** Reference to the close button */
   @ViewChild('wnCloseButton') private readonly _closeButton?: ElementRef;
@@ -327,18 +329,20 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
    * Registers keyboard event listener when the dialog opens.
    */
   private _registerKeyboardListener(): void {
-    this._keyboardListener = this._renderer.listen('window', 'keydown', (event: KeyboardEvent) => {
-      this._handleKeyboardNavigation(event);
-    });
+    if (this._options.enableKeyboardNavigation) {
+      this.keyboardEventSubscription = fromEvent<KeyboardEvent>(window, 'keydown').subscribe(
+        event => this._handleKeyboardNavigation(event)
+      );
+    }
   }
 
   /**
    * Unregisters keyboard event listener when the dialog closes.
    */
   private _unregisterKeyboardListener(): void {
-    if (this._keyboardListener) {
-      this._keyboardListener();
-      this._keyboardListener = undefined;
+    if (this.keyboardEventSubscription) {
+      this.keyboardEventSubscription.unsubscribe();
+      this.keyboardEventSubscription = undefined;
     }
   }
 }
