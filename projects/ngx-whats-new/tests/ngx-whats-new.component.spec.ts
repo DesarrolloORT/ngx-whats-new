@@ -377,6 +377,7 @@ describe('NgxWhatsNewComponent', () => {
       tick(); // Resolve open() method pending Promise
 
       const unregisterSpy = jest
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .spyOn(component as any, '_unregisterKeyboardListener')
         .mockImplementation();
 
