@@ -70,295 +70,307 @@ describe('NgxWhatsNewComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  describe('Initialization and configuration', () => {
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
 
-  it('should use default options if none are provided', () => {
-    expect(component.options).toEqual({
-      clickableNavigationDots: true,
-      enableKeyboardNavigation: true,
-      disableClose: true,
+    it('should use default options if none are provided', () => {
+      expect(component.options).toEqual({
+        clickableNavigationDots: true,
+        enableKeyboardNavigation: true,
+        disableClose: true,
+      });
+    });
+
+    it('should set options correctly when provided', () => {
+      const customOptions: DialogOptions = {
+        customStyle: {
+          maxWidth: '600px',
+        },
+        clickableNavigationDots: false,
+        enableKeyboardNavigation: false,
+        disableClose: false,
+      };
+      component.options = customOptions;
+      expect(component.options).toEqual(customOptions);
+    });
+
+    it('should set items correctly when provided', () => {
+      const items: WhatsNewItem[] = [{ title: 'Item 1' }, { title: 'Item 2' }];
+      component.items = items;
+      expect(component.items).toEqual(items);
+    });
+
+    it('should focus on close button after view init when disableClose is false', fakeAsync(() => {
+      component.options = { disableClose: false };
+      component.items = [{ title: 'Item 1' }];
+      component.open();
+      tick(); // Resolve open() method pending Promise
+      fixture.detectChanges();
+
+      const closeButton = fixture.debugElement.query(By.css('.wn-close-modal-button'));
+      const focusSpy = jest.spyOn(closeButton.nativeElement, 'focus');
+
+      component.ngAfterViewInit();
+
+      expect(focusSpy).toHaveBeenCalled();
+    }));
+
+    it('should warn and set items to empty array when items is null', () => {
+      jest.spyOn(console, 'warn');
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (component.items as any) = null;
+
+      expect(console.warn).toHaveBeenCalledWith('NgxWhatsNewComponent: No items provided.');
+      expect(component.items).toEqual([]);
+    });
+
+    it('should warn and set items to empty array when items is empty', () => {
+      jest.spyOn(console, 'warn');
+
+      component.items = [];
+
+      expect(console.warn).toHaveBeenCalledWith('NgxWhatsNewComponent: No items provided.');
+      expect(component.items).toEqual([]);
     });
   });
 
-  it('should set options correctly when provided', () => {
-    const customOptions: DialogOptions = {
-      customStyle: {
-        maxWidth: '600px',
-      },
-      clickableNavigationDots: false,
-      enableKeyboardNavigation: false,
-      disableClose: false,
-    };
-    component.options = customOptions;
-    expect(component.options).toEqual(customOptions);
-  });
+  describe('Navigation', () => {
+    it('should navigate to next item when goToNext() is called', fakeAsync(() => {
+      const items: WhatsNewItem[] = [{ title: 'Item 1' }, { title: 'Item 2' }, { title: 'Item 3' }];
+      component.items = items;
+      component.open();
+      tick(); // Resolve open() method pending Promise
+      jest.spyOn(component.navigation, 'emit');
 
-  it('should set items correctly when provided', () => {
-    const items: WhatsNewItem[] = [{ title: 'Item 1' }, { title: 'Item 2' }];
-    component.items = items;
-    expect(component.items).toEqual(items);
-  });
+      expect(component['_selectedIndex']).toBe(0);
+      component.goToNext();
+      expect(component['_selectedIndex']).toBe(1);
+      expect(component.navigation.emit).toHaveBeenCalledWith({
+        previousItem: { index: 0, item: items[0] },
+        currentItem: { index: 1, item: items[1] },
+      });
+    }));
 
-  it('should open the dialog and emit "opened" event', fakeAsync(() => {
-    jest.spyOn(component.opened, 'emit');
-    component.open();
-    tick(); // Resolve the Promise in open()
-    fixture.detectChanges();
-    expect(component['_isVisible']).toBe(true);
-    expect(component.opened.emit).toHaveBeenCalled();
-  }));
+    it('should close the dialog when goToNext() is called on the last item', fakeAsync(() => {
+      const items: WhatsNewItem[] = [{ title: 'Item 1' }];
+      component.items = items;
+      component.options = { disableClose: false };
+      component.open();
+      tick(); // Resolve open() method pending Promise
+      jest.spyOn(component, 'close');
 
-  it('should close the dialog and emit "closed" event when disableClose is false', () => {
-    component.options = { disableClose: false };
-    component.open();
-    jest.spyOn(component.closed, 'emit');
-    component.close();
-    fixture.detectChanges();
-    expect(component['_isVisible']).toBe(false);
-    expect(component.closed.emit).toHaveBeenCalled();
-  });
+      component.goToNext();
+      expect(component.close).toHaveBeenCalled();
+    }));
 
-  it('should navigate to next item when goToNext() is called', () => {
-    const items: WhatsNewItem[] = [{ title: 'Item 1' }, { title: 'Item 2' }, { title: 'Item 3' }];
-    component.items = items;
-    component.open();
-    jest.spyOn(component.navigation, 'emit');
+    it('should navigate to specified index when navigateTo(index) is called', fakeAsync(() => {
+      const items: WhatsNewItem[] = [{ title: 'Item 1' }, { title: 'Item 2' }, { title: 'Item 3' }];
+      component.items = items;
+      component.open();
+      tick(); // Resolve open() method pending Promise
+      fixture.detectChanges();
+      jest.spyOn(component.navigation, 'emit');
 
-    expect(component['_selectedIndex']).toBe(0);
-    component.goToNext();
-    expect(component['_selectedIndex']).toBe(1);
-    expect(component.navigation.emit).toHaveBeenCalledWith({
-      previousItem: { index: 0, item: items[0] },
-      currentItem: { index: 1, item: items[1] },
+      component.navigateTo(2);
+      expect(component['_selectedIndex']).toBe(2);
+      expect(component.navigation.emit).toHaveBeenCalledWith({
+        previousItem: { index: 0, item: items[0] },
+        currentItem: { index: 2, item: items[2] },
+      });
+    }));
+
+    it('should not navigate when navigateTo(index) is called and clickableNavigationDots is false', fakeAsync(() => {
+      const items: WhatsNewItem[] = [{ title: 'Item 1' }, { title: 'Item 2' }];
+      component.items = items;
+      component.options = { clickableNavigationDots: false };
+      component.open();
+      tick(); // Resolve open() method pending Promise
+      fixture.detectChanges();
+      jest.spyOn(component.navigation, 'emit');
+
+      component.navigateTo(1);
+      expect(component['_selectedIndex']).toBe(0); // Should not change
+      expect(component.navigation.emit).not.toHaveBeenCalled();
+    }));
+
+    it('should navigate to next item on ArrowRight keypress', fakeAsync(() => {
+      const items: WhatsNewItem[] = [{ title: 'Item 1' }, { title: 'Item 2' }];
+      component.items = items;
+      component.options = { disableClose: false, enableKeyboardNavigation: true };
+      component.open();
+      tick(); // Resolve open() method pending Promise
+      fixture.detectChanges();
+      jest.spyOn(component.navigation, 'emit');
+
+      const event = new KeyboardEvent('keydown', { key: 'ArrowRight' });
+      window.dispatchEvent(event);
+      fixture.detectChanges();
+
+      expect(component['_selectedIndex']).toBe(1);
+      expect(component.navigation.emit).toHaveBeenCalledWith({
+        previousItem: { index: 0, item: items[0] },
+        currentItem: { index: 1, item: items[1] },
+      });
+    }));
+
+    it('should navigate to previous item on ArrowLeft keypress', fakeAsync(() => {
+      const items: WhatsNewItem[] = [{ title: 'Item 1' }, { title: 'Item 2' }];
+      component.items = items;
+      component.options = { disableClose: false, enableKeyboardNavigation: true };
+      component.open();
+      tick(); // Resolve open() method pending Promise
+      component['_selectedIndex'] = 1;
+      fixture.detectChanges();
+      jest.spyOn(component.navigation, 'emit');
+
+      const event = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
+      window.dispatchEvent(event);
+      fixture.detectChanges();
+
+      expect(component['_selectedIndex']).toBe(0);
+      expect(component.navigation.emit).toHaveBeenCalledWith({
+        previousItem: { index: 1, item: items[1] },
+        currentItem: { index: 0, item: items[0] },
+      });
+    }));
+
+    it('should close the dialog when ArrowRight is pressed on the last item', fakeAsync(() => {
+      const items: WhatsNewItem[] = [{ title: 'Item 1' }, { title: 'Item 2' }];
+      component.items = items;
+      component.options = { disableClose: false, enableKeyboardNavigation: true }; // Allow closing
+      component.open();
+      tick(); // Resolve the Promise in open()
+
+      jest.spyOn(component, 'close');
+
+      // Set _selectedIndex to the last item
+      component['_selectedIndex'] = items.length - 1;
+      fixture.detectChanges();
+
+      // Simulate ArrowRight keypress
+      const event = new KeyboardEvent('keydown', { key: 'ArrowRight' });
+      window.dispatchEvent(event);
+      fixture.detectChanges();
+
+      expect(component.close).toHaveBeenCalled();
+    }));
+
+    it('should not navigate when ArrowLeft is pressed on the first item', fakeAsync(() => {
+      const items: WhatsNewItem[] = [{ title: 'Item 1' }, { title: 'Item 2' }];
+      component.items = items;
+      component.options = { disableClose: false, enableKeyboardNavigation: true };
+      component.open();
+      tick();
+      fixture.detectChanges();
+
+      jest.spyOn(component.navigation, 'emit');
+
+      // Ensure _selectedIndex is 0
+      component['_selectedIndex'] = 0;
+
+      // Simulate ArrowLeft keypress
+      const event = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
+      window.dispatchEvent(event);
+      fixture.detectChanges();
+
+      // _selectedIndex should remain 0
+      expect(component['_selectedIndex']).toBe(0);
+      // Navigation event should not be emitted
+      expect(component.navigation.emit).not.toHaveBeenCalled();
+    }));
+
+    it('should warn and not navigate when navigateTo is called with no items', () => {
+      jest.spyOn(console, 'warn');
+
+      component.items = [];
+      component.navigateTo(0);
+
+      expect(console.warn).toHaveBeenCalledWith('NgxWhatsNewComponent: No items to navigate.');
+      expect(component['_selectedIndex']).toBe(0);
+    });
+
+    it('should warn and not navigate when goToNext is called with no items', () => {
+      jest.spyOn(console, 'warn');
+
+      component.items = [];
+      component.goToNext();
+
+      expect(console.warn).toHaveBeenCalledWith('NgxWhatsNewComponent: No items to navigate.');
+      expect(component['_selectedIndex']).toBe(0);
     });
   });
 
-  it('should close the dialog when goToNext() is called on the last item', () => {
-    const items: WhatsNewItem[] = [{ title: 'Item 1' }];
-    component.items = items;
-    component.options = { disableClose: false };
-    component.open();
-    jest.spyOn(component, 'close');
+  describe('Events', () => {
+    it('should open the dialog and emit "opened" event', fakeAsync(() => {
+      jest.spyOn(component.opened, 'emit');
+      component.open();
+      tick(); // Resolve the Promise in open()
+      fixture.detectChanges();
+      expect(component['_isVisible']).toBe(true);
+      expect(component.opened.emit).toHaveBeenCalled();
+    }));
 
-    component.goToNext();
-    expect(component.close).toHaveBeenCalled();
+    it('should close the dialog and emit "closed" event when disableClose is false', fakeAsync(() => {
+      component.options = { disableClose: false };
+      component.open();
+      tick(); // Resolve open() method pending Promise
+      jest.spyOn(component.closed, 'emit');
+      component.close();
+      fixture.detectChanges();
+      expect(component['_isVisible']).toBe(false);
+      expect(component.closed.emit).toHaveBeenCalled();
+    }));
   });
 
-  it('should navigate to specified index when navigateTo(index) is called', fakeAsync(() => {
-    const items: WhatsNewItem[] = [{ title: 'Item 1' }, { title: 'Item 2' }, { title: 'Item 3' }];
-    component.items = items;
-    component.open();
-    tick(); // Resolve any pending Promises
-    fixture.detectChanges();
-    jest.spyOn(component.navigation, 'emit');
+  describe('Keyboard events', () => {
+    it('should close the dialog on Escape keypress when disableClose is false', fakeAsync(() => {
+      component.options = { disableClose: false, enableKeyboardNavigation: true };
+      component.open();
+      tick(); // Resolve open() method pending Promise
+      jest.spyOn(component, 'close');
 
-    component.navigateTo(2);
-    expect(component['_selectedIndex']).toBe(2);
-    expect(component.navigation.emit).toHaveBeenCalledWith({
-      previousItem: { index: 0, item: items[0] },
-      currentItem: { index: 2, item: items[2] },
-    });
-  }));
+      const event = new KeyboardEvent('keydown', { key: 'Escape' });
+      window.dispatchEvent(event);
+      fixture.detectChanges();
 
-  it('should not navigate when navigateTo(index) is called and clickableNavigationDots is false', fakeAsync(() => {
-    const items: WhatsNewItem[] = [{ title: 'Item 1' }, { title: 'Item 2' }];
-    component.items = items;
-    component.options = { clickableNavigationDots: false };
-    component.open();
-    tick(); // Resolve any pending Promises
-    fixture.detectChanges();
-    jest.spyOn(component.navigation, 'emit');
+      expect(component.close).toHaveBeenCalled();
+    }));
 
-    component.navigateTo(1);
-    expect(component['_selectedIndex']).toBe(0); // Should not change
-    expect(component.navigation.emit).not.toHaveBeenCalled();
-  }));
+    it('should unregister keyboard listener on ngOnDestroy', fakeAsync(() => {
+      component.open();
+      tick(); // Resolve open() method pending Promise
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const unregisterSpy = jest.spyOn(component as any, '_unregisterKeyboardListener');
 
-  it('should navigate to next item on ArrowRight keypress', fakeAsync(() => {
-    const items: WhatsNewItem[] = [{ title: 'Item 1' }, { title: 'Item 2' }];
-    component.items = items;
-    component.options = { disableClose: false, enableKeyboardNavigation: true };
-    component.open();
-    tick(); // Resolve any pending Promises
-    fixture.detectChanges();
-    jest.spyOn(component.navigation, 'emit');
+      component.ngOnDestroy();
 
-    const event = new KeyboardEvent('keydown', { key: 'ArrowRight' });
-    window.dispatchEvent(event);
-    fixture.detectChanges();
+      expect(unregisterSpy).toHaveBeenCalled();
+    }));
 
-    expect(component['_selectedIndex']).toBe(1);
-    expect(component.navigation.emit).toHaveBeenCalledWith({
-      previousItem: { index: 0, item: items[0] },
-      currentItem: { index: 1, item: items[1] },
-    });
-  }));
+    it('should not navigate or close when an unhandled key is pressed', fakeAsync(() => {
+      const items: WhatsNewItem[] = [{ title: 'Item 1' }, { title: 'Item 2' }];
+      component.items = items;
+      component.options = { disableClose: false, enableKeyboardNavigation: true };
+      component.open();
+      tick();
+      fixture.detectChanges();
 
-  it('should navigate to previous item on ArrowLeft keypress', fakeAsync(() => {
-    const items: WhatsNewItem[] = [{ title: 'Item 1' }, { title: 'Item 2' }];
-    component.items = items;
-    component.options = { disableClose: false, enableKeyboardNavigation: true };
-    component.open();
-    tick(); // Resolve any pending Promises
-    component['_selectedIndex'] = 1;
-    fixture.detectChanges();
-    jest.spyOn(component.navigation, 'emit');
+      jest.spyOn(component.navigation, 'emit');
+      jest.spyOn(component, 'close');
 
-    const event = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
-    window.dispatchEvent(event);
-    fixture.detectChanges();
+      const initialIndex = component['_selectedIndex'];
 
-    expect(component['_selectedIndex']).toBe(0);
-    expect(component.navigation.emit).toHaveBeenCalledWith({
-      previousItem: { index: 1, item: items[1] },
-      currentItem: { index: 0, item: items[0] },
-    });
-  }));
+      // Simulate an unhandled keypress (e.g., 'Enter')
+      const event = new KeyboardEvent('keydown', { key: 'Enter' });
+      window.dispatchEvent(event);
+      fixture.detectChanges();
 
-  it('should close the dialog on Escape keypress when disableClose is false', fakeAsync(() => {
-    component.options = { disableClose: false, enableKeyboardNavigation: true };
-    component.open();
-    tick(); // Resolve any pending Promises
-    jest.spyOn(component, 'close');
-
-    const event = new KeyboardEvent('keydown', { key: 'Escape' });
-    window.dispatchEvent(event);
-    fixture.detectChanges();
-
-    expect(component.close).toHaveBeenCalled();
-  }));
-
-  it('should focus on close button after view init when disableClose is false', fakeAsync(() => {
-    component.options = { disableClose: false };
-    component.items = [{ title: 'Item 1' }];
-    component.open();
-    tick(); // Resolve any pending Promises
-    fixture.detectChanges();
-
-    const closeButton = fixture.debugElement.query(By.css('.wn-close-modal-button'));
-    const focusSpy = jest.spyOn(closeButton.nativeElement, 'focus');
-
-    component.ngAfterViewInit();
-
-    expect(focusSpy).toHaveBeenCalled();
-  }));
-
-  it('should unregister keyboard listener on ngOnDestroy', () => {
-    component.open();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const unregisterSpy = jest.spyOn(component as any, '_unregisterKeyboardListener');
-
-    component.ngOnDestroy();
-
-    expect(unregisterSpy).toHaveBeenCalled();
-  });
-
-  it('should close the dialog when ArrowRight is pressed on the last item', fakeAsync(() => {
-    const items: WhatsNewItem[] = [{ title: 'Item 1' }, { title: 'Item 2' }];
-    component.items = items;
-    component.options = { disableClose: false, enableKeyboardNavigation: true }; // Allow closing
-    component.open();
-    tick(); // Resolve the Promise in open()
-
-    jest.spyOn(component, 'close');
-
-    // Set _selectedIndex to the last item
-    component['_selectedIndex'] = items.length - 1;
-    fixture.detectChanges();
-
-    // Simulate ArrowRight keypress
-    const event = new KeyboardEvent('keydown', { key: 'ArrowRight' });
-    window.dispatchEvent(event);
-    fixture.detectChanges();
-
-    expect(component.close).toHaveBeenCalled();
-  }));
-
-  it('should not navigate when ArrowLeft is pressed on the first item', fakeAsync(() => {
-    const items: WhatsNewItem[] = [{ title: 'Item 1' }, { title: 'Item 2' }];
-    component.items = items;
-    component.options = { disableClose: false, enableKeyboardNavigation: true };
-    component.open();
-    tick();
-    fixture.detectChanges();
-
-    jest.spyOn(component.navigation, 'emit');
-
-    // Ensure _selectedIndex is 0
-    component['_selectedIndex'] = 0;
-
-    // Simulate ArrowLeft keypress
-    const event = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
-    window.dispatchEvent(event);
-    fixture.detectChanges();
-
-    // _selectedIndex should remain 0
-    expect(component['_selectedIndex']).toBe(0);
-    // Navigation event should not be emitted
-    expect(component.navigation.emit).not.toHaveBeenCalled();
-  }));
-
-  it('should not navigate or close when an unhandled key is pressed', fakeAsync(() => {
-    const items: WhatsNewItem[] = [{ title: 'Item 1' }, { title: 'Item 2' }];
-    component.items = items;
-    component.options = { disableClose: false, enableKeyboardNavigation: true };
-    component.open();
-    tick();
-    fixture.detectChanges();
-
-    jest.spyOn(component.navigation, 'emit');
-    jest.spyOn(component, 'close');
-
-    const initialIndex = component['_selectedIndex'];
-
-    // Simulate an unhandled keypress (e.g., 'Enter')
-    const event = new KeyboardEvent('keydown', { key: 'Enter' });
-    window.dispatchEvent(event);
-    fixture.detectChanges();
-
-    expect(component['_selectedIndex']).toBe(initialIndex);
-    expect(component.navigation.emit).not.toHaveBeenCalled();
-    expect(component.close).not.toHaveBeenCalled();
-  }));
-
-  it('should warn and not navigate when navigateTo is called with no items', () => {
-    jest.spyOn(console, 'warn');
-
-    component.items = [];
-    component.navigateTo(0);
-
-    expect(console.warn).toHaveBeenCalledWith('NgxWhatsNewComponent: No items to navigate.');
-    expect(component['_selectedIndex']).toBe(0);
-  });
-
-  it('should warn and not navigate when goToNext is called with no items', () => {
-    jest.spyOn(console, 'warn');
-
-    component.items = [];
-    component.goToNext();
-
-    expect(console.warn).toHaveBeenCalledWith('NgxWhatsNewComponent: No items to navigate.');
-    expect(component['_selectedIndex']).toBe(0);
-  });
-
-  it('should warn and set items to empty array when items is null', () => {
-    jest.spyOn(console, 'warn');
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (component.items as any) = null;
-
-    expect(console.warn).toHaveBeenCalledWith('NgxWhatsNewComponent: No items provided.');
-    expect(component.items).toEqual([]);
-  });
-
-  it('should warn and set items to empty array when items is empty', () => {
-    jest.spyOn(console, 'warn');
-
-    component.items = [];
-
-    expect(console.warn).toHaveBeenCalledWith('NgxWhatsNewComponent: No items provided.');
-    expect(component.items).toEqual([]);
+      expect(component['_selectedIndex']).toBe(initialIndex);
+      expect(component.navigation.emit).not.toHaveBeenCalled();
+      expect(component.close).not.toHaveBeenCalled();
+    }));
   });
 });
