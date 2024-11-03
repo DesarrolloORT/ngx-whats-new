@@ -81,7 +81,7 @@ describe('NgxWhatsNewComponent', () => {
     component.items = mockItems;
     fixture.detectChanges();
   });
-  
+
   afterEach(() => {
     if (component) {
       component.close();
