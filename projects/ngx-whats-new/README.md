@@ -202,7 +202,7 @@ export interface WhatsNewItem {
 You can customize the look and feel of the dialog by overriding the CSS variables exposed by the component. The following variables are available and these are their default values:
 
 ```css
-:root {
+:host {
   /* Global variables */
   --wn-base-font-size: 16px;
   --wn-base-font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -284,6 +284,31 @@ You can customize the look and feel of the dialog by overriding the CSS variable
   --wn-backdrop-z-index: -1;
   --wn-backdrop-color: rgba(0, 0, 0, 0.3);
 }
+```
+
+### Making your own theme
+
+To make your own theme, you can copy the CSS rule above with the variables you want to override and add them to your own CSS or SCSS file. Then, change the `:host` selector to the selector of the component, `ngx-whats-new`. For example:
+
+```scss
+/* my-styles.scss */
+
+ngx-whats-new {
+  /* Global variables */
+  --wn-base-font-size: 14px;
+  --wn-base-font-family: 'Helvetica', 'Arial', sans-serif;
+
+  /* Title */
+  --wn-title-color: #0987d5;
+  --wn-title-text-align: left;
+
+  /* Text */
+  --wn-text-color: #000000;
+  --wn-text-text-align: left;
+}
+
+// Any other SCSS rules for your app
+// ...
 ```
 
 > [!WARNING]
