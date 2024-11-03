@@ -1,5 +1,6 @@
-@if (isVisible) {
+@if (_isVisible) {
 <div class="wn-modal-container">
+  @let selectedIndex = _getSelectedIndex();
   <div
     role="dialog"
     class="wn-modal"
@@ -24,8 +25,23 @@
         [style.padding-top]="items[selectedIndex].image ? '' : 'calc(2 * var(--_body-spacing))'"
         [style.border]="options.customStyle?.border">
         @if (items[selectedIndex].image) { @let img = items[selectedIndex].image;
-        <div class="wn-image" [style.background]="img?.background">
-          <img [src]="img?.src" [alt]="img?.altText" />
+        <div
+          class="wn-image"
+          [style.background]="img?.background"
+          [style.aspect-ratio]="img?.aspectRatio">
+          @if (!_imageHasLoaded) {
+          <div class="wn-image-placeholder">
+            <div class="wn-image-loader"></div>
+          </div>
+          }
+          <img
+            [src]="img?.src"
+            [alt]="img?.altText"
+            (load)="_onImageLoad()"
+            (error)="_onImageError()"
+            [style.object-fit]="img?.objectFit"
+            [class.wn-image-loaded]="_imageHasLoaded"
+            [class.wn-image-not-loaded]="!_imageHasLoaded" />
         </div>
         }
         <div class="wn-info-body">

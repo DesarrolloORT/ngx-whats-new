@@ -95,6 +95,7 @@
           height: auto;
           background: var(--wn-image-background);
           max-height: var(--_image-max-height);
+          aspect-ratio: 16 / 10;
 
           &::after {
             content: '';
@@ -107,6 +108,66 @@
             height: 1px;
             background-color: transparent;
             box-shadow: var(--wn-image-box-shadow);
+          }
+
+          .wn-image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--wn-image-placeholder-background);
+
+            .wn-image-loader {
+              width: 2.5em;
+              aspect-ratio: 1;
+              color: var(--wn-image-loader-color);
+              position: relative;
+              background:
+                conic-gradient(from 134deg at top, currentColor 92deg, #0000 0) top,
+                conic-gradient(from -46deg at bottom, currentColor 92deg, #0000 0) bottom;
+              background-size: 100% 50%;
+              background-repeat: no-repeat;
+
+              &:before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                --_g: currentColor 0.90625em, #0000 0 calc(100% - 0.90625em), currentColor 0;
+                background: linear-gradient(45deg, var(--_g)), linear-gradient(-45deg, var(--_g));
+                animation: loaderAnimation 1.5s infinite cubic-bezier(0.3, 1, 0, 1);
+              }
+
+              @keyframes loaderAnimation {
+                33% {
+                  inset: -10px;
+                  transform: rotate(0deg);
+                }
+                66% {
+                  inset: -10px;
+                  transform: rotate(90deg);
+                }
+                100% {
+                  inset: 0;
+                  transform: rotate(90deg);
+                }
+              }
+            }
+          }
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+
+            &.wn-image-loaded {
+              display: block;
+            }
+
+            &.wn-image-not-loaded {
+              display: none;
+            }
           }
         }
 

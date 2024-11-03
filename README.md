@@ -182,6 +182,10 @@ export interface WhatsNewItem {
     background?: string;
     /** Alternative text for the image */
     altText: string;
+    /** Aspect ratio of the image. Useful for responsive images */
+    aspectRatio?: string;
+    /** Object fit property of the image. Value is `cover` by default to fill image container. Set to contain to keep the aspect ratio. If `contain` is set, it is recommended to set the `background` property as the image won't fit completely the container */
+    objectFit?: string;
   };
   /** Main action button show on the bottom of the dialog */
   button?: {
@@ -239,6 +243,8 @@ You can customize the look and feel of the dialog by overriding the CSS variable
   /* Image */
   --wn-image-background: #eaeaea;
   --wn-image-box-shadow: '0px -1px 5px 5px rgb(0 0 0 / 5%), 0px -1px 8px 5px rgb(0 0 0 / 12%)';
+  --wn-image-placeholder-background: #292929;
+  --wn-image-loader-color: #731d2d;
 
   /* Modal container */
   --wn-modal-container-z-index: 1000;
