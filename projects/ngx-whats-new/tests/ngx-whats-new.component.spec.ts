@@ -71,6 +71,18 @@ describe('NgxWhatsNewComponent', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => {
+    if (component) {
+      component.ngOnDestroy();
+    }
+
+    if (fixture) {
+      fixture.destroy();
+    }
+
+    jest.restoreAllMocks();
+  });
+
   describe('Initialization and configuration', () => {
     it('should create', () => {
       expect(component).toBeTruthy();
