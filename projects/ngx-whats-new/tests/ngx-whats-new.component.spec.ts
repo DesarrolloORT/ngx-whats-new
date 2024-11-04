@@ -183,17 +183,20 @@ describe('NgxWhatsNewComponent', () => {
       navigationEmitSpy.mockRestore();
     }));
 
-    it('should close the dialog when goToNext() is called on the last item', fakeAsync(() => {
+    it('should force close the dialog and emit "completed" event when goToNext() is called on the last item', fakeAsync(() => {
       const items: WhatsNewItem[] = [{ title: 'Item 1' }];
       component.items = items;
       component.options = { disableClose: false };
       component.open();
       tick(); // Resolve open() method pending Promise
       const closeSpy = jest.spyOn(component, 'close').mockImplementation();
+      const completedEmitSpy = jest.spyOn(component.completed, 'emit').mockImplementation();
 
       component.goToNext();
-      expect(closeSpy).toHaveBeenCalled();
+      expect(closeSpy).toHaveBeenCalledWith(true);
+      expect(completedEmitSpy).toHaveBeenCalled();
       closeSpy.mockRestore();
+      completedEmitSpy.mockRestore();
     }));
 
     it('should navigate to specified index when navigateTo(index) is called', fakeAsync(() => {
@@ -277,7 +280,7 @@ describe('NgxWhatsNewComponent', () => {
       navigationEmitSpy.mockRestore();
     }));
 
-    it('should close the dialog when ArrowRight is pressed on the last item', fakeAsync(() => {
+    it('should force close the dialog and emit "completed" event when ArrowRight is pressed on the last item', fakeAsync(() => {
       const items: WhatsNewItem[] = [{ title: 'Item 1' }, { title: 'Item 2' }];
       component.items = items;
       component.options = { disableClose: false, enableKeyboardNavigation: true }; // Allow closing
@@ -285,6 +288,7 @@ describe('NgxWhatsNewComponent', () => {
       tick(); // Resolve the Promise in open()
 
       const closeSpy = jest.spyOn(component, 'close').mockImplementation();
+      const completedEmitSpy = jest.spyOn(component.completed, 'emit').mockImplementation();
 
       // Set _selectedIndex to the last item
       component['_selectedIndex'] = items.length - 1;
@@ -295,8 +299,10 @@ describe('NgxWhatsNewComponent', () => {
       component['_handleKeyboardNavigation'](event);
       fixture.detectChanges();
 
-      expect(closeSpy).toHaveBeenCalled();
+      expect(closeSpy).toHaveBeenCalledWith(true);
+      expect(completedEmitSpy).toHaveBeenCalled();
       closeSpy.mockRestore();
+      completedEmitSpy.mockRestore();
     }));
 
     it('should not navigate when ArrowLeft is pressed on the first item', fakeAsync(() => {
