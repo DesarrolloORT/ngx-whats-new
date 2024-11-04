@@ -79,6 +79,12 @@ describe('AppComponent', () => {
     expect(consoleLogSpy).toHaveBeenCalledWith('Dialog closed');
   });
 
+  it('should log "Dialog completed" when onCompleted is called', () => {
+    const consoleLogSpy = jest.spyOn(console, 'log');
+    component.onCompleted();
+    expect(consoleLogSpy).toHaveBeenCalledWith('Dialog completed');
+  });
+
   it('should log navigation events correctly', () => {
     const consoleInfoSpy = jest.spyOn(console, 'info');
     const navigationEvent: NavigationEvent = {
