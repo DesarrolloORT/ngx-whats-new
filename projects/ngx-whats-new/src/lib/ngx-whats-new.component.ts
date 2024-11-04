@@ -88,7 +88,7 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
       this._updateTabIndices();
       this._emitNavigationEvent(previousIndex, previousItem, currentIndex, currentItem);
     } else {
-      this.close();
+      this.close(true); // Force close the dialog as the last item has been viewed
     }
   }
 
@@ -126,9 +126,12 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  /** Closes What's New dialog. */
-  public close(): void {
-    if (!this._options.disableClose) {
+  /**
+   * Closes What's New dialog.
+   * @param {boolean} forceClose - Forces the dialog to close even if `disableClose` is set to `true`. Default: `false`
+   */
+  public close(forceClose: boolean = false): void {
+    if (!this._options.disableClose || forceClose) {
       this._unregisterKeyboardListener();
       this._isVisible = false;
       this.closed.emit();
@@ -230,7 +233,7 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
           if (nextIndex < this.items.length - 1) {
             nextIndex++;
           } else {
-            this.close();
+            this.close(true);
             return;
           }
           break;
