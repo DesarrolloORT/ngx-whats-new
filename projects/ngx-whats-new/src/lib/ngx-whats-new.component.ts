@@ -5,6 +5,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   OnDestroy,
   Output,
@@ -122,6 +123,7 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   /** Opens What's New dialog. */
   public open(): void {
     Promise.resolve().then(() => {
+      this._self.nativeElement.style.display = 'block';
       this._isVisible = true;
       this.opened.emit();
       this._registerKeyboardListener();
@@ -135,6 +137,7 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
    */
   public close(forceClose: boolean = false): void {
     if (!this._options.disableClose || forceClose) {
+      this._self.nativeElement.style.display = 'none';
       this._unregisterKeyboardListener();
       this._isVisible = false;
       this.closed.emit();
@@ -182,6 +185,8 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   /** Reference to the navigation buttons */
   @ViewChildren('wnNavButton')
   private readonly _navButtons?: QueryList<ElementRef>;
+
+  private readonly _self = inject(ElementRef);
 
   /** Index of the selected modal item */
   private _selectedIndex = 0;
