@@ -67,6 +67,9 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   /** @output closed - Emits an event on dialog close */
   @Output() public readonly closed = new EventEmitter<void>();
 
+  /** @output completed - Emits an event on dialog close when all items have been viewed */
+  @Output() public readonly completed = new EventEmitter<void>();
+
   /** @output opened - Emits an event on dialog open */
   @Output() public readonly opened = new EventEmitter<void>();
 
@@ -88,7 +91,7 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
       this._updateTabIndices();
       this._emitNavigationEvent(previousIndex, previousItem, currentIndex, currentItem);
     } else {
-      this.close(true); // Force close the dialog as the last item has been viewed
+      this._emitCompletedEvent();
     }
   }
 
@@ -233,7 +236,7 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
           if (nextIndex < this.items.length - 1) {
             nextIndex++;
           } else {
-            this.close(true);
+            this._emitCompletedEvent();
             return;
           }
           break;
@@ -322,6 +325,11 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
           item: currentItem,
         },
       });
+  }
+
+  private _emitCompletedEvent(): void {
+    this.close(true); // Force close the dialog as all items have been viewed
+    this.completed.emit();
   }
 
   /**
