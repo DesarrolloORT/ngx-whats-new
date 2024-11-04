@@ -83,6 +83,10 @@ export class AppComponent implements AfterViewInit {
     console.log('Dialog closed');
   }
 
+  public onCompleted(): void {
+    console.log('Dialog completed');
+  }
+
   public onNavigation($event: NavigationEvent) {
     console.info('Previous item:', $event.previousItem);
     console.info('Current item:', $event.currentItem);
