@@ -33,6 +33,8 @@ const DEFAULT_OPTIONS: DialogOptions = {
   encapsulation: ViewEncapsulation.ShadowDom,
 })
 export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
+  constructor(private readonly _self: ElementRef) {}
+
   // * -----------------------
   // * Component's public API
   // * -----------------------
@@ -185,8 +187,6 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   /** Reference to the navigation buttons */
   @ViewChildren('wnNavButton')
   private readonly _navButtons?: QueryList<ElementRef>;
-
-  private readonly _self = inject(ElementRef);
 
   /** Index of the selected modal item */
   private _selectedIndex = 0;
