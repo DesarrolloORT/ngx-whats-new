@@ -100,6 +100,10 @@ describe('NgxWhatsNewComponent', () => {
       expect(component).toBeTruthy();
     });
 
+    it('should initialize component with display: none by default', () => {
+      expect(fixture.debugElement.nativeElement.style.display).toBe('none');
+    });
+
     it('should use default options if none are provided', () => {
       expect(component.options).toEqual({
         clickableNavigationDots: true,
@@ -357,6 +361,7 @@ describe('NgxWhatsNewComponent', () => {
       component.open();
       tick(); // Resolve the Promise in open()
       fixture.detectChanges();
+      expect(fixture.debugElement.nativeElement.style.display).toBe('block');
       expect(component['_isVisible']).toBe(true);
       expect(openedEmitSpy).toHaveBeenCalled();
       openedEmitSpy.mockRestore();
@@ -369,6 +374,7 @@ describe('NgxWhatsNewComponent', () => {
       const closedEmitSpy = jest.spyOn(component.closed, 'emit').mockImplementation();
       component.close();
       fixture.detectChanges();
+      expect(fixture.debugElement.nativeElement.style.display).toBe('none');
       expect(component['_isVisible']).toBe(false);
       expect(closedEmitSpy).toHaveBeenCalled();
       closedEmitSpy.mockRestore();
