@@ -33,7 +33,11 @@ const DEFAULT_OPTIONS: DialogOptions = {
   encapsulation: ViewEncapsulation.ShadowDom,
 })
 export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
-  constructor(private readonly _self: ElementRef) {}
+  constructor(private readonly _self: ElementRef) {
+    // Initialize component as hidden by default to avoid blocking content underneath
+    // Showing the component will be handled by the open() method
+    this._self.nativeElement.style.display = 'none';
+  }
 
   // * -----------------------
   // * Component's public API
