@@ -57,3 +57,4 @@ jobs:
           notification-summary: 'ngx-whats-new release: ${{ github.event.release.name }}'
           notification-style: good
           timezone: America/Montevideo
+          verbose-logging: true
