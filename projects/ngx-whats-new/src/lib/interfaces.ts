@@ -25,7 +25,7 @@ export interface WhatsNewItem {
     /** Text of the button */
     text: string;
     /** Horizontal alignment of the button */
-    position?: 'left' | 'center' | 'right';
+    position?: 'start' | 'center' | 'end';
   };
 }
 
