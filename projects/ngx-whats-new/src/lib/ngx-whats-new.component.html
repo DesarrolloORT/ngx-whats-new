@@ -1,104 +1,111 @@
 @if (_isVisible) {
-<div class="wn-modal-container">
-  @let selectedIndex = _getSelectedIndex();
-  <div
-    role="dialog"
-    class="wn-modal"
-    aria-modal="true"
-    aria-labelledby="modal-title"
-    aria-describedby="modal-description"
-    [style.max-width]="options.customStyle?.maxWidth"
-    cdkTrapFocus>
-    @if (!options.disableClose) {
-    <button
-      #wnCloseButton
-      aria-label="Close dialog"
-      class="wn-close-modal-button"
-      (click)="close()">
-      ⛌
-    </button>
-    }
-    <div class="wn-modal-layout">
-      <div
-        class="wn-modal-body"
-        aria-live="polite"
-        [style.padding-top]="items[selectedIndex].image || options.disableClose ? '' : 'calc(2 * var(--_body-spacing))'"
-        [style.border]="options.customStyle?.border">
-        @if (items[selectedIndex].image) { @let img = items[selectedIndex].image;
-        <div
-          class="wn-image"
-          [style.background]="img?.background"
-          [style.aspect-ratio]="img?.aspectRatio">
-          @if (!_imageHasLoaded) {
-          <div class="wn-image-placeholder">
-            <div class="wn-image-loader"></div>
-          </div>
-          }
-          <img
-            [src]="img?.src"
-            [alt]="img?.altText"
-            (load)="_onImageLoad()"
-            (error)="_onImageError()"
-            [style.object-fit]="img?.objectFit"
-            [class.wn-image-loaded]="_imageHasLoaded"
-            [class.wn-image-not-loaded]="!_imageHasLoaded" />
-        </div>
-        }
-        <div class="wn-info-body">
-          @if (items[selectedIndex].title) {
-          <h2 class="wn-title">{{ items[selectedIndex].title }}</h2>
-          } @if (items[selectedIndex].text) {
-          <p class="wn-paragraph">{{ items[selectedIndex].text }}</p>
-          } @if (items[selectedIndex].html) {
-          <div class="wn-paragraph html" [innerHTML]="items[selectedIndex].html"></div>
-          } @if (items[selectedIndex].button) { @let btn = items[selectedIndex].button;
-          <button
-            class="wn-button"
-            [style.align-self]="btn?.position ?? 'center'"
-            (click)="goToNext()">
-            {{ btn?.text }}
-          </button>
-          }
-        </div>
-      </div>
-      @if (items.length > 1) {
-      <nav aria-label="Carousel-like item navigation" class="wn-navigation">
-        <ul class="wn-navigation-list" aria-label="Carousel Tabs">
-          @for (item of items; track i; let i = $index;) {
-          <li
-            class="wn-dot"
-            role="tabpanel"
-            [class.clickable]="options.clickableNavigationDots"
-            [class.active]="i === selectedIndex"
-            [class.inactive]="i !== selectedIndex">
-            <button
-              #wnNavButton
-              role="tab"
-              [attr.aria-selected]="i === selectedIndex"
-              [attr.aria-controls]="'tabpanel-' + i"
-              [id]="'tab-' + i"
-              [tabindex]="i === selectedIndex ? '0' : '-1'"
-              (click)="navigateTo(i)"
-              [attr.aria-label]="
-                (i === selectedIndex ? 'Current slide, ' : '') +
-                'Navigate to item ' +
-                (i + 1)
-              "
-              class="wn-nav-button">
-              Navigate to item {{ i + 1 }}
-            </button>
-          </li>
-          }
-        </ul>
-      </nav>
+  <div class="wn-modal-container">
+    @let selectedIndex = _getSelectedIndex();
+    <div
+      role="dialog"
+      class="wn-modal"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+      aria-describedby="modal-description"
+      [style.max-width]="options.customStyle?.maxWidth"
+      cdkTrapFocus>
+      @if (!options.disableClose) {
+        <button
+          #wnCloseButton
+          aria-label="Close dialog"
+          class="wn-close-modal-button"
+          (click)="close()">
+          ⛌
+        </button>
       }
+      <div class="wn-modal-layout">
+        <div
+          class="wn-modal-body"
+          aria-live="polite"
+          [style.padding-top]="
+            items[selectedIndex].image || options.disableClose
+              ? ''
+              : 'calc(2 * var(--_body-spacing))'
+          "
+          [style.border]="options.customStyle?.border">
+          @if (items[selectedIndex].image) {
+            @let img = items[selectedIndex].image;
+            <div
+              class="wn-image"
+              [style.background]="img?.background"
+              [style.aspect-ratio]="img?.aspectRatio">
+              @if (!_imageHasLoaded) {
+                <div class="wn-image-placeholder">
+                  <div class="wn-image-loader"></div>
+                </div>
+              }
+              <img
+                [src]="img?.src"
+                [alt]="img?.altText"
+                (load)="_onImageLoad()"
+                (error)="_onImageError()"
+                [style.object-fit]="img?.objectFit"
+                [class.wn-image-loaded]="_imageHasLoaded"
+                [class.wn-image-not-loaded]="!_imageHasLoaded" />
+            </div>
+          }
+          <div class="wn-info-body">
+            @if (items[selectedIndex].title) {
+              <h2 class="wn-title">{{ items[selectedIndex].title }}</h2>
+            }
+            @if (items[selectedIndex].text) {
+              <p class="wn-paragraph">{{ items[selectedIndex].text }}</p>
+            }
+            @if (items[selectedIndex].html) {
+              <div class="wn-paragraph html" [innerHTML]="items[selectedIndex].html"></div>
+            }
+            @if (items[selectedIndex].button) {
+              @let btn = items[selectedIndex].button;
+              <button
+                class="wn-button"
+                [style.align-self]="btn?.position ?? 'center'"
+                (click)="goToNext()">
+                {{ btn?.text }}
+              </button>
+            }
+          </div>
+        </div>
+        @if (items.length > 1) {
+          <nav aria-label="Carousel-like item navigation" class="wn-navigation">
+            <ul class="wn-navigation-list" aria-label="Carousel Tabs">
+              @for (item of items; track i; let i = $index) {
+                <li
+                  class="wn-dot"
+                  role="tabpanel"
+                  [class.clickable]="options.clickableNavigationDots"
+                  [class.active]="i === selectedIndex"
+                  [class.inactive]="i !== selectedIndex">
+                  <button
+                    #wnNavButton
+                    role="tab"
+                    [attr.aria-selected]="i === selectedIndex"
+                    [attr.aria-controls]="'tabpanel-' + i"
+                    [id]="'tab-' + i"
+                    [tabindex]="i === selectedIndex ? '0' : '-1'"
+                    (click)="navigateTo(i)"
+                    [attr.aria-label]="
+                      (i === selectedIndex ? 'Current slide, ' : '') + 'Navigate to item ' + (i + 1)
+                    "
+                    class="wn-nav-button">
+                    Navigate to item {{ i + 1 }}
+                  </button>
+                </li>
+              }
+            </ul>
+          </nav>
+        }
+      </div>
     </div>
-  </div>
-  <div class="wn-backdrop" aria-hidden="true" (keydown)="close()" (click)="close()"></div>
+    <div class="wn-backdrop" aria-hidden="true" (keydown)="close()" (click)="close()"></div>
 
-  <h1 class="sr-only" id="modal-title">Update information dialog</h1>
-  <p class="sr-only" id="modal-description">
-    This dialog contains information related to the latest features and fixes.
-  </p>
-</div>
+    <h1 class="sr-only" id="modal-title">Update information dialog</h1>
+    <p class="sr-only" id="modal-description">
+      This dialog contains information related to the latest features and fixes.
+    </p>
+  </div>
 }
