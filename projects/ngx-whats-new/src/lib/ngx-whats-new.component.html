@@ -22,7 +22,7 @@
       <div
         class="wn-modal-body"
         aria-live="polite"
-        [style.padding-top]="items[selectedIndex].image ? '' : 'calc(2 * var(--_body-spacing))'"
+        [style.padding-top]="items[selectedIndex].image || options.disableClose ? '' : 'calc(2 * var(--_body-spacing))'"
         [style.border]="options.customStyle?.border">
         @if (items[selectedIndex].image) { @let img = items[selectedIndex].image;
         <div
