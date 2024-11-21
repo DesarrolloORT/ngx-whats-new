@@ -186,6 +186,7 @@
             color: var(--wn-title-color);
             text-align: var(--wn-title-text-align);
             margin: 0;
+            font-family: var(--wn-base-font-family);
           }
 
           .wn-paragraph {
@@ -193,6 +194,7 @@
             text-align: var(--wn-text-text-align);
             font-weight: var(--wn-text-font-weight);
             margin: 0;
+            font-family: var(--wn-base-font-family);
 
             &.html {
               // * Add here any styles for html embedded content
@@ -217,6 +219,7 @@
             color: var(--wn-main-button-color);
             border-radius: var(--wn-main-button-border-radius);
             font-size: 1em;
+            font-family: var(--wn-base-font-family);
 
             &:hover {
               opacity: var(--wn-main-button-hover-opacity);
