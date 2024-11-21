@@ -11,6 +11,8 @@
   width: 100%;
   height: 100%;
   z-index: var(--wn-modal-container-z-index);
+  font-size: var(--wn-base-font-size);
+  font-family: var(--wn-base-font-family);
 
   // Generate public CSS variables from the variables map
   @include mixins.generate-css-variables(vars.$wn-variables);
@@ -24,11 +26,6 @@
   --_layout-spacing: 1.5em;
   --_dot-size: 1.2em;
   --_dot-spacing: 1.5em;
-
-  * {
-    font-size: var(--wn-base-font-size);
-    font-family: var(--wn-base-font-family);
-  }
 }
 
 .wn-modal-container {
@@ -71,6 +68,7 @@
       color: var(--wn-close-button-color);
       border: var(--wn-close-button-border);
       aspect-ratio: 1/1;
+      font-size: 1em;
       border-radius: var(--wn-close-button-border-radius);
     }
 
@@ -218,6 +216,7 @@
             background-color: var(--wn-main-button-background-color);
             color: var(--wn-main-button-color);
             border-radius: var(--wn-main-button-border-radius);
+            font-size: 1em;
 
             &:hover {
               opacity: var(--wn-main-button-hover-opacity);
