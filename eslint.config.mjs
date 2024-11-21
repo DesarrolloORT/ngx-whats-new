@@ -76,6 +76,8 @@ export default [
     files: ['**/*.component.html'],
     rules: {
       '@typescript-eslint/ban-ts-comment': ['off'],
+      '@angular-eslint/template/prefer-control-flow': 'warn',
+      'prettier/prettier': ['error', { overrides: [{ options: { parser: 'angular' } }] }],
     },
   },
 ];
