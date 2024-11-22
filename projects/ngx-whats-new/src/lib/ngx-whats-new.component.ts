@@ -47,7 +47,7 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
     if (items && items.length > 0) {
       this._items = items;
     } else {
-      console.warn('NgxWhatsNewComponent: No items provided.');
+      console.warn('NgxWhatsNewComponent: No updates to show.');
       this._items = [];
     }
     this._resetState();
