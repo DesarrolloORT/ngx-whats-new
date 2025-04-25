@@ -3,7 +3,14 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
-    "types": ["jest", "node"]
+    "paths": {
+      "src/*": ["projects/*"]
+    },
+    "module": "ES2022",
+    "isolatedModules": false,
+    "types": ["jest", "node"],
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["projects/**/*.spec.ts", "projects/**/*.d.ts"]
 }
