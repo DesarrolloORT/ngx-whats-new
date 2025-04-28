@@ -35,7 +35,7 @@ app.component.html
 <button (click)="openDialog()">Open Dialog</button>
 
 <ngx-whats-new
-  #whatsNew
+  #whatsnew
   (opened)="onOpen()"
   (closed)="onClose()"
   (navigation)="onNavigation($event)"
@@ -46,7 +46,7 @@ app.component.html
 app.component.ts
 
 ```typescript
-    @ViewChild('whatsNew') private readonly modal?: NgxWhatsNewComponent;
+    @ViewChild('whatsnew') private readonly modal?: NgxWhatsNewComponent;
 
     /** Options for the modal */
     public options: DialogOptions = {
