@@ -10,6 +10,7 @@ import { NgxWhatsNewComponent } from 'projects/ngx-whats-new/src/lib/ngx-whats-n
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  standalone: false,
 })
 export class AppComponent implements AfterViewInit {
   @ViewChild('whatsNew') private readonly modal?: NgxWhatsNewComponent;
