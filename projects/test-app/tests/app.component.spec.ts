@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -5,36 +6,58 @@ import {
   DialogOptions,
   NavigationEvent,
   WhatsNewItem,
-} from 'projects/ngx-whats-new/src/public-api';
+} from 'projects/ngx-whats-new/src/lib/interfaces';
 
 import { AppComponent } from '../src/app/app.component';
 
+@Component({
+  selector: 'ngx-whats-new',
+  standalone: true,
+  template: '',
+})
+class MockNgxWhatsNewComponent {
+  @Input() options?: DialogOptions;
+  @Input() items?: WhatsNewItem[];
+  @Output() opened = new EventEmitter<void>();
+  @Output() closed = new EventEmitter<void>();
+  @Output() navigation = new EventEmitter<NavigationEvent>();
+
+  open() {
+    this.opened.emit();
+  }
+  close() {
+    this.closed.emit();
+  }
+}
+
 describe('AppComponent', () => {
-  let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
-  let mockModalComponent: MockNgxWhatsNewComponent;
+  let component: AppComponent;
+  let mockModal: MockNgxWhatsNewComponent;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [AppComponent],
-      imports: [MockNgxWhatsNewComponent],
-    }).compileComponents();
-  });
+    TestBed.configureTestingModule({
+      imports: [AppComponent],
+    });
+    TestBed.overrideComponent(AppComponent, {
+      set: {
+        imports: [MockNgxWhatsNewComponent],
+      },
+    });
+    await TestBed.compileComponents();
 
-  beforeEach(async () => {
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
 
+    // render the template once so our <ngx-whats-new> appears…
     fixture.detectChanges();
 
-    // Get the mock modal component instance
-    const modalDebugElement = fixture.debugElement.query(By.directive(MockNgxWhatsNewComponent));
-    mockModalComponent = modalDebugElement.componentInstance;
+    // grab the mock instance and wire it into the private ViewChild
+    const modalDbg = fixture.debugElement.query(By.directive(MockNgxWhatsNewComponent));
+    mockModal = modalDbg.componentInstance;
+    (component as any).modal = mockModal;
 
-    // Assign the mock modal to the component's modal property
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (component as any).modal = mockModalComponent;
-
+    // run change detection again so everything is up-to-date
     fixture.detectChanges();
   });
 
@@ -56,64 +79,46 @@ describe('AppComponent', () => {
   });
 
   it('should call openDialog in ngAfterViewInit', () => {
-    const openDialogSpy = jest.spyOn(component, 'openDialog');
+    const spy = jest.spyOn(component, 'openDialog');
+    // manually trigger the lifecycle hook
     component.ngAfterViewInit();
-    expect(openDialogSpy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should open the modal when openDialog is called', () => {
-    const modalOpenSpy = jest.spyOn(mockModalComponent, 'open');
+    const openSpy = jest.spyOn(mockModal, 'open');
     component.openDialog();
-    expect(modalOpenSpy).toHaveBeenCalled();
+    expect(openSpy).toHaveBeenCalled();
   });
 
   it('should log "Dialog opened" when onOpen is called', () => {
-    const consoleLogSpy = jest.spyOn(console, 'log');
+    const logSpy = jest.spyOn(console, 'log');
     component.onOpen();
-    expect(consoleLogSpy).toHaveBeenCalledWith('Dialog opened');
+    expect(logSpy).toHaveBeenCalledWith('Dialog opened');
   });
 
   it('should log "Dialog closed" when onClose is called', () => {
-    const consoleLogSpy = jest.spyOn(console, 'log');
+    const logSpy = jest.spyOn(console, 'log');
     component.onClose();
-    expect(consoleLogSpy).toHaveBeenCalledWith('Dialog closed');
+    expect(logSpy).toHaveBeenCalledWith('Dialog closed');
   });
 
   it('should log "Dialog completed" when onCompleted is called', () => {
-    const consoleLogSpy = jest.spyOn(console, 'log');
+    const logSpy = jest.spyOn(console, 'log');
     component.onCompleted();
-    expect(consoleLogSpy).toHaveBeenCalledWith('Dialog completed');
+    expect(logSpy).toHaveBeenCalledWith('Dialog completed');
   });
 
   it('should log navigation events correctly', () => {
-    const consoleInfoSpy = jest.spyOn(console, 'info');
-    const navigationEvent: NavigationEvent = {
+    const infoSpy = jest.spyOn(console, 'info');
+    const navEvent: NavigationEvent = {
       previousItem: { index: 0, item: { title: 'Previous item' } },
       currentItem: { index: 1, item: { title: 'Current item' } },
     };
-    component.onNavigation(navigationEvent);
-    expect(consoleInfoSpy).toHaveBeenCalledWith('Previous item:', navigationEvent.previousItem);
-    expect(consoleInfoSpy).toHaveBeenCalledWith('Current item:', navigationEvent.currentItem);
+
+    component.onNavigation(navEvent);
+
+    expect(infoSpy).toHaveBeenCalledWith('Previous item:', navEvent.previousItem);
+    expect(infoSpy).toHaveBeenCalledWith('Current item:', navEvent.currentItem);
   });
 });
-
-@Component({
-  selector: 'ngx-whats-new',
-  standalone: true,
-  template: '',
-})
-class MockNgxWhatsNewComponent {
-  @Input() options?: DialogOptions;
-  @Input() items?: WhatsNewItem[];
-  @Output() opened = new EventEmitter<void>();
-  @Output() closed = new EventEmitter<void>();
-  @Output() navigation = new EventEmitter<NavigationEvent>();
-
-  open() {
-    this.opened.emit();
-  }
-
-  close() {
-    this.closed.emit();
-  }
-}
