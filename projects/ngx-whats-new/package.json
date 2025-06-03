@@ -4,9 +4,9 @@
   "homepage": "https://github.com/DesarrolloORT/ngx-whats-new",
   "author": "DesarrolloORT",
   "peerDependencies": {
-    "@angular/common": "^19.2.8",
-    "@angular/core": "^19.2.8",
-    "@angular/cdk": "^19.2.11"
+    "@angular/common": "^20.0.0",
+    "@angular/core": "^20.0.0",
+    "@angular/cdk": "^20.0.1"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
