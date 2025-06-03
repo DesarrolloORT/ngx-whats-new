@@ -1,5 +1,4 @@
 import { A11yModule } from '@angular/cdk/a11y';
-
 import {
   AfterViewInit,
   Component,
