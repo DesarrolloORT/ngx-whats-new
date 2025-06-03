@@ -1,5 +1,5 @@
 import { A11yModule } from '@angular/cdk/a11y';
-import { CommonModule } from '@angular/common';
+
 import {
   AfterViewInit,
   Component,
@@ -25,7 +25,7 @@ const DEFAULT_OPTIONS: DialogOptions = {
 
 @Component({
   selector: 'ngx-whats-new',
-  imports: [CommonModule, A11yModule],
+  imports: [A11yModule],
   templateUrl: './ngx-whats-new.component.html',
   styleUrls: ['./ngx-whats-new.component.scss'],
   encapsulation: ViewEncapsulation.ShadowDom,
