@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 
 import { DialogOptions, WhatsNewItem } from '../src/lib/interfaces';
@@ -69,7 +70,7 @@ describe('NgxWhatsNewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgxWhatsNewComponent, CommonModule, A11yModule],
+      imports: [NgxWhatsNewComponent, CommonModule, A11yModule, NoopAnimationsModule],
     }).compileComponents();
   });
 
