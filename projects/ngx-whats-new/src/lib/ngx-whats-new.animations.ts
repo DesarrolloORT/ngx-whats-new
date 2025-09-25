@@ -1,11 +1,4 @@
-import {
-  animate,
-  group,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
+import { animate, group, state, style, transition, trigger } from '@angular/animations';
 
 // Individual animation triggers
 export const modalEntryAnimation = trigger('modalAnimation', [
@@ -90,5 +83,5 @@ export const imageAnimation = trigger('imageAnimation', [
 export const ngxWhatsNewAnimations = [
   modalEntryAnimation,
   contentTransitionAnimation,
-  imageAnimation
+  imageAnimation,
 ];
