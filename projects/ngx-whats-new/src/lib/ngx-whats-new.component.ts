@@ -15,6 +15,7 @@ import {
 import { fromEvent, Subscription } from 'rxjs';
 
 import { DialogOptions, NavigationEvent, WhatsNewItem } from './interfaces';
+import { ngxWhatsNewAnimations } from './ngx-whats-new.animations';
 
 const DEFAULT_OPTIONS: DialogOptions = {
   clickableNavigationDots: true,
@@ -28,6 +29,7 @@ const DEFAULT_OPTIONS: DialogOptions = {
   templateUrl: './ngx-whats-new.component.html',
   styleUrls: ['./ngx-whats-new.component.scss'],
   encapsulation: ViewEncapsulation.ShadowDom,
+  animations: ngxWhatsNewAnimations,
 })
 export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   constructor(private readonly _self: ElementRef) {
@@ -179,6 +181,9 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   /** Tracks image loading status */
   protected _imageHasLoaded = false;
 
+  /** Tracks content animation state to trigger re-animations on item change */
+  protected _contentAnimationState = 0;
+
   /** Subscription to keyboard event listener */
   private keyboardEventSubscription?: Subscription;
 
@@ -201,6 +206,8 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   protected _setSelectedIndex(index: number): void {
     this._selectedIndex = index;
     this._imageHasLoaded = false;
+    // Trigger content animation by changing the state
+    this._contentAnimationState = this._contentAnimationState === 0 ? 1 : 0;
   }
 
   /** Handles image load event */
@@ -212,6 +219,11 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   protected _onImageError() {
     this._imageHasLoaded = false;
     console.warn('NgxWhatsNewComponent: Image failed to load.');
+  }
+
+  /** Gets the current image animation state */
+  protected _getImageState(): string {
+    return this._imageHasLoaded ? 'loaded' : 'loading';
   }
 
   /**
