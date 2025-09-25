@@ -20,10 +20,12 @@ $wn-variables: (
   wn-main-button-hover-opacity: 0.9,
   wn-main-button-hover-color: #fdfdfd,
   wn-main-button-hover-background-color: #661020,
+  wn-main-button-hover-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1),
   // active state
   wn-main-button-active-opacity: 1,
   wn-main-button-active-color: #fdfdfd,
   wn-main-button-active-background-color: #731d2d,
+  wn-main-button-active-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1),
 
   // Close button
   wn-close-button-background-color: rgba(
@@ -44,6 +46,7 @@ $wn-variables: (
   wn-image-box-shadow: '0px -1px 5px 5px rgb(0 0 0 / 5%), 0px -1px 8px 5px rgb(0 0 0 / 12%)',
   wn-image-placeholder-background: #292929,
   wn-image-loader-color: #731d2d,
+  wn-image-shimmer-color: rgba(255, 255, 255, 0.2),
 
   // Modal container
   wn-modal-container-z-index: 1000,
