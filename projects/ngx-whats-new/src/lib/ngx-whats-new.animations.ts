@@ -24,23 +24,6 @@ export const modalEntryAnimation = trigger('modalAnimation', [
       ),
     ]),
   ]),
-  transition(':leave', [
-    group([
-      animate(
-        '200ms ease-in',
-        style({
-          transform: 'scale(0.8)',
-          opacity: 0,
-        })
-      ),
-      animate(
-        '150ms ease-in',
-        style({
-          filter: 'blur(5px)',
-        })
-      ),
-    ]),
-  ]),
 ]);
 
 export const contentTransitionAnimation = trigger('contentAnimation', [
