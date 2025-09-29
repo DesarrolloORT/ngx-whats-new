@@ -249,29 +249,29 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
 
   /**
    * Handles drag end event for swipe navigation on touch devices.
-   * 
+   *
    * Processes horizontal swipe gestures to navigate between slides:
-   * - Swipe right (positive X): Navigate to previous slide  
+   * - Swipe right (positive X): Navigate to previous slide
    * - Swipe left (negative X): Navigate to next slide
-   * 
+   *
    * Only triggers navigation if the drag distance exceeds the configured threshold.
-   * 
+   *
    * @param event - CDK drag end event containing drag distance information
    */
   protected _onDragEnd(event: CdkDragEnd): void {
     const dragDistance = event.distance.x;
     const threshold = this._options.swipeThreshold || DEFAULT_SWIPE_THRESHOLD;
-    
+
     // Reset position of dragged element to original position
     event.source.reset();
-    
+
     // Only process navigation if drag distance exceeds minimum threshold
     if (Math.abs(dragDistance) > threshold) {
       if (dragDistance > 0) {
         // Positive X distance = swipe right = previous slide
         this.goToPrevious();
       } else {
-        // Negative X distance = swipe left = next slide  
+        // Negative X distance = swipe left = next slide
         this.goToNext();
       }
     }
@@ -282,13 +282,13 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
     return this._imageHasLoaded ? 'loaded' : 'loading';
   }
 
-  /** 
+  /**
    * Checks if swipe navigation should be enabled.
-   * 
+   *
    * Swipe is enabled when:
    * - disableSwipeNavigation option is not set to true
    * - There are multiple items to navigate between
-   * 
+   *
    * @returns true if swipe navigation should be active
    */
   protected _isSwipeEnabled(): boolean {

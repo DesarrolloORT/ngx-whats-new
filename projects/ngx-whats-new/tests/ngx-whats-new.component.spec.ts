@@ -126,11 +126,11 @@ describe('NgxWhatsNewComponent', () => {
         disableClose: false,
       };
       component.options = customOptions;
-      
+
       // Expect the custom options merged with defaults
       expect(component.options).toEqual({
         clickableNavigationDots: false, // From customOptions
-        enableKeyboardNavigation: false, // From customOptions  
+        enableKeyboardNavigation: false, // From customOptions
         disableClose: false, // From customOptions
         customStyle: { maxWidth: '600px' }, // From customOptions
         disableSwipeNavigation: true, // Default value
@@ -521,7 +521,7 @@ describe('NgxWhatsNewComponent', () => {
         distance: { x: -100, y: 0 }, // -100 > 50 threshold
         source: { reset: mockResetFn },
         dropPoint: { x: 0, y: 0 },
-        event: new Event('dragend')
+        event: new Event('dragend'),
       } as unknown as CdkDragEnd;
 
       component['_onDragEnd'](mockDragEndEvent);
@@ -542,7 +542,7 @@ describe('NgxWhatsNewComponent', () => {
         distance: { x: 100, y: 0 }, // 100 > 50 threshold
         source: { reset: mockResetFn },
         dropPoint: { x: 0, y: 0 },
-        event: new Event('dragend')
+        event: new Event('dragend'),
       } as unknown as CdkDragEnd;
 
       component['_onDragEnd'](mockDragEndEvent);
@@ -553,14 +553,14 @@ describe('NgxWhatsNewComponent', () => {
 
     it('should not navigate if swipe distance is below threshold', () => {
       const initialIndex = component['_getSelectedIndex']();
-      
+
       // Mock drag end event with small distance
       const mockResetFn = jest.fn();
       const mockDragEndEvent = {
         distance: { x: -30, y: 0 }, // Below default threshold of 50
         source: { reset: mockResetFn },
         dropPoint: { x: 0, y: 0 },
-        event: new Event('dragend')
+        event: new Event('dragend'),
       } as unknown as CdkDragEnd;
 
       component['_onDragEnd'](mockDragEndEvent);
@@ -572,14 +572,14 @@ describe('NgxWhatsNewComponent', () => {
     it('should respect custom swipe threshold', () => {
       component.options = { ...component.options, swipeThreshold: 80 };
       const initialIndex = component['_getSelectedIndex']();
-      
+
       // Mock drag end event with distance below custom threshold
       const mockResetFn = jest.fn();
       const mockDragEndEvent = {
         distance: { x: -60, y: 0 }, // Below custom threshold of 80
         source: { reset: mockResetFn },
         dropPoint: { x: 0, y: 0 },
-        event: new Event('dragend')
+        event: new Event('dragend'),
       } as unknown as CdkDragEnd;
 
       component['_onDragEnd'](mockDragEndEvent);
