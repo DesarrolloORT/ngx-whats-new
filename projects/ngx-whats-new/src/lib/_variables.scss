@@ -82,5 +82,13 @@ $wn-variables: (
   // Backdrop
   wn-backdrop-filter: blur(3px),
   wn-backdrop-z-index: -1,
-  wn-backdrop-color: rgba(0, 0, 0, 0.3)
+  wn-backdrop-color: rgba(0, 0, 0, 0.3),
+
+  // Drag & Drop Shadows
+  wn-drag-preview-shadow: rgba(0, 0, 0, 0.25),
+  wn-drag-image-shadow: rgba(0, 0, 0, 0.2),
+  wn-drag-image-after-shadow: rgba(0, 0, 0, 0.3),
+  wn-drag-image-placeholder-shadow: rgba(0, 0, 0, 0.1),
+  wn-drag-close-button-shadow: rgba(0, 0, 0, 0.2),
+  wn-drag-navigation-shadow: rgba(0, 0, 0, 0.15)
 );

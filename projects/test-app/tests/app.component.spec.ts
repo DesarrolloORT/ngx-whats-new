@@ -69,6 +69,8 @@ describe('AppComponent', () => {
     expect(component.options).toEqual({
       enableKeyboardNavigation: true,
       clickableNavigationDots: true,
+      disableSwipeNavigation: false,
+      disableClose: false,
     });
   });
 

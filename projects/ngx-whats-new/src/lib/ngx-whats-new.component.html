@@ -4,12 +4,17 @@
     <div
       role="dialog"
       class="wn-modal"
+      [class.wn-swipe-enabled]="_isSwipeEnabled()"
       aria-modal="true"
       aria-labelledby="modal-title"
       aria-describedby="modal-description"
       [style.max-width]="options.customStyle?.maxWidth"
       [@modalAnimation]
-      cdkTrapFocus>
+      cdkTrapFocus
+      cdkDrag
+      cdkDragLockAxis="x"
+      [cdkDragDisabled]="!_isSwipeEnabled()"
+      (cdkDragEnded)="_onDragEnd($event)">
       @if (!options.disableClose) {
         <button
           #wnCloseButton

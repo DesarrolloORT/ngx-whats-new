@@ -1,4 +1,5 @@
 import { A11yModule } from '@angular/cdk/a11y';
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
@@ -110,6 +111,8 @@ describe('NgxWhatsNewComponent', () => {
         clickableNavigationDots: true,
         enableKeyboardNavigation: true,
         disableClose: true,
+        disableSwipeNavigation: true,
+        swipeThreshold: 50,
       });
     });
 
@@ -123,7 +126,16 @@ describe('NgxWhatsNewComponent', () => {
         disableClose: false,
       };
       component.options = customOptions;
-      expect(component.options).toEqual(customOptions);
+      
+      // Expect the custom options merged with defaults
+      expect(component.options).toEqual({
+        clickableNavigationDots: false, // From customOptions
+        enableKeyboardNavigation: false, // From customOptions  
+        disableClose: false, // From customOptions
+        customStyle: { maxWidth: '600px' }, // From customOptions
+        disableSwipeNavigation: true, // Default value
+        swipeThreshold: 50, // Default value
+      });
     });
 
     it('should set items correctly when provided', () => {
@@ -489,6 +501,124 @@ describe('NgxWhatsNewComponent', () => {
 
       // Restore the original console.warn implementation
       consoleWarnSpy.mockRestore();
+    });
+  });
+
+  describe('Swipe Navigation', () => {
+    beforeEach(() => {
+      component.items = mockItems;
+      component.open();
+      fixture.detectChanges();
+    });
+
+    it('should navigate to next item on swipe left', () => {
+      const initialIndex = component['_getSelectedIndex']();
+      expect(initialIndex).toBe(0);
+
+      // Mock drag end event with left swipe (negative distance)
+      const mockResetFn = jest.fn();
+      const mockDragEndEvent = {
+        distance: { x: -100, y: 0 }, // -100 > 50 threshold
+        source: { reset: mockResetFn },
+        dropPoint: { x: 0, y: 0 },
+        event: new Event('dragend')
+      } as unknown as CdkDragEnd;
+
+      component['_onDragEnd'](mockDragEndEvent);
+
+      expect(component['_getSelectedIndex']()).toBe(1);
+      expect(mockResetFn).toHaveBeenCalled();
+    });
+
+    it('should navigate to previous item on swipe right', () => {
+      // Start at second item by calling goToNext first
+      component.goToNext();
+      fixture.detectChanges();
+      expect(component['_getSelectedIndex']()).toBe(1);
+
+      // Mock drag end event with right swipe (positive distance)
+      const mockResetFn = jest.fn();
+      const mockDragEndEvent = {
+        distance: { x: 100, y: 0 }, // 100 > 50 threshold
+        source: { reset: mockResetFn },
+        dropPoint: { x: 0, y: 0 },
+        event: new Event('dragend')
+      } as unknown as CdkDragEnd;
+
+      component['_onDragEnd'](mockDragEndEvent);
+
+      expect(component['_getSelectedIndex']()).toBe(0);
+      expect(mockResetFn).toHaveBeenCalled();
+    });
+
+    it('should not navigate if swipe distance is below threshold', () => {
+      const initialIndex = component['_getSelectedIndex']();
+      
+      // Mock drag end event with small distance
+      const mockResetFn = jest.fn();
+      const mockDragEndEvent = {
+        distance: { x: -30, y: 0 }, // Below default threshold of 50
+        source: { reset: mockResetFn },
+        dropPoint: { x: 0, y: 0 },
+        event: new Event('dragend')
+      } as unknown as CdkDragEnd;
+
+      component['_onDragEnd'](mockDragEndEvent);
+
+      expect(component['_getSelectedIndex']()).toBe(initialIndex);
+      expect(mockResetFn).toHaveBeenCalled();
+    });
+
+    it('should respect custom swipe threshold', () => {
+      component.options = { ...component.options, swipeThreshold: 80 };
+      const initialIndex = component['_getSelectedIndex']();
+      
+      // Mock drag end event with distance below custom threshold
+      const mockResetFn = jest.fn();
+      const mockDragEndEvent = {
+        distance: { x: -60, y: 0 }, // Below custom threshold of 80
+        source: { reset: mockResetFn },
+        dropPoint: { x: 0, y: 0 },
+        event: new Event('dragend')
+      } as unknown as CdkDragEnd;
+
+      component['_onDragEnd'](mockDragEndEvent);
+
+      expect(component['_getSelectedIndex']()).toBe(initialIndex);
+    });
+
+    it('should enable swipe when disableSwipeNavigation is false and multiple items exist', () => {
+      component.options = { ...component.options, disableSwipeNavigation: false };
+      expect(component['_isSwipeEnabled']()).toBeTruthy();
+    });
+
+    it('should disable swipe when disableSwipeNavigation is true', () => {
+      component.options = { ...component.options, disableSwipeNavigation: true };
+      expect(component['_isSwipeEnabled']()).toBeFalsy();
+    });
+
+    it('should disable swipe when only one item exists', () => {
+      component.items = [mockItems[0]];
+      expect(component['_isSwipeEnabled']()).toBeFalsy();
+    });
+
+    it('should have goToPrevious method that navigates backwards', () => {
+      // Start at second item by calling goToNext first
+      component.goToNext();
+      fixture.detectChanges();
+      expect(component['_getSelectedIndex']()).toBe(1);
+
+      component.goToPrevious();
+
+      expect(component['_getSelectedIndex']()).toBe(0);
+    });
+
+    it('should not navigate backwards from first item', () => {
+      expect(component['_getSelectedIndex']()).toBe(0);
+
+      component.goToPrevious();
+
+      expect(component['_getSelectedIndex']()).toBe(0);
     });
   });
 });

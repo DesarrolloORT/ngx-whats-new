@@ -16,7 +16,12 @@ export class AppComponent implements AfterViewInit {
   @ViewChild('whatsnew') private readonly modal?: NgxWhatsNewComponent;
 
   /** Options for the modal */
-  public options: DialogOptions = { enableKeyboardNavigation: true, clickableNavigationDots: true };
+  public options: DialogOptions = { 
+    enableKeyboardNavigation: true, 
+    clickableNavigationDots: true,  
+    disableSwipeNavigation: false,
+    disableClose: false
+  };
 
   /** Modals to show */
   public modals: WhatsNewItem[] = [

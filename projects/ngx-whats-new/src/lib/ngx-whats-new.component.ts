@@ -1,4 +1,5 @@
 import { A11yModule } from '@angular/cdk/a11y';
+import { CdkDrag, CdkDragEnd } from '@angular/cdk/drag-drop';
 import {
   AfterViewInit,
   Component,
@@ -17,15 +18,20 @@ import { fromEvent, Subscription } from 'rxjs';
 import { DialogOptions, NavigationEvent, WhatsNewItem } from './interfaces';
 import { ngxWhatsNewAnimations } from './ngx-whats-new.animations';
 
+/** Default swipe threshold in pixels */
+const DEFAULT_SWIPE_THRESHOLD = 50;
+
 const DEFAULT_OPTIONS: DialogOptions = {
   clickableNavigationDots: true,
   enableKeyboardNavigation: true,
   disableClose: true,
+  disableSwipeNavigation: true,
+  swipeThreshold: DEFAULT_SWIPE_THRESHOLD,
 };
 
 @Component({
   selector: 'ngx-whats-new',
-  imports: [A11yModule],
+  imports: [A11yModule, CdkDrag],
   templateUrl: './ngx-whats-new.component.html',
   styleUrls: ['./ngx-whats-new.component.scss'],
   encapsulation: ViewEncapsulation.ShadowDom,
@@ -58,7 +64,7 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
 
   /** DialogOptions for What's New dialog */
   @Input() public set options(options: DialogOptions) {
-    this._options = { ...options };
+    this._options = { ...DEFAULT_OPTIONS, ...options };
   }
   public get options() {
     return this._options;
@@ -98,6 +104,26 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
       this._emitNavigationEvent(previousIndex, previousItem, currentIndex, currentItem);
     } else {
       this._emitCompletedEvent();
+    }
+  }
+
+  /** Navigates to the previous item. */
+  public goToPrevious(): void {
+    if (this.items.length === 0) {
+      console.warn('NgxWhatsNewComponent: No items to navigate.');
+      return;
+    }
+
+    const previousIndex = this._getSelectedIndex();
+    const previousItem = this.items[previousIndex];
+
+    if (previousIndex > 0) {
+      this._setSelectedIndex(previousIndex - 1);
+      const currentIndex = this._getSelectedIndex();
+      const currentItem = this.items[currentIndex];
+
+      this._updateTabIndices();
+      this._emitNavigationEvent(previousIndex, previousItem, currentIndex, currentItem);
     }
   }
 
@@ -221,9 +247,52 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
     console.warn('NgxWhatsNewComponent: Image failed to load.');
   }
 
+  /**
+   * Handles drag end event for swipe navigation on touch devices.
+   * 
+   * Processes horizontal swipe gestures to navigate between slides:
+   * - Swipe right (positive X): Navigate to previous slide  
+   * - Swipe left (negative X): Navigate to next slide
+   * 
+   * Only triggers navigation if the drag distance exceeds the configured threshold.
+   * 
+   * @param event - CDK drag end event containing drag distance information
+   */
+  protected _onDragEnd(event: CdkDragEnd): void {
+    const dragDistance = event.distance.x;
+    const threshold = this._options.swipeThreshold || DEFAULT_SWIPE_THRESHOLD;
+    
+    // Reset position of dragged element to original position
+    event.source.reset();
+    
+    // Only process navigation if drag distance exceeds minimum threshold
+    if (Math.abs(dragDistance) > threshold) {
+      if (dragDistance > 0) {
+        // Positive X distance = swipe right = previous slide
+        this.goToPrevious();
+      } else {
+        // Negative X distance = swipe left = next slide  
+        this.goToNext();
+      }
+    }
+  }
+
   /** Gets the current image animation state */
   protected _getImageState(): string {
     return this._imageHasLoaded ? 'loaded' : 'loading';
+  }
+
+  /** 
+   * Checks if swipe navigation should be enabled.
+   * 
+   * Swipe is enabled when:
+   * - disableSwipeNavigation option is not set to true
+   * - There are multiple items to navigate between
+   * 
+   * @returns true if swipe navigation should be active
+   */
+  protected _isSwipeEnabled(): boolean {
+    return this._options.disableSwipeNavigation !== true && this.items.length > 1;
   }
 
   /**
