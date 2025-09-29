@@ -18,7 +18,7 @@
     {
       "files": "*.component.html",
       "options": {
-        "parser": "html"
+        "parser": "angular"
       }
     },
     {

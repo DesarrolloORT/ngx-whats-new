@@ -4,8 +4,11 @@
  */
 
 import type { Config } from 'jest';
+import { createEsmPreset } from 'jest-preset-angular/presets';
 
-const config: Config = {
+const esmPreset = createEsmPreset();
+
+const myConfig: Config = {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -88,7 +91,10 @@ const config: Config = {
   // ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-  // moduleNameMapper: {},
+  moduleNameMapper: {
+    ...esmPreset.moduleNameMapper,
+    '^rxjs': '<rootDir>/node_modules/rxjs/dist/bundles/rxjs.umd.js',
+  },
 
   //An array of directory paths that should be used when resolving modules.
   modulePaths: ['<rootDir>'],
@@ -103,7 +109,7 @@ const config: Config = {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  preset: 'jest-preset-angular',
+  // preset: 'jest-preset-angular', @deprecated
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -174,7 +180,16 @@ const config: Config = {
   // testRunner: "jest-circus/runner",
 
   // A map from regular expressions to paths to transformers
-  // transform: undefined,
+  transform: {
+    '^.+\\.(ts|js|html|svg)$': [
+      'jest-preset-angular',
+      {
+        tsconfig: '<rootDir>/tsconfig.spec.json',
+        stringifyContentPathRegex: '\\.(html|svg)$',
+        useESM: true,
+      },
+    ],
+  },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
@@ -195,4 +210,7 @@ const config: Config = {
   // watchman: true,
 };
 
-export default config;
+export default {
+  ...esmPreset,
+  ...myConfig,
+} satisfies Config;

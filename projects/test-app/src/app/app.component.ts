@@ -10,14 +10,17 @@ import { NgxWhatsNewComponent } from 'projects/ngx-whats-new/src/lib/ngx-whats-n
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  imports: [NgxWhatsNewComponent],
 })
 export class AppComponent implements AfterViewInit {
-  @ViewChild('whatsNew') private readonly modal?: NgxWhatsNewComponent;
+  @ViewChild('whatsnew') private readonly modal?: NgxWhatsNewComponent;
 
   /** Options for the modal */
-  public options: DialogOptions = {
-    enableKeyboardNavigation: true,
-    clickableNavigationDots: true,
+  public options: DialogOptions = { 
+    enableKeyboardNavigation: true, 
+    clickableNavigationDots: true,  
+    disableSwipeNavigation: false,
+    disableClose: false
   };
 
   /** Modals to show */
@@ -29,17 +32,11 @@ export class AppComponent implements AfterViewInit {
         src: 'https://picsum.photos/500',
         altText: 'In v1.0.0, lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
       },
-      button: {
-        text: 'Okay',
-        position: 'center',
-      },
+      button: { text: 'Okay', position: 'center' },
     },
     {
       text: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just. Spsum dolor sit amet, consectetur adipiscing el aspect et just',
-      button: {
-        text: 'Got it!',
-        position: 'center',
-      },
+      button: { text: 'Got it!', position: 'center' },
     },
     {
       image: {
@@ -47,10 +44,7 @@ export class AppComponent implements AfterViewInit {
         altText: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
       },
       text: 'Very interesting feature',
-      button: {
-        text: 'Got it',
-        position: 'center',
-      },
+      button: { text: 'Got it', position: 'center' },
     },
     {
       text: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just. Spsum dolor sit amet, consectetur adipiscing el aspect et just.',
@@ -60,10 +54,7 @@ export class AppComponent implements AfterViewInit {
         objectFit: 'contain',
         altText: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
       },
-      button: {
-        text: 'Lets go',
-        position: 'center',
-      },
+      button: { text: 'Lets go', position: 'center' },
     },
   ];
 

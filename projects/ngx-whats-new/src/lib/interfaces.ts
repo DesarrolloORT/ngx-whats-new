@@ -54,6 +54,20 @@ export interface DialogOptions {
    */
   clickableNavigationDots?: boolean;
   /**
+   * Flag to disable swipe navigation on touch devices.
+   * When `true`, users cannot swipe left/right to navigate between items.
+   *
+   * Default: `true`
+   */
+  disableSwipeNavigation?: boolean;
+  /**
+   * Minimum distance in pixels required to trigger a swipe navigation.
+   * Lower values make swipe more sensitive, higher values require more deliberate gestures.
+   *
+   * Default: `50`
+   */
+  swipeThreshold?: number;
+  /**
    * Custom styles for the dialog.
    */
   customStyle?: {

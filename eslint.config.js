@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 
 import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
-import eslintPluginPrettier from 'eslint-plugin-prettier';
+import eslintConfigPrettier from 'eslint-config-prettier';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -21,7 +21,6 @@ export default [
   {
     plugins: {
       'simple-import-sort': simpleImportSort,
-      prettier: eslintPluginPrettier,
     },
 
     rules: {
@@ -34,8 +33,7 @@ export default [
       'eslint:recommended',
       'plugin:@typescript-eslint/recommended',
       'plugin:@angular-eslint/recommended',
-      'plugin:@angular-eslint/template/process-inline-templates',
-      'plugin:prettier/recommended'
+      'plugin:@angular-eslint/template/process-inline-templates'
     )
     .map(config => ({
       ...config,
@@ -76,6 +74,8 @@ export default [
     files: ['**/*.component.html'],
     rules: {
       '@typescript-eslint/ban-ts-comment': ['off'],
+      '@angular-eslint/template/prefer-control-flow': 'error',
     },
   },
+  eslintConfigPrettier,
 ];
