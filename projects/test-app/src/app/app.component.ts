@@ -27,7 +27,7 @@ export class AppComponent implements AfterViewInit {
   public modals: WhatsNewItem[] = [
     {
       title: 'Whats new in v1.0.0',
-      html: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.<br /><a href="http://google.com">test</a> ',
+      html: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.<br /><a href="http://google.com">test</a>',
       image: {
         src: 'https://picsum.photos/500',
         altText: 'In v1.0.0, lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
@@ -35,8 +35,38 @@ export class AppComponent implements AfterViewInit {
       button: { text: 'Okay', position: 'center' },
     },
     {
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just. Spsum dolor sit amet, consectetur adipiscing el aspect et just',
-      button: { text: 'Got it!', position: 'center' },
+      title: { 
+        content: '🚀 Enhanced Performance', 
+        style: { 
+          color: '#4CAF50', 
+          fontSize: 'x-large', 
+          fontWeight: 'bold',
+          textAlign: 'center'
+        } 
+      },
+      text: { 
+        content: 'Experience lightning-fast loading times and smoother interactions. Our optimized engine delivers 50% better performance.',
+        style: { 
+          fontSize: 'medium', 
+          textAlign: 'center', 
+          color: '#2E7D32',
+          lineHeight: '1.6',
+          backgroundColor: '#E8F5E8',
+          padding: '1rem',
+          borderRadius: '8px'
+        }
+      },
+      button: { 
+        text: 'Amazing!', 
+        position: 'center', 
+        style: { 
+          backgroundColor: '#4CAF50', 
+          color: '#fff', 
+          fontWeight: 'bold',
+          padding: '12px 24px',
+          borderRadius: '20px'
+        } 
+      },
     },
     {
       image: {
@@ -44,7 +74,7 @@ export class AppComponent implements AfterViewInit {
         altText: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.',
       },
       text: 'Very interesting feature',
-      button: { text: 'Got it', position: 'center' },
+      button: { text: 'Got it', position: 'center', style:{ backgroundColor: '#ff4081', color: '#fff', fontWeight: 'bold' } },
     },
     {
       text: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just. Spsum dolor sit amet, consectetur adipiscing el aspect et just.',

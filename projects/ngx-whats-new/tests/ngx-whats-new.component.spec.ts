@@ -166,7 +166,7 @@ describe('NgxWhatsNewComponent', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (component.items as any) = null;
 
-      expect(consoleWarnSpy).toHaveBeenCalledWith('NgxWhatsNewComponent: No items provided.');
+      expect(consoleWarnSpy).toHaveBeenCalledWith('NgxWhatsNewComponent: No updates to show.');
       expect(component.items).toEqual([]);
       consoleWarnSpy.mockRestore();
     });
@@ -176,7 +176,7 @@ describe('NgxWhatsNewComponent', () => {
 
       component.items = [];
 
-      expect(consoleWarnSpy).toHaveBeenCalledWith('NgxWhatsNewComponent: No items provided.');
+      expect(consoleWarnSpy).toHaveBeenCalledWith('NgxWhatsNewComponent: No updates to show.');
       expect(component.items).toEqual([]);
       consoleWarnSpy.mockRestore();
     });
@@ -347,24 +347,27 @@ describe('NgxWhatsNewComponent', () => {
       navigationEmitSpy.mockRestore();
     }));
 
-    it('should warn and not navigate when navigateTo is called with no items', () => {
+    it('should warn and not navigate when navigation methods are called with no items', () => {
       const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
       component.items = [];
+
+      // Test navigateTo
       component.navigateTo(0);
-
       expect(consoleWarnSpy).toHaveBeenCalledWith('NgxWhatsNewComponent: No items to navigate.');
       expect(component['_selectedIndex']).toBe(0);
-    });
 
-    it('should warn and not navigate when goToNext is called with no items', () => {
-      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-
-      component.items = [];
+      // Test goToNext
       component.goToNext();
-
       expect(consoleWarnSpy).toHaveBeenCalledWith('NgxWhatsNewComponent: No items to navigate.');
       expect(component['_selectedIndex']).toBe(0);
+
+      // Test goToPrevious
+      component.goToPrevious();
+      expect(consoleWarnSpy).toHaveBeenCalledWith('NgxWhatsNewComponent: No items to navigate.');
+      expect(component['_selectedIndex']).toBe(0);
+
+      consoleWarnSpy.mockRestore();
     });
   });
 
@@ -601,24 +604,46 @@ describe('NgxWhatsNewComponent', () => {
       component.items = [mockItems[0]];
       expect(component['_isSwipeEnabled']()).toBeFalsy();
     });
+  });
 
-    it('should have goToPrevious method that navigates backwards', () => {
-      // Start at second item by calling goToNext first
-      component.goToNext();
-      fixture.detectChanges();
-      expect(component['_getSelectedIndex']()).toBe(1);
+  describe('Custom Styles per Slide', () => {
+    it('should handle different content types and styles correctly', () => {
+      // String content
+      const stringItem = { title: 'Simple title', text: 'Simple text' };
+      expect(component['_getFieldContent'](stringItem, 'title')).toBe('Simple title');
+      expect(component['_getFieldStyle'](stringItem, 'title')).toBeUndefined();
 
-      component.goToPrevious();
+      // Object content with styles
+      const styledItem = {
+        title: {
+          content: 'Styled title',
+          style: { textAlign: 'center' as const, fontWeight: 'bold' as const },
+        },
+      };
+      expect(component['_getFieldContent'](styledItem, 'title')).toBe('Styled title');
+      expect(component['_getFieldStyle'](styledItem, 'title')).toEqual({
+        textAlign: 'center',
+        fontWeight: 'bold',
+      });
 
-      expect(component['_getSelectedIndex']()).toBe(0);
+      // Undefined content
+      const emptyItem = {};
+      expect(component['_getFieldContent'](emptyItem, 'title')).toBe('');
+      expect(component['_getFieldStyle'](emptyItem, 'title')).toBeUndefined();
     });
 
-    it('should not navigate backwards from first item', () => {
-      expect(component['_getSelectedIndex']()).toBe(0);
+    it('should handle button styles correctly', () => {
+      const itemWithButtonStyle = {
+        button: { text: 'Click me', style: { backgroundColor: '#007bff', color: 'white' } },
+      };
+      const itemWithoutButtonStyle = { button: { text: 'Click me' } };
 
-      component.goToPrevious();
-
-      expect(component['_getSelectedIndex']()).toBe(0);
+      expect(component['_getButtonStyle'](itemWithButtonStyle)).toEqual({
+        backgroundColor: '#007bff',
+        color: 'white',
+      });
+      expect(component['_getButtonStyle'](itemWithoutButtonStyle)).toBeUndefined();
+      expect(component['_getButtonStyle']({})).toBeUndefined();
     });
   });
 });

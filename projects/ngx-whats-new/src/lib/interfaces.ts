@@ -1,13 +1,40 @@
 /**
+ * Custom styles that can be applied to elements.
+ */
+export interface ElementStyles {
+  textAlign?: 'left' | 'center' | 'right' | 'justify';
+  fontSize?: 'small' | 'medium' | 'large' | 'x-large' | string;
+  fontWeight?: 'lighter' | 'normal' | 'medium' | 'bold' | 'bolder';
+  color?: string;
+  margin?: string;
+  padding?: string;
+  lineHeight?: string;
+  letterSpacing?: string;
+  textTransform?: 'none' | 'uppercase' | 'lowercase' | 'capitalize';
+  backgroundColor?: string;
+  borderRadius?: string;
+  border?: string;
+  alignSelf?: 'start' | 'center' | 'end';
+}
+
+/**
+ * Content that can be either a simple string or an object with content and custom styling.
+ */
+export type ContentWithStyle = string | {
+  content: string;
+  style: ElementStyles;
+};
+
+/**
  * Item to show in the dialog.
  */
 export interface WhatsNewItem {
-  /** Title of the item */
-  title?: string;
-  /** Text content */
-  text?: string;
-  /** HTML content */
-  html?: string;
+  /** Title of the item - can be string or object with custom styling */
+  title?: ContentWithStyle;
+  /** Text content - can be string or object with custom styling */
+  text?: ContentWithStyle;
+  /** HTML content - can be string or object with custom styling */
+  html?: ContentWithStyle;
   image?: {
     /** Source of the image */
     src: string;
@@ -26,6 +53,8 @@ export interface WhatsNewItem {
     text: string;
     /** Horizontal alignment of the button */
     position?: 'start' | 'center' | 'end';
+    /** Custom styling for the button */
+    style?: ElementStyles;
   };
 }
 

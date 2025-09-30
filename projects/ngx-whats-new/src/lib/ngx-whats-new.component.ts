@@ -1,5 +1,6 @@
 import { A11yModule } from '@angular/cdk/a11y';
 import { CdkDrag, CdkDragEnd } from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -15,7 +16,7 @@ import {
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 
-import { DialogOptions, NavigationEvent, WhatsNewItem } from './interfaces';
+import { ContentWithStyle, DialogOptions, ElementStyles, NavigationEvent, WhatsNewItem } from './interfaces';
 import { ngxWhatsNewAnimations } from './ngx-whats-new.animations';
 
 /** Default swipe threshold in pixels */
@@ -31,7 +32,7 @@ const DEFAULT_OPTIONS: DialogOptions = {
 
 @Component({
   selector: 'ngx-whats-new',
-  imports: [A11yModule, CdkDrag],
+  imports: [A11yModule, CdkDrag, CommonModule],
   templateUrl: './ngx-whats-new.component.html',
   styleUrls: ['./ngx-whats-new.component.scss'],
   encapsulation: ViewEncapsulation.ShadowDom,
@@ -280,6 +281,61 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   /** Gets the current image animation state */
   protected _getImageState(): string {
     return this._imageHasLoaded ? 'loaded' : 'loading';
+  }
+
+  /** Helper methods for content and styling */
+  
+  /** Extracts content from ContentWithStyle type */
+  private _getContent(content: ContentWithStyle | undefined): string {
+    if (!content) return '';
+    return typeof content === 'string' ? content : content.content;
+  }
+
+  /** Extracts style from ContentWithStyle type */
+  private _getStyle(content: ContentWithStyle | undefined): ElementStyles | undefined {
+    if (!content || typeof content === 'string') return undefined;
+    return this._sanitizeStyles(content.style);
+  }
+
+  /**
+   * Sanitizes and validates style properties to prevent unsafe values
+   * @param styles - Raw styles to sanitize
+   * @returns Sanitized styles object
+   */
+  private _sanitizeStyles(styles: ElementStyles): ElementStyles {
+    const sanitized: Partial<ElementStyles> = {};
+    
+    // Copy only safe properties and validate values
+    Object.entries(styles).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') {
+        // Basic sanitization: remove potentially dangerous values
+        const stringValue = String(value);
+        if (!stringValue.includes('javascript:') && 
+            !stringValue.includes('expression(') && 
+            !stringValue.includes('url(javascript:)')) {
+          (sanitized as Record<string, unknown>)[key] = value;
+        } else {
+          console.warn(`NgxWhatsNewComponent: Potentially unsafe style value removed: ${key}=${value}`);
+        }
+      }
+    });
+    
+    return sanitized as ElementStyles;
+  }
+
+  /** Gets content from a specific field of WhatsNewItem */
+  protected _getFieldContent(item: WhatsNewItem, field: 'title' | 'text' | 'html'): string {
+    return this._getContent(item[field]);
+  }
+
+  /** Gets style from a specific field of WhatsNewItem */
+  protected _getFieldStyle(item: WhatsNewItem, field: 'title' | 'text' | 'html'): ElementStyles | undefined {
+    return this._getStyle(item[field]);
+  }
+
+  /** Gets button style */
+  protected _getButtonStyle(item: WhatsNewItem): ElementStyles | undefined {
+    return item.button?.style ? this._sanitizeStyles(item.button.style) : undefined;
   }
 
   /**

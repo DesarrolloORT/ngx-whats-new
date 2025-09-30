@@ -58,20 +58,28 @@
             </div>
           }
           <div class="wn-info-body">
-            @if (items[selectedIndex].title) {
-              <h2 class="wn-title">{{ items[selectedIndex].title }}</h2>
+            @if (_getFieldContent(items[selectedIndex], 'title')) {
+              <h2 class="wn-title" [ngStyle]="_getFieldStyle(items[selectedIndex], 'title')">
+                {{ _getFieldContent(items[selectedIndex], 'title') }}
+              </h2>
             }
-            @if (items[selectedIndex].text) {
-              <p class="wn-paragraph">{{ items[selectedIndex].text }}</p>
+            @if (_getFieldContent(items[selectedIndex], 'text')) {
+              <p class="wn-paragraph" [ngStyle]="_getFieldStyle(items[selectedIndex], 'text')">
+                {{ _getFieldContent(items[selectedIndex], 'text') }}
+              </p>
             }
-            @if (items[selectedIndex].html) {
-              <div class="wn-paragraph html" [innerHTML]="items[selectedIndex].html"></div>
+            @if (_getFieldContent(items[selectedIndex], 'html')) {
+              <div class="wn-paragraph html" 
+                   [innerHTML]="_getFieldContent(items[selectedIndex], 'html')"
+                   [ngStyle]="_getFieldStyle(items[selectedIndex], 'html')">
+              </div>
             }
             @if (items[selectedIndex].button) {
               @let btn = items[selectedIndex].button;
               <button
                 class="wn-button"
                 [style.align-self]="btn?.position ?? 'center'"
+                [ngStyle]="_getButtonStyle(items[selectedIndex])"
                 (click)="goToNext()">
                 {{ btn?.text }}
               </button>

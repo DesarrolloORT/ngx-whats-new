@@ -76,8 +76,14 @@ describe('AppComponent', () => {
 
   it('should initialize modals correctly', () => {
     expect(component.modals.length).toBe(4);
+    // First modal uses simple string for title
     expect(component.modals[0].title).toBe('Whats new in v1.0.0');
-    expect(component.modals[1].text).toContain('Lorem ipsum dolor sit amet');
+    expect(component.modals[0].html).toBe('Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.<br /><a href="http://google.com">test</a>');
+    // Second modal now has title and text with styles
+    expect((component.modals[1].title as any).content).toBe('🚀 Enhanced Performance');
+    expect((component.modals[1].title as any).style).toBeDefined();
+    expect((component.modals[1].text as any).content).toContain('Experience lightning-fast loading');
+    expect((component.modals[1].text as any).style).toBeDefined();
   });
 
   it('should call openDialog in ngAfterViewInit', () => {
