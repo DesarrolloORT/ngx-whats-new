@@ -16,7 +16,14 @@ const compat = new FlatCompat({
 
 export default [
   {
-    ignores: ['**/coverage/', '**/dist/', '**/node_modules/', '**/.angular/', '**/index.html'],
+    ignores: [
+      '**/coverage/',
+      '**/dist/',
+      '**/node_modules/',
+      '**/.angular/',
+      '**/index.html',
+      'projects/angularjs-whats-new/**',
+    ],
   },
   {
     plugins: {

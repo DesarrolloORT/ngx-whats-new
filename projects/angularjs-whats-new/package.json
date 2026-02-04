@@ -15,10 +15,17 @@
   "author": "",
   "license": "MIT",
   "peerDependencies": {
-    "angular": ">=1.5.0"
+    "angular": "^1.8.2"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nicobrinkkemper/ngx-whats-new.git"
-  }
+    "url": "git+https://github.com/nicobrinkkemper/ngx-whats-new.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/nicobrinkkemper/ngx-whats-new/issues"
+  },
+  "homepage": "https://github.com/nicobrinkkemper/ngx-whats-new#readme"
 }

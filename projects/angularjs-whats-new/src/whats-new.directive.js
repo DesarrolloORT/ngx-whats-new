@@ -23,13 +23,13 @@
         onOpened: '&?',
         onClosed: '&?',
         onNavigation: '&?',
-        onCompleted: '&?'
+        onCompleted: '&?',
       },
       templateUrl: 'whats-new.template.html',
       controller: WhatsNewController,
       controllerAs: 'vm',
       bindToController: true,
-      link: linkFunction
+      link: linkFunction,
     };
   }
 
@@ -89,7 +89,7 @@
     var DEFAULT_OPTIONS = {
       clickableNavigationDots: true,
       enableKeyboardNavigation: true,
-      disableClose: true
+      disableClose: true,
     };
 
     // Private state
@@ -119,11 +119,15 @@
     };
 
     // Watch for changes in options
-    $scope.$watch('vm.options', function (newOptions) {
-      if (newOptions) {
-        vm._options = angular.extend({}, DEFAULT_OPTIONS, newOptions);
-      }
-    }, true);
+    $scope.$watch(
+      'vm.options',
+      function (newOptions) {
+        if (newOptions) {
+          vm._options = angular.extend({}, DEFAULT_OPTIONS, newOptions);
+        }
+      },
+      true
+    );
 
     // Watch for changes in items
     $scope.$watch('vm.items', function (newItems) {
@@ -331,13 +335,13 @@
           $event: {
             previousItem: {
               index: previousIndex,
-              item: previousItem
+              item: previousItem,
             },
             currentItem: {
               index: currentIndex,
-              item: currentItem
-            }
-          }
+              item: currentItem,
+            },
+          },
         });
       }
     }
