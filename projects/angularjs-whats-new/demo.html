@@ -1,313 +1,321 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" ng-app="demoApp">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AngularJS What's New - Demo</title>
-  <link rel="stylesheet" href="src/whats-new.css">
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      padding: 2em;
-      background: #f0f0f0;
-    }
-    .demo-container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: white;
-      padding: 2em;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    h1 {
-      color: #333;
-      margin-bottom: 1em;
-    }
-    .demo-button {
-      background: #661020;
-      color: white;
-      border: none;
-      padding: 0.8em 2em;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 1em;
-      transition: all 0.2s ease;
-    }
-    .demo-button:hover {
-      background: #731d2d;
-      transform: translateY(-2px);
-    }
-    .demo-options {
-      margin-top: 2em;
-      padding: 1em;
-      background: #f9f9f9;
-      border-radius: 4px;
-    }
-    .demo-options label {
-      display: block;
-      margin-bottom: 0.5em;
-    }
-    .log-output {
-      margin-top: 2em;
-      padding: 1em;
-      background: #1a1a1a;
-      color: #0f0;
-      font-family: monospace;
-      border-radius: 4px;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-    .log-output p {
-      margin: 0.25em 0;
-    }
-  </style>
-</head>
-<body ng-controller="DemoController as vm">
-  <div class="demo-container">
-    <h1>AngularJS What's New Demo</h1>
-    <p>Click the button below to open the What's New dialog.</p>
-    
-    <button class="demo-button" ng-click="vm.openDialog()">Open What's New Dialog</button>
-    
-    <div class="demo-options">
-      <h3>Options</h3>
-      <label>
-        <input type="checkbox" ng-model="vm.options.enableKeyboardNavigation">
-        Enable Keyboard Navigation
-      </label>
-      <label>
-        <input type="checkbox" ng-model="vm.options.clickableNavigationDots">
-        Clickable Navigation Dots
-      </label>
-      <label>
-        <input type="checkbox" ng-model="vm.options.disableClose">
-        Disable Close (force view all items)
-      </label>
-    </div>
-    
-    <div class="log-output">
-      <h4 style="color: #fff; margin: 0 0 0.5em 0;">Event Log:</h4>
-      <p ng-repeat="log in vm.logs track by $index">{{log}}</p>
-    </div>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AngularJS What's New - Demo</title>
+    <link rel="stylesheet" href="src/whats-new.css" />
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 2em;
+        background: #f0f0f0;
+      }
+      .demo-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        padding: 2em;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #333;
+        margin-bottom: 1em;
+      }
+      .demo-button {
+        background: #661020;
+        color: white;
+        border: none;
+        padding: 0.8em 2em;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: all 0.2s ease;
+      }
+      .demo-button:hover {
+        background: #731d2d;
+        transform: translateY(-2px);
+      }
+      .demo-options {
+        margin-top: 2em;
+        padding: 1em;
+        background: #f9f9f9;
+        border-radius: 4px;
+      }
+      .demo-options label {
+        display: block;
+        margin-bottom: 0.5em;
+      }
+      .log-output {
+        margin-top: 2em;
+        padding: 1em;
+        background: #1a1a1a;
+        color: #0f0;
+        font-family: monospace;
+        border-radius: 4px;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+      .log-output p {
+        margin: 0.25em 0;
+      }
+    </style>
+  </head>
+  <body ng-controller="DemoController as vm">
+    <div class="demo-container">
+      <h1>AngularJS What's New Demo</h1>
+      <p>Click the button below to open the What's New dialog.</p>
 
-  <!-- What's New Component -->
-  <whats-new
-    items="vm.modals"
-    options="vm.options"
-    on-opened="vm.onOpen()"
-    on-closed="vm.onClose()"
-    on-navigation="vm.onNavigation($event)"
-    on-completed="vm.onCompleted()">
-  </whats-new>
+      <button class="demo-button" ng-click="vm.openDialog()">Open What's New Dialog</button>
 
-  <!-- AngularJS (using CDN for demo) -->
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-  
-  <!-- What's New Module -->
-  <script src="src/whats-new.module.js"></script>
-  <script src="src/whats-new.directive.js"></script>
-  
-  <!-- Template Cache (inline template for demo) -->
-  <script type="text/ng-template" id="whats-new.template.html">
-    <div class="wn-modal-container" ng-if="vm._isVisible">
-      <div
-        role="dialog"
-        class="wn-modal"
-        aria-modal="true"
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-        ng-style="{'max-width': vm._options.customStyle.maxWidth}">
-        
-        <button
-          ng-if="!vm._options.disableClose"
-          aria-label="Close dialog"
-          class="wn-close-modal-button"
-          ng-click="vm.close()">
-          ⛌
-        </button>
-        
-        <div class="wn-modal-layout">
-          <div
-            class="wn-modal-body"
-            aria-live="polite"
-            ng-style="{
-              'padding-top': (vm._items[vm._selectedIndex].image || vm._options.disableClose) ? '' : 'calc(2 * var(--_body-spacing))',
-              'border': vm._options.customStyle.border
-            }"
-            ng-class="{'wn-content-animate': vm._contentAnimationState}">
-            
-            <!-- Image Section -->
-            <div
-              ng-if="vm._items[vm._selectedIndex].image"
-              class="wn-image"
-              ng-style="{
-                'background': vm._items[vm._selectedIndex].image.background,
-                'aspect-ratio': vm._items[vm._selectedIndex].image.aspectRatio
-              }">
-              
-              <div class="wn-image-placeholder" ng-if="!vm._imageHasLoaded">
-                <div class="wn-image-loader"></div>
-              </div>
-              
-              <img
-                ng-src="{{vm._items[vm._selectedIndex].image.src}}"
-                alt="{{vm._items[vm._selectedIndex].image.altText}}"
-                ng-style="{'object-fit': vm._items[vm._selectedIndex].image.objectFit}"
-                ng-class="{
-                  'wn-image-loaded': vm._imageHasLoaded,
-                  'wn-image-not-loaded': !vm._imageHasLoaded
-                }"
-                onload="angular.element(this).scope().$apply(function(scope) { scope.vm.onImageLoad(); })"
-                onerror="angular.element(this).scope().$apply(function(scope) { scope.vm.onImageError(); })" />
-            </div>
-            
-            <!-- Info Body Section -->
-            <div class="wn-info-body">
-              <h2 class="wn-title" ng-if="vm._items[vm._selectedIndex].title">
-                {{vm._items[vm._selectedIndex].title}}
-              </h2>
-              
-              <p class="wn-paragraph" ng-if="vm._items[vm._selectedIndex].text">
-                {{vm._items[vm._selectedIndex].text}}
-              </p>
-              
-              <div
-                class="wn-paragraph html"
-                ng-if="vm._items[vm._selectedIndex].html"
-                ng-bind-html="vm.trustHtml(vm._items[vm._selectedIndex].html)">
-              </div>
-              
-              <button
-                ng-if="vm._items[vm._selectedIndex].button"
-                class="wn-button"
-                ng-style="{'align-self': vm._items[vm._selectedIndex].button.position || 'center'}"
-                ng-click="vm.goToNext()">
-                {{vm._items[vm._selectedIndex].button.text}}
-              </button>
-            </div>
-          </div>
-          
-          <!-- Navigation Dots -->
-          <nav ng-if="vm._items.length > 1" aria-label="Carousel-like item navigation" class="wn-navigation">
-            <ul class="wn-navigation-list" aria-label="Carousel Tabs">
-              <li
-                ng-repeat="item in vm._items track by $index"
-                class="wn-dot"
-                role="tabpanel"
-                ng-class="{
-                  'clickable': vm._options.clickableNavigationDots,
-                  'active': $index === vm._selectedIndex,
-                  'inactive': $index !== vm._selectedIndex
-                }">
-                <button
-                  role="tab"
-                  ng-attr-aria-selected="{{$index === vm._selectedIndex}}"
-                  ng-attr-aria-controls="tabpanel-{{$index}}"
-                  id="tab-{{$index}}"
-                  tabindex="{{$index === vm._selectedIndex ? '0' : '-1'}}"
-                  ng-click="vm.navigateTo($index)"
-                  ng-attr-aria-label="{{($index === vm._selectedIndex ? 'Current slide, ' : '') + 'Navigate to item ' + ($index + 1)}}"
-                  class="wn-nav-button">
-                  Navigate to item {{$index + 1}}
-                </button>
-              </li>
-            </ul>
-          </nav>
-        </div>
+      <div class="demo-options">
+        <h3>Options</h3>
+        <label>
+          <input type="checkbox" ng-model="vm.options.enableKeyboardNavigation" />
+          Enable Keyboard Navigation
+        </label>
+        <label>
+          <input type="checkbox" ng-model="vm.options.clickableNavigationDots" />
+          Clickable Navigation Dots
+        </label>
+        <label>
+          <input type="checkbox" ng-model="vm.options.disableClose" />
+          Disable Close (force view all items)
+        </label>
       </div>
-      
-      <div class="wn-backdrop" aria-hidden="true" ng-click="vm.close()"></div>
 
-      <h1 class="sr-only" id="modal-title">Update information dialog</h1>
-      <p class="sr-only" id="modal-description">
-        This dialog contains information related to the latest features and fixes.
-      </p>
+      <div class="log-output">
+        <h4 style="color: #fff; margin: 0 0 0.5em 0">Event Log:</h4>
+        <p ng-repeat="log in vm.logs track by $index">{{log}}</p>
+      </div>
     </div>
-  </script>
-  
-  <!-- Demo App -->
-  <script>
-    angular.module('demoApp', ['whatsNew'])
-      .controller('DemoController', ['$scope', function($scope) {
-        var vm = this;
-        
-        vm.logs = ['Ready to show events...'];
-        
-        // Options for the modal
-        vm.options = {
-          enableKeyboardNavigation: true,
-          clickableNavigationDots: true,
-          disableClose: false
-        };
-        
-        // Definition of all modals to show
-        vm.modals = [
-          {
-            title: "What's new in v1.0.0",
-            html: 'We have completely redesigned the user interface for a better experience.<br /><a href="https://example.com">Learn more</a>',
-            image: {
-              src: 'https://picsum.photos/500/300',
-              altText: 'New UI screenshot'
+
+    <!-- What's New Component -->
+    <whats-new
+      items="vm.modals"
+      options="vm.options"
+      on-opened="vm.onOpen()"
+      on-closed="vm.onClose()"
+      on-navigation="vm.onNavigation($event)"
+      on-completed="vm.onCompleted()"></whats-new>
+
+    <!-- AngularJS - CDN version -->
+    <!-- For local testing, you can use: <script src="node_modules/angular/angular.min.js"></script> -->
+    <!-- after running: npm install angular@1.8.2 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <!-- What's New Module -->
+    <script src="src/whats-new.module.js"></script>
+    <script src="src/whats-new.directive.js"></script>
+
+    <!-- Template Cache (inline template for demo) -->
+    <script type="text/ng-template" id="whats-new.template.html">
+      <div class="wn-modal-container" ng-if="vm._isVisible">
+        <div
+          role="dialog"
+          class="wn-modal"
+          aria-modal="true"
+          aria-labelledby="modal-title"
+          aria-describedby="modal-description"
+          ng-style="{'max-width': vm._options.customStyle && vm._options.customStyle.maxWidth}">
+
+          <button
+            ng-if="!vm._options.disableClose"
+            aria-label="Close dialog"
+            class="wn-close-modal-button"
+            ng-click="vm.close()">
+            ⛌
+          </button>
+
+          <div class="wn-modal-layout">
+            <div
+              class="wn-modal-body"
+              aria-live="polite"
+              ng-style="{
+                'padding-top': (vm._items[vm._selectedIndex].image || vm._options.disableClose) ? '' : 'calc(2 * var(--_body-spacing))',
+                'border': vm._options.customStyle && vm._options.customStyle.border
+              }"
+              ng-class="{'wn-content-animate': vm._contentAnimationState}">
+
+              <!-- Image Section -->
+              <div
+                ng-if="vm._items[vm._selectedIndex].image"
+                class="wn-image"
+                ng-style="{
+                  'background': vm._items[vm._selectedIndex].image.background,
+                  'aspect-ratio': vm._items[vm._selectedIndex].image.aspectRatio
+                }">
+
+                <div class="wn-image-placeholder" ng-if="!vm._imageHasLoaded">
+                  <div class="wn-image-loader"></div>
+                </div>
+
+                <img
+                  ng-src="{{vm._items[vm._selectedIndex].image.src}}"
+                  alt="{{vm._items[vm._selectedIndex].image.altText}}"
+                  ng-style="{'object-fit': vm._items[vm._selectedIndex].image.objectFit}"
+                  ng-class="{
+                    'wn-image-loaded': vm._imageHasLoaded,
+                    'wn-image-not-loaded': !vm._imageHasLoaded
+                  }"
+                  onload="angular.element(this).scope().$apply(function(scope) { scope.vm.onImageLoad(); })"
+                  onerror="angular.element(this).scope().$apply(function(scope) { scope.vm.onImageError(); })" />
+              </div>
+
+              <!-- Info Body Section -->
+              <div class="wn-info-body">
+                <h2 class="wn-title" ng-if="vm._items[vm._selectedIndex].title">
+                  {{vm._items[vm._selectedIndex].title}}
+                </h2>
+
+                <p class="wn-paragraph" ng-if="vm._items[vm._selectedIndex].text">
+                  {{vm._items[vm._selectedIndex].text}}
+                </p>
+
+                <div
+                  class="wn-paragraph html"
+                  ng-if="vm._items[vm._selectedIndex].html"
+                  ng-bind-html="vm.trustHtml(vm._items[vm._selectedIndex].html)">
+                </div>
+
+                <button
+                  ng-if="vm._items[vm._selectedIndex].button"
+                  class="wn-button"
+                  ng-style="{'align-self': vm._items[vm._selectedIndex].button.position || 'center'}"
+                  ng-click="vm.goToNext()">
+                  {{vm._items[vm._selectedIndex].button.text}}
+                </button>
+              </div>
+            </div>
+
+            <!-- Navigation Dots -->
+            <nav ng-if="vm._items.length > 1" aria-label="Carousel-like item navigation" class="wn-navigation">
+              <ul class="wn-navigation-list" aria-label="Carousel Tabs">
+                <li
+                  ng-repeat="item in vm._items track by $index"
+                  class="wn-dot"
+                  role="tabpanel"
+                  ng-class="{
+                    'clickable': vm._options.clickableNavigationDots,
+                    'active': $index === vm._selectedIndex,
+                    'inactive': $index !== vm._selectedIndex
+                  }">
+                  <button
+                    role="tab"
+                    ng-attr-aria-selected="{{$index === vm._selectedIndex}}"
+                    ng-attr-aria-controls="tabpanel-{{$index}}"
+                    id="tab-{{$index}}"
+                    tabindex="{{$index === vm._selectedIndex ? '0' : '-1'}}"
+                    ng-click="vm.navigateTo($index)"
+                    ng-attr-aria-label="{{($index === vm._selectedIndex ? 'Current slide, ' : '') + 'Navigate to item ' + ($index + 1)}}"
+                    class="wn-nav-button">
+                    Navigate to item {{$index + 1}}
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+        <div class="wn-backdrop" aria-hidden="true" ng-click="vm.close()"></div>
+
+        <h1 class="sr-only" id="modal-title">Update information dialog</h1>
+        <p class="sr-only" id="modal-description">
+          This dialog contains information related to the latest features and fixes.
+        </p>
+      </div>
+    </script>
+
+    <!-- Demo App -->
+    <script>
+      angular.module('demoApp', ['whatsNew']).controller('DemoController', [
+        '$scope',
+        function ($scope) {
+          var vm = this;
+
+          vm.logs = ['Ready to show events...'];
+
+          // Options for the modal
+          vm.options = {
+            enableKeyboardNavigation: true,
+            clickableNavigationDots: true,
+            disableClose: false,
+          };
+
+          // Definition of all modals to show
+          vm.modals = [
+            {
+              title: "What's new in v1.0.0",
+              html: 'We have completely redesigned the user interface for a better experience.<br /><a href="https://example.com">Learn more</a>',
+              image: {
+                src: 'https://picsum.photos/500/300',
+                altText: 'New UI screenshot',
+              },
+              button: {
+                text: 'Next',
+                position: 'center',
+              },
             },
-            button: {
-              text: 'Next',
-              position: 'center'
-            }
-          },
-          {
-            title: 'Improved Performance',
-            text: 'Our application is now 50% faster thanks to optimized algorithms and caching.',
-            image: {
-              src: 'https://picsum.photos/500/301',
-              altText: 'Performance chart'
+            {
+              title: 'Improved Performance',
+              text: 'Our application is now 50% faster thanks to optimized algorithms and caching.',
+              image: {
+                src: 'https://picsum.photos/500/301',
+                altText: 'Performance chart',
+              },
+              button: {
+                text: 'Next',
+                position: 'center',
+              },
             },
-            button: {
-              text: 'Next',
-              position: 'center'
+            {
+              title: 'Dark Mode Support',
+              text: 'You can now switch to dark mode for a more comfortable viewing experience at night.',
+              button: {
+                text: 'Got it!',
+                position: 'center',
+              },
+            },
+          ];
+
+          function log(message) {
+            var timestamp = new Date().toLocaleTimeString();
+            vm.logs.unshift('[' + timestamp + '] ' + message);
+            if (vm.logs.length > 10) {
+              vm.logs.pop();
             }
-          },
-          {
-            title: 'Dark Mode Support',
-            text: 'You can now switch to dark mode for a more comfortable viewing experience at night.',
-            button: {
-              text: 'Got it!',
-              position: 'center'
+          }
+
+          vm.openDialog = function () {
+            var scope = angular.element(document.querySelector('whats-new')).isolateScope();
+            if (scope && scope.vm) {
+              scope.vm.open();
             }
-          }
-        ];
-        
-        function log(message) {
-          var timestamp = new Date().toLocaleTimeString();
-          vm.logs.unshift('[' + timestamp + '] ' + message);
-          if (vm.logs.length > 10) {
-            vm.logs.pop();
-          }
-        }
-        
-        vm.openDialog = function() {
-          var scope = angular.element(document.querySelector('whats-new')).isolateScope();
-          if (scope && scope.vm) {
-            scope.vm.open();
-          }
-        };
-        
-        vm.onOpen = function() {
-          log('Dialog opened');
-        };
-        
-        vm.onClose = function() {
-          log('Dialog closed');
-        };
-        
-        vm.onNavigation = function($event) {
-          log('Navigated from item ' + ($event.previousItem.index + 1) + ' to item ' + ($event.currentItem.index + 1));
-        };
-        
-        vm.onCompleted = function() {
-          log('All items viewed - Dialog completed!');
-        };
-      }]);
-  </script>
-</body>
+          };
+
+          vm.onOpen = function () {
+            log('Dialog opened');
+          };
+
+          vm.onClose = function () {
+            log('Dialog closed');
+          };
+
+          vm.onNavigation = function ($event) {
+            log(
+              'Navigated from item ' +
+                ($event.previousItem.index + 1) +
+                ' to item ' +
+                ($event.currentItem.index + 1)
+            );
+          };
+
+          vm.onCompleted = function () {
+            log('All items viewed - Dialog completed!');
+          };
+        },
+      ]);
+    </script>
+  </body>
 </html>

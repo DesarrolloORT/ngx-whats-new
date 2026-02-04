@@ -5,8 +5,7 @@
     aria-modal="true"
     aria-labelledby="modal-title"
     aria-describedby="modal-description"
-    ng-style="{'max-width': vm._options.customStyle.maxWidth}">
-    
+    ng-style="{'max-width': vm._options.customStyle && vm._options.customStyle.maxWidth}">
     <button
       ng-if="!vm._options.disableClose"
       aria-label="Close dialog"
@@ -14,17 +13,16 @@
       ng-click="vm.close()">
       ⛌
     </button>
-    
+
     <div class="wn-modal-layout">
       <div
         class="wn-modal-body"
         aria-live="polite"
         ng-style="{
           'padding-top': (vm._items[vm._selectedIndex].image || vm._options.disableClose) ? '' : 'calc(2 * var(--_body-spacing))',
-          'border': vm._options.customStyle.border
+          'border': vm._options.customStyle && vm._options.customStyle.border
         }"
         ng-class="{'wn-content-animate': vm._contentAnimationState}">
-        
         <!-- Image Section -->
         <div
           ng-if="vm._items[vm._selectedIndex].image"
@@ -33,11 +31,10 @@
             'background': vm._items[vm._selectedIndex].image.background,
             'aspect-ratio': vm._items[vm._selectedIndex].image.aspectRatio
           }">
-          
           <div class="wn-image-placeholder" ng-if="!vm._imageHasLoaded">
             <div class="wn-image-loader"></div>
           </div>
-          
+
           <img
             ng-src="{{vm._items[vm._selectedIndex].image.src}}"
             alt="{{vm._items[vm._selectedIndex].image.altText}}"
@@ -51,23 +48,22 @@
             onload="angular.element(this).scope().$apply(function(scope) { scope.vm.onImageLoad(); })"
             onerror="angular.element(this).scope().$apply(function(scope) { scope.vm.onImageError(); })" />
         </div>
-        
+
         <!-- Info Body Section -->
         <div class="wn-info-body">
           <h2 class="wn-title" ng-if="vm._items[vm._selectedIndex].title">
             {{vm._items[vm._selectedIndex].title}}
           </h2>
-          
+
           <p class="wn-paragraph" ng-if="vm._items[vm._selectedIndex].text">
             {{vm._items[vm._selectedIndex].text}}
           </p>
-          
+
           <div
             class="wn-paragraph html"
             ng-if="vm._items[vm._selectedIndex].html"
-            ng-bind-html="vm.trustHtml(vm._items[vm._selectedIndex].html)">
-          </div>
-          
+            ng-bind-html="vm.trustHtml(vm._items[vm._selectedIndex].html)"></div>
+
           <button
             ng-if="vm._items[vm._selectedIndex].button"
             class="wn-button"
@@ -77,9 +73,12 @@
           </button>
         </div>
       </div>
-      
+
       <!-- Navigation Dots -->
-      <nav ng-if="vm._items.length > 1" aria-label="Carousel-like item navigation" class="wn-navigation">
+      <nav
+        ng-if="vm._items.length > 1"
+        aria-label="Carousel-like item navigation"
+        class="wn-navigation">
         <ul class="wn-navigation-list" aria-label="Carousel Tabs">
           <li
             ng-repeat="item in vm._items track by $index"
@@ -106,7 +105,7 @@
       </nav>
     </div>
   </div>
-  
+
   <div class="wn-backdrop" aria-hidden="true" ng-click="vm.close()"></div>
 
   <h1 class="sr-only" id="modal-title">Update information dialog</h1>
