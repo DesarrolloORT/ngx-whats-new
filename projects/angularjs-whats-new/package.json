@@ -1,0 +1,24 @@
+{
+  "name": "angularjs-whats-new",
+  "version": "1.0.0",
+  "description": "AngularJS module for displaying 'What's New' multi-modal dialogs",
+  "main": "src/index.js",
+  "keywords": [
+    "angularjs",
+    "angular",
+    "modal",
+    "dialog",
+    "whats-new",
+    "onboarding",
+    "features"
+  ],
+  "author": "",
+  "license": "MIT",
+  "peerDependencies": {
+    "angular": ">=1.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nicobrinkkemper/ngx-whats-new.git"
+  }
+}

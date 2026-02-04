@@ -4,11 +4,28 @@ Ngx-whats-new is an angular module with a multi-modal component that is typicall
 
 ![ngx-whats-new screencast](screencast.gif)
 
+## Versions
+
+This library is available for both modern Angular and AngularJS:
+
+| Version | Angular Version | Location |
+|---------|-----------------|----------|
+| **ngx-whats-new** | Angular 2+ (currently v20) | `projects/ngx-whats-new/` |
+| **angularjs-whats-new** | AngularJS 1.5+ | `projects/angularjs-whats-new/` |
+
+### Modern Angular Installation
+
 ```
-    npm i ngx-whats-new
+npm i ngx-whats-new
 ```
 
-## Usage example:
+### AngularJS Installation
+
+For AngularJS projects, see the documentation in [`projects/angularjs-whats-new/README.md`](projects/angularjs-whats-new/README.md).
+
+---
+
+## Modern Angular Usage Example:
 
 [Codesandbox example](https://codesandbox.io/s/ngx-whats-new-demo-nxc8b?file=/src/main.ts)
 
