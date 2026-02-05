@@ -7,6 +7,12 @@ An AngularJS (1.x) module with a multi-modal component that is typically used to
 ### NPM (Recommended)
 
 ```bash
+npm install @desarrolloort/angularjs-whats-new
+```
+
+Or if publishing to npm registry:
+
+```bash
 npm install angularjs-whats-new
 ```
 
@@ -24,17 +30,17 @@ Copy the files from `dist/` directory to your project:
 **If installed via NPM:**
 
 ```html
-<link rel="stylesheet" href="node_modules/angularjs-whats-new/dist/angularjs-whats-new.css" />
+<link rel="stylesheet" href="node_modules/@desarrolloort/angularjs-whats-new/angularjs-whats-new.css" />
 <script src="node_modules/angular/angular.min.js"></script>
-<script src="node_modules/angularjs-whats-new/dist/angularjs-whats-new.js"></script>
+<script src="node_modules/@desarrolloort/angularjs-whats-new/angularjs-whats-new.js"></script>
 ```
 
 **If using a bundler (Webpack, Browserify, etc.):**
 
 ```javascript
 // In your main JavaScript file
-require('angularjs-whats-new/dist/angularjs-whats-new.css');
-require('angularjs-whats-new');
+require('@desarrolloort/angularjs-whats-new/angularjs-whats-new.css');
+require('@desarrolloort/angularjs-whats-new');
 ```
 
 **Manual installation:**

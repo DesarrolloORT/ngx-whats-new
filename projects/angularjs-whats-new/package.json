@@ -1,5 +1,5 @@
 {
-  "name": "angularjs-whats-new",
+  "name": "@desarrolloort/angularjs-whats-new",
   "version": "1.0.0",
   "description": "AngularJS module for displaying 'What's New' multi-modal dialogs to showcase new features and updates in your application",
   "main": "dist/angularjs-whats-new.js",
@@ -27,9 +27,12 @@
   "peerDependencies": {
     "angular": "^1.5.0 || ^1.6.0 || ^1.7.0 || ^1.8.0"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nicobrinkkemper/ngx-whats-new.git",
+    "url": "git+https://github.com/DesarrolloORT/ngx-whats-new.git",
     "directory": "projects/angularjs-whats-new"
   },
   "scripts": {
@@ -40,9 +43,9 @@
     "format:check": "prettier --check ."
   },
   "bugs": {
-    "url": "https://github.com/nicobrinkkemper/ngx-whats-new/issues"
+    "url": "https://github.com/DesarrolloORT/ngx-whats-new/issues"
   },
-  "homepage": "https://github.com/nicobrinkkemper/ngx-whats-new/tree/main/projects/angularjs-whats-new#readme",
+  "homepage": "https://github.com/DesarrolloORT/ngx-whats-new/tree/main/projects/angularjs-whats-new#readme",
   "engines": {
     "node": ">=12.0.0"
   }

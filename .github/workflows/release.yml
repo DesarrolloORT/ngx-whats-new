@@ -52,7 +52,7 @@ jobs:
         run: |
           npm pack
           VERSION=$(jq -r .version package.json)
-          mv angularjs-whats-new-$VERSION.tgz angularjs-whats-new-$VERSION.tgz
+          mv desarrolloort-angularjs-whats-new-$VERSION.tgz angularjs-whats-new-$VERSION.tgz
         working-directory: dist/angularjs-whats-new
 
       - name: Upload tarballs to release
