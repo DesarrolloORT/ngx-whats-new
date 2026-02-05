@@ -2,7 +2,7 @@
  * Unit tests for AngularJS What's New Directive
  *
  * Basic test suite for the whatsNew directive.
- * 
+ *
  * @module whatsNew.tests
  */
 describe('whatsNew directive', function () {
