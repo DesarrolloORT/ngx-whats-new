@@ -1,0 +1,23 @@
+# Source files (if you want to include only dist)
+# Uncomment the following lines if you want to publish only the dist folder
+# src/
+# build.js
+
+# Development files
+demo.html
+*.log
+*.tmp
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts (keep dist folder)
+node_modules/

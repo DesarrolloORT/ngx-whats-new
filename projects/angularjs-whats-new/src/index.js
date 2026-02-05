@@ -5,9 +5,9 @@
  *
  * Usage:
  *   1. Include the module files:
- *      - whats-new.module.js
- *      - whats-new.directive.js
- *      - whats-new.css
+ *      - lib/whats-new.module.js
+ *      - lib/whats-new.directive.js
+ *      - lib/whats-new.css
  *
  *   2. Include the template file or use $templateCache
  *

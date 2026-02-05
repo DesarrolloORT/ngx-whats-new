@@ -4,21 +4,41 @@ An AngularJS (1.x) module with a multi-modal component that is typically used to
 
 ## Installation
 
-Copy the files from `src/` directory to your project:
-- `whats-new.module.js` - Module definition
-- `whats-new.directive.js` - Directive implementation
-- `whats-new.template.html` - HTML template
-- `whats-new.css` - Component styles
+### NPM (Recommended)
+
+```bash
+npm install angularjs-whats-new
+```
+
+### Manual Installation
+
+Copy the files from `dist/` directory to your project:
+- `angularjs-whats-new.js` - Combined module (includes template)
+- `angularjs-whats-new.css` - Component styles
 
 ## Usage
 
 ### 1. Include the files in your HTML
 
+**If installed via NPM:**
 ```html
-<link rel="stylesheet" href="path/to/whats-new.css">
+<link rel="stylesheet" href="node_modules/angularjs-whats-new/dist/angularjs-whats-new.css">
+<script src="node_modules/angular/angular.min.js"></script>
+<script src="node_modules/angularjs-whats-new/dist/angularjs-whats-new.js"></script>
+```
+
+**If using a bundler (Webpack, Browserify, etc.):**
+```javascript
+// In your main JavaScript file
+require('angularjs-whats-new/dist/angularjs-whats-new.css');
+require('angularjs-whats-new');
+```
+
+**Manual installation:**
+```html
+<link rel="stylesheet" href="path/to/angularjs-whats-new.css">
 <script src="path/to/angular.min.js"></script>
-<script src="path/to/whats-new.module.js"></script>
-<script src="path/to/whats-new.directive.js"></script>
+<script src="path/to/angularjs-whats-new.js"></script>
 ```
 
 ### 2. Add the module as a dependency
