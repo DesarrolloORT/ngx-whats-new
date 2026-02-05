@@ -6,7 +6,6 @@
   "style": "dist/angularjs-whats-new.css",
   "files": [
     "dist/",
-    "src/",
     "README.md",
     "LICENSE"
   ],
@@ -34,6 +33,7 @@
     "directory": "projects/angularjs-whats-new"
   },
   "scripts": {
+    "build": "node build.js",
     "pack": "npm run build && npm pack",
     "prepublishOnly": "npm run build",
     "format": "prettier --write .",

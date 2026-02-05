@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "start": "ng serve",
-    "build": "ng build ngx-whats-new",
+    "build": "npm run build:angularjs && ng build ngx-whats-new",
+    "build:angularjs": "cd projects/angularjs-whats-new && npm run build",
+    "build:angular": "ng build ngx-whats-new",
     "build:app": "ng build test-app",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:ci": "npm run test -- --ci --silent --maxWorkers=3 --no-watchman",
