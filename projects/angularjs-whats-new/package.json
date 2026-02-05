@@ -35,7 +35,9 @@
   },
   "scripts": {
     "pack": "npm run build && npm pack",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "bugs": {
     "url": "https://github.com/nicobrinkkemper/ngx-whats-new/issues"

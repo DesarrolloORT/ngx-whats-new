@@ -13,6 +13,7 @@ npm install angularjs-whats-new
 ### Manual Installation
 
 Copy the files from `dist/` directory to your project:
+
 - `angularjs-whats-new.js` - Combined module (includes template)
 - `angularjs-whats-new.css` - Component styles
 
@@ -21,13 +22,15 @@ Copy the files from `dist/` directory to your project:
 ### 1. Include the files in your HTML
 
 **If installed via NPM:**
+
 ```html
-<link rel="stylesheet" href="node_modules/angularjs-whats-new/dist/angularjs-whats-new.css">
+<link rel="stylesheet" href="node_modules/angularjs-whats-new/dist/angularjs-whats-new.css" />
 <script src="node_modules/angular/angular.min.js"></script>
 <script src="node_modules/angularjs-whats-new/dist/angularjs-whats-new.js"></script>
 ```
 
 **If using a bundler (Webpack, Browserify, etc.):**
+
 ```javascript
 // In your main JavaScript file
 require('angularjs-whats-new/dist/angularjs-whats-new.css');
@@ -35,8 +38,9 @@ require('angularjs-whats-new');
 ```
 
 **Manual installation:**
+
 ```html
-<link rel="stylesheet" href="path/to/angularjs-whats-new.css">
+<link rel="stylesheet" href="path/to/angularjs-whats-new.css" />
 <script src="path/to/angular.min.js"></script>
 <script src="path/to/angularjs-whats-new.js"></script>
 ```
@@ -56,8 +60,7 @@ angular.module('myApp', ['whatsNew']);
   on-opened="vm.onOpen()"
   on-closed="vm.onClose()"
   on-navigation="vm.onNavigation($event)"
-  on-completed="vm.onCompleted()">
-</whats-new>
+  on-completed="vm.onCompleted()"></whats-new>
 
 <button ng-click="vm.openDialog()">Open Dialog</button>
 ```
@@ -65,88 +68,91 @@ angular.module('myApp', ['whatsNew']);
 ### 4. Configure in your controller
 
 ```javascript
-angular.module('myApp').controller('MainController', ['$scope', function($scope) {
-  var vm = this;
+angular.module('myApp').controller('MainController', [
+  '$scope',
+  function ($scope) {
+    var vm = this;
 
-  // Options for the modal
-  vm.options = {
-    enableKeyboardNavigation: true,
-    clickableNavigationDots: true,
-    disableClose: false
-  };
+    // Options for the modal
+    vm.options = {
+      enableKeyboardNavigation: true,
+      clickableNavigationDots: true,
+      disableClose: false,
+    };
 
-  // Definition of all modals to show
-  vm.modals = [
-    {
-      title: "What's new in v1.0.0",
-      html: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.<br /><a href="http://google.com">test</a>',
-      image: {
-        src: 'https://picsum.photos/500',
-        altText: 'In v1.0.0, lorem ipsum dolor sit amet.',
+    // Definition of all modals to show
+    vm.modals = [
+      {
+        title: "What's new in v1.0.0",
+        html: 'Lorem ipsum dolor sit amet, consectetur adipiscing el aspect et just.<br /><a href="http://google.com">test</a>',
+        image: {
+          src: 'https://picsum.photos/500',
+          altText: 'In v1.0.0, lorem ipsum dolor sit amet.',
+        },
+        button: {
+          text: 'Okay',
+          position: 'center',
+        },
       },
-      button: {
-        text: 'Okay',
-        position: 'center'
+      {
+        title: "What's new in v1.1.0",
+        text: 'More awesome features!',
+        button: {
+          text: 'Got it',
+          position: 'center',
+        },
+      },
+    ];
+
+    // Get the directive element reference
+    var whatsNewElement = null;
+
+    // After the view is ready, get the directive's controller
+    $scope.$on('$viewContentLoaded', function () {
+      // Alternative: Use element reference with directive API
+      whatsNewElement = angular.element(document.querySelector('whats-new'));
+    });
+
+    vm.openDialog = function () {
+      // Get the directive's isolate scope and call open()
+      var scope = angular.element(document.querySelector('whats-new')).isolateScope();
+      if (scope && scope.vm) {
+        scope.vm.open();
       }
-    },
-    {
-      title: "What's new in v1.1.0",
-      text: 'More awesome features!',
-      button: {
-        text: 'Got it',
-        position: 'center'
-      }
-    }
-  ];
+    };
 
-  // Get the directive element reference
-  var whatsNewElement = null;
+    vm.onOpen = function () {
+      console.log('Dialog opened');
+    };
 
-  // After the view is ready, get the directive's controller
-  $scope.$on('$viewContentLoaded', function() {
-    // Alternative: Use element reference with directive API
-    whatsNewElement = angular.element(document.querySelector('whats-new'));
-  });
+    vm.onClose = function () {
+      console.log('Dialog closed');
+    };
 
-  vm.openDialog = function() {
-    // Get the directive's isolate scope and call open()
-    var scope = angular.element(document.querySelector('whats-new')).isolateScope();
-    if (scope && scope.vm) {
-      scope.vm.open();
-    }
-  };
+    vm.onNavigation = function ($event) {
+      console.info('Previous item:', $event.previousItem);
+      console.info('Current item:', $event.currentItem);
+    };
 
-  vm.onOpen = function() {
-    console.log('Dialog opened');
-  };
-
-  vm.onClose = function() {
-    console.log('Dialog closed');
-  };
-
-  vm.onNavigation = function($event) {
-    console.info('Previous item:', $event.previousItem);
-    console.info('Current item:', $event.currentItem);
-  };
-
-  vm.onCompleted = function() {
-    console.log('All items viewed');
-  };
-}]);
+    vm.onCompleted = function () {
+      console.log('All items viewed');
+    };
+  },
+]);
 ```
 
 ## API
 
 ### Directive Attributes
 
-| Attribute | Type | Description |
-|-----------|------|-------------|
-| `items` | Array | Array of WhatsNewItem objects to display |
-| `options` | Object | DialogOptions configuration object |
-| `on-opened` | Function | Callback when dialog opens |
-| `on-closed` | Function | Callback when dialog closes |
+| Attribute       | Type     | Description                                       |
+| --------------- | -------- | ------------------------------------------------- |
+| `items`         | Array    | Array of WhatsNewItem objects to display          |
+| `options`       | Object   | DialogOptions configuration object                |
+| `on-opened`     | Function | Callback when dialog opens                        |
+| `on-closed`     | Function | Callback when dialog closes                       |
 | `on-navigation` | Function | Callback when navigation occurs (receives $event) |
-| `on-completed` | Function | Callback when all items have been viewed |
+| `on-completed`  | Function | Callback when all items have been viewed          |
 
 ### DialogOptions
 
@@ -237,6 +243,7 @@ See the CSS file for all available CSS variables.
 ## Keyboard Navigation
 
 When `enableKeyboardNavigation` is enabled:
+
 - **ArrowRight**: Navigate to next item
 - **ArrowLeft**: Navigate to previous item
 - **Escape**: Close the dialog (if `disableClose` is false)
