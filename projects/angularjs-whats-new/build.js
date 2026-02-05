@@ -1,6 +1,6 @@
 /**
  * Build script for angularjs-whats-new
- * 
+ *
  * This script concatenates the source files and creates the distributable files.
  */
 
