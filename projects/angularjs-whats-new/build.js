@@ -88,6 +88,13 @@ const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.jso
 // Update paths in package.json since files will be in the same directory
 packageJson.main = 'angularjs-whats-new.js';
 packageJson.style = 'angularjs-whats-new.css';
+// Update files array to reference files in the root of the published package
+packageJson.files = [
+  '*.js',
+  '*.css',
+  'README.md',
+  'LICENSE'
+];
 // Remove build-related scripts from published package
 delete packageJson.scripts;
 fs.writeFileSync(path.join(distDir, 'package.json'), JSON.stringify(packageJson, null, 2), 'utf8');
