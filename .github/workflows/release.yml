@@ -29,23 +29,36 @@ jobs:
       - name: Build library
         run: npm run build
 
-      - name: Publish package
+      - name: Publish ngx-whats-new package
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: dist/ngx-whats-new
 
-      - name: Generate tarball
+      - name: Publish angularjs-whats-new package
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: dist/angularjs-whats-new
+
+      - name: Generate ngx-whats-new tarball
         run: |
           npm pack
           VERSION=$(jq -r .version package.json)
           mv desarrolloort-ngx-whats-new-$VERSION.tgz ngx-whats-new-$VERSION.tgz
         working-directory: dist/ngx-whats-new
 
-      - name: Upload tarball to release
+      - name: Generate angularjs-whats-new tarball
+        run: |
+          npm pack
+          VERSION=$(jq -r .version package.json)
+          mv angularjs-whats-new-$VERSION.tgz angularjs-whats-new-$VERSION.tgz
+        working-directory: dist/angularjs-whats-new
+
+      - name: Upload tarballs to release
         uses: AButler/upload-release-assets@v3.0
         with:
-          files: 'dist/ngx-whats-new/*.tgz'
+          files: 'dist/ngx-whats-new/*.tgz;dist/angularjs-whats-new/*.tgz'
           release-tag: ${{ github.event.release.tag_name }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
