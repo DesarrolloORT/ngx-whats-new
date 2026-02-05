@@ -9,7 +9,7 @@ const path = require('path');
 
 // Directories
 const srcDir = path.join(__dirname, 'src', 'lib');
-const distDir = path.join(__dirname, 'dist');
+const distDir = path.join(__dirname, '..', '..', 'dist', 'angularjs-whats-new');
 
 // Ensure dist directory exists
 if (!fs.existsSync(distDir)) {
@@ -83,8 +83,28 @@ const minifiedCss = css
 fs.writeFileSync(path.join(distDir, 'angularjs-whats-new.min.js'), minifiedJs, 'utf8');
 fs.writeFileSync(path.join(distDir, 'angularjs-whats-new.min.css'), minifiedCss, 'utf8');
 
+// Copy package.json and README.md to dist
+const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
+// Update paths in package.json since files will be in the same directory
+packageJson.main = 'angularjs-whats-new.js';
+packageJson.style = 'angularjs-whats-new.css';
+// Remove build-related scripts from published package
+delete packageJson.scripts;
+fs.writeFileSync(path.join(distDir, 'package.json'), JSON.stringify(packageJson, null, 2), 'utf8');
+
+// Copy README.md
+fs.copyFileSync(path.join(__dirname, 'README.md'), path.join(distDir, 'README.md'));
+
+// Copy LICENSE if it exists
+const licensePath = path.join(__dirname, 'LICENSE');
+if (fs.existsSync(licensePath)) {
+  fs.copyFileSync(licensePath, path.join(distDir, 'LICENSE'));
+}
+
 console.log('Build complete!');
 console.log(`  - ${path.join(distDir, 'angularjs-whats-new.js')}`);
 console.log(`  - ${path.join(distDir, 'angularjs-whats-new.css')}`);
 console.log(`  - ${path.join(distDir, 'angularjs-whats-new.min.js')}`);
 console.log(`  - ${path.join(distDir, 'angularjs-whats-new.min.css')}`);
+console.log(`  - ${path.join(distDir, 'package.json')}`);
+console.log(`  - ${path.join(distDir, 'README.md')}`);
