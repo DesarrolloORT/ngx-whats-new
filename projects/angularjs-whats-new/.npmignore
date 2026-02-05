@@ -1,12 +1,21 @@
-# Source files (if you want to include only dist)
-# Uncomment the following lines if you want to publish only the dist folder
-# src/
-# build.js
+# Source files (only distribute the built files)
+src/
+tests/
+/dist
+build.js
+tsconfig*.json
+ng-package.json
 
 # Development files
 demo.html
 *.log
 *.tmp
+*.spec.js
+.editorconfig
+.eslintrc*
+.prettierrc*
+package-lock.json
+npm-debug.log*
 
 # IDE
 .vscode/
