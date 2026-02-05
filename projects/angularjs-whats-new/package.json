@@ -1,31 +1,47 @@
 {
   "name": "angularjs-whats-new",
   "version": "1.0.0",
-  "description": "AngularJS module for displaying 'What's New' multi-modal dialogs",
-  "main": "src/index.js",
+  "description": "AngularJS module for displaying 'What's New' multi-modal dialogs to showcase new features and updates in your application",
+  "main": "dist/angularjs-whats-new.js",
+  "style": "dist/angularjs-whats-new.css",
+  "files": [
+    "dist/",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
   "keywords": [
     "angularjs",
     "angular",
+    "angular1",
     "modal",
     "dialog",
     "whats-new",
     "onboarding",
-    "features"
+    "features",
+    "changelog",
+    "release-notes",
+    "ui-component"
   ],
-  "author": "",
+  "author": "Gabriele",
   "license": "MIT",
   "peerDependencies": {
-    "angular": "^1.8.2"
+    "angular": "^1.5.0 || ^1.6.0 || ^1.7.0 || ^1.8.0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nicobrinkkemper/ngx-whats-new.git"
+    "url": "git+https://github.com/nicobrinkkemper/ngx-whats-new.git",
+    "directory": "projects/angularjs-whats-new"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pack": "npm run build && npm pack",
+    "prepublishOnly": "npm run build"
   },
   "bugs": {
     "url": "https://github.com/nicobrinkkemper/ngx-whats-new/issues"
   },
-  "homepage": "https://github.com/nicobrinkkemper/ngx-whats-new#readme"
+  "homepage": "https://github.com/nicobrinkkemper/ngx-whats-new/tree/main/projects/angularjs-whats-new#readme",
+  "engines": {
+    "node": ">=12.0.0"
+  }
 }
