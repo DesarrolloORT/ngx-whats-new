@@ -4,9 +4,9 @@
  */
 
 import type { Config } from 'jest';
-import { createEsmPreset } from 'jest-preset-angular/presets';
+import presets from 'jest-preset-angular/presets/index.js';
 
-const esmPreset = createEsmPreset();
+const esmPreset = presets.createEsmPreset();
 
 const myConfig: Config = {
   // All imported modules in your tests should be mocked automatically
@@ -151,7 +151,7 @@ const myConfig: Config = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  testEnvironment: 'jsdom',
+  testEnvironment: 'jest-preset-angular/environments/jest-jsdom-env',
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
