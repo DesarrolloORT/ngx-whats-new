@@ -3,6 +3,18 @@ name: Publish package and attach to release
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to build and attach assets to (e.g. v4.0.0)'
+        required: true
+
+env:
+  RELEASE_TAG: ${{ inputs.tag || github.event.release.tag_name }}
+
+permissions:
+  contents: write # upload release assets
+  packages: write # publish to GitHub Packages
 
 jobs:
   release:
@@ -11,6 +23,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+        with:
+          ref: ${{ env.RELEASE_TAG }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
@@ -19,46 +33,42 @@ jobs:
           check-latest: true
           registry-url: 'https://npm.pkg.github.com'
 
-      - name: Authenticate to GitHub Packages
-        run: |
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
-          echo "@desarrolloort:registry=https://npm.pkg.github.com" >> ~/.npmrc
-
       - name: Install dependencies
         run: npm install
 
       - name: Build library
         run: npm run build
 
-      - name: Publish ngx-whats-new package
-        run: npm publish
+      # The two packages are versioned independently, so a release may only bump one of
+      # them. Publishing a version that already exists fails with a 409, which would take
+      # down the whole job (and the tarball upload with it) — so skip what's already there.
+      - name: Publish packages (skipping versions already on the registry)
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        working-directory: dist/ngx-whats-new
-
-      - name: Publish angularjs-whats-new package
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        working-directory: dist/angularjs-whats-new
-
-      - name: Generate ngx-whats-new tarball
         run: |
-          npm pack
-          VERSION=$(jq -r .version package.json)
-          mv desarrolloort-ngx-whats-new-$VERSION.tgz ngx-whats-new-$VERSION.tgz
-        working-directory: dist/ngx-whats-new
+          for pkg in ngx-whats-new angularjs-whats-new; do
+            NAME=$(jq -r .name "dist/$pkg/package.json")
+            VERSION=$(jq -r .version "dist/$pkg/package.json")
+            # `npm view` exits 0 with empty output when the version is missing, and
+            # non-zero (E404) when the package itself is unknown — check the output.
+            if [ -n "$(npm view "$NAME@$VERSION" version 2>/dev/null || true)" ]; then
+              echo "::notice::$NAME@$VERSION is already published — skipping"
+            else
+              echo "Publishing $NAME@$VERSION"
+              ( cd "dist/$pkg" && npm publish )
+            fi
+          done
 
-      - name: Generate angularjs-whats-new tarball
+      - name: Generate tarballs
         run: |
-          npm pack
-          VERSION=$(jq -r .version package.json)
-          mv desarrolloort-angularjs-whats-new-$VERSION.tgz angularjs-whats-new-$VERSION.tgz
-        working-directory: dist/angularjs-whats-new
+          mkdir -p release-assets
+          for pkg in ngx-whats-new angularjs-whats-new; do
+            VERSION=$(jq -r .version "dist/$pkg/package.json")
+            ( cd "dist/$pkg" && npm pack --pack-destination "$GITHUB_WORKSPACE/release-assets" )
+            mv "release-assets/desarrolloort-$pkg-$VERSION.tgz" "release-assets/$pkg-$VERSION.tgz"
+          done
 
       - name: Upload tarballs to release
-        uses: AButler/upload-release-assets@v4.0
-        with:
-          files: 'dist/ngx-whats-new/*.tgz;dist/angularjs-whats-new/*.tgz'
-          release-tag: ${{ github.event.release.tag_name }}
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "$RELEASE_TAG" release-assets/*.tgz --clobber
