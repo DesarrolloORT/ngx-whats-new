@@ -10,12 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '24'
+          check-latest: true
           registry-url: 'https://npm.pkg.github.com'
 
       - name: Authenticate to GitHub Packages
@@ -56,18 +57,8 @@ jobs:
         working-directory: dist/angularjs-whats-new
 
       - name: Upload tarballs to release
-        uses: AButler/upload-release-assets@v3.0
+        uses: AButler/upload-release-assets@v4.0
         with:
           files: 'dist/ngx-whats-new/*.tgz;dist/angularjs-whats-new/*.tgz'
           release-tag: ${{ github.event.release.tag_name }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Notify to Microsoft Teams Release Channel
-        uses: carriquiry-g/ms-teams-notification@v2
-        with:
-          github-token: ${{ github.token }}
-          ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_RELEASE_CHANNEL_WEBHOOK_URI }}
-          notification-summary: 'ngx-whats-new release: ${{ github.event.release.name }}'
-          notification-style: good
-          timezone: America/Montevideo
-          verbose-logging: true
