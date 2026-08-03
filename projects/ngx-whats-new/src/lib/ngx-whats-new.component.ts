@@ -11,6 +11,7 @@ import {
   ViewChild,
   ViewChildren,
   ViewEncapsulation,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 
@@ -29,6 +30,7 @@ const DEFAULT_OPTIONS: DialogOptions = {
   templateUrl: './ngx-whats-new.component.html',
   styleUrls: ['./ngx-whats-new.component.scss'],
   encapsulation: ViewEncapsulation.ShadowDom,
+  changeDetection: ChangeDetectionStrategy.Eager,
   animations: ngxWhatsNewAnimations,
 })
 export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
