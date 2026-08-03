@@ -42,8 +42,8 @@
                 </div>
               }
               <img
-                [src]="img?.src"
-                [alt]="img?.altText"
+                [src]="$safeNavigationMigration(img?.src)"
+                [alt]="$safeNavigationMigration(img?.altText)"
                 (load)="_onImageLoad()"
                 (error)="_onImageError()"
                 [style.object-fit]="img?.objectFit"
