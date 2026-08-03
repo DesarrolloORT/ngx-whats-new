@@ -45,8 +45,22 @@
               'wn-image-loaded': vm._imageHasLoaded,
               'wn-image-not-loaded': !vm._imageHasLoaded
             }"
-            onload="angular.element(this).scope().$apply(function(scope) { scope.vm.onImageLoad(); })"
-            onerror="angular.element(this).scope().$apply(function(scope) { scope.vm.onImageError(); })" />
+            onload="
+              angular
+                .element(this)
+                .scope()
+                .$apply(function (scope) {
+                  scope.vm.onImageLoad();
+                })
+            "
+            onerror="
+              angular
+                .element(this)
+                .scope()
+                .$apply(function (scope) {
+                  scope.vm.onImageError();
+                })
+            " />
         </div>
 
         <!-- Info Body Section -->
