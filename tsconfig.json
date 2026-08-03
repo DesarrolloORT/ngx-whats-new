@@ -2,7 +2,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "strict": true,
     "sourceMap": true,
@@ -17,11 +16,11 @@
     "moduleResolution": "bundler",
     "importHelpers": true,
     "paths": {
-      "ngx-whats-new": ["dist/ngx-whats-new/ngx-whats-new", "dist/ngx-whats-new"]
+      "ngx-whats-new": ["./dist/ngx-whats-new/ngx-whats-new", "./dist/ngx-whats-new"],
+      "projects/*": ["./projects/*"]
     },
     "target": "ES2022",
     "module": "es2020",
-    "lib": ["es2022", "dom"],
     "isolatedModules": true,
     "useDefineForClassFields": false
   },

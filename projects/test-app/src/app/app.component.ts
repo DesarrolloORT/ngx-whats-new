@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import {
   DialogOptions,
   NavigationEvent,
@@ -10,6 +10,7 @@ import { NgxWhatsNewComponent } from 'projects/ngx-whats-new/src/lib/ngx-whats-n
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgxWhatsNewComponent],
 })
 export class AppComponent implements AfterViewInit {
