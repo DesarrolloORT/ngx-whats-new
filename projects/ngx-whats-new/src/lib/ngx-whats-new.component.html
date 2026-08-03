@@ -8,7 +8,7 @@
       aria-labelledby="modal-title"
       aria-describedby="modal-description"
       [style.max-width]="options.customStyle?.maxWidth"
-      [@modalAnimation]
+      animate.enter="wn-modal-enter"
       cdkTrapFocus>
       @if (!options.disableClose) {
         <button
@@ -29,7 +29,8 @@
               : 'calc(2 * var(--_body-spacing))'
           "
           [style.border]="options.customStyle?.border"
-          [@contentAnimation]="_contentAnimationState">
+          [class.wn-content-animate-a]="_contentAnimationState === 0"
+          [class.wn-content-animate-b]="_contentAnimationState === 1">
           @if (items[selectedIndex].image) {
             @let img = items[selectedIndex].image;
             <div
@@ -48,8 +49,7 @@
                 (error)="_onImageError()"
                 [style.object-fit]="img?.objectFit"
                 [class.wn-image-loaded]="_imageHasLoaded"
-                [class.wn-image-not-loaded]="!_imageHasLoaded"
-                [@imageAnimation]="_getImageState()" />
+                [class.wn-image-not-loaded]="!_imageHasLoaded" />
             </div>
           }
           <div class="wn-info-body">

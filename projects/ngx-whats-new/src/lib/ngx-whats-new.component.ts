@@ -17,7 +17,6 @@ import {
 import { fromEvent, Subscription } from 'rxjs';
 
 import { DialogOptions, NavigationEvent, WhatsNewItem } from './interfaces';
-import { ngxWhatsNewAnimations } from './ngx-whats-new.animations';
 
 const DEFAULT_OPTIONS: DialogOptions = {
   clickableNavigationDots: true,
@@ -32,7 +31,6 @@ const DEFAULT_OPTIONS: DialogOptions = {
   styleUrls: ['./ngx-whats-new.component.scss'],
   encapsulation: ViewEncapsulation.ShadowDom,
   changeDetection: ChangeDetectionStrategy.Eager,
-  animations: ngxWhatsNewAnimations,
 })
 export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   private readonly _self = inject(ElementRef);
@@ -186,7 +184,14 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   /** Tracks image loading status */
   protected _imageHasLoaded = false;
 
-  /** Tracks content animation state to trigger re-animations on item change */
+  /**
+   * Tracks content animation state to trigger re-animations on item change.
+   *
+   * The template maps this to one of two mutually exclusive CSS classes
+   * (`wn-content-animate-a` / `wn-content-animate-b`) backed by two distinct
+   * `@keyframes`. Toggling the value therefore changes the computed
+   * `animation-name`, which restarts the animation on *every* item change.
+   */
   protected _contentAnimationState = 0;
 
   /** Subscription to keyboard event listener */
@@ -224,11 +229,6 @@ export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
   protected _onImageError() {
     this._imageHasLoaded = false;
     console.warn('NgxWhatsNewComponent: Image failed to load.');
-  }
-
-  /** Gets the current image animation state */
-  protected _getImageState(): string {
-    return this._imageHasLoaded ? 'loaded' : 'loading';
   }
 
   /**

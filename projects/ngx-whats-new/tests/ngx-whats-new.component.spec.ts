@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 
 import { DialogOptions, WhatsNewItem } from '../src/lib/interfaces';
@@ -70,7 +69,7 @@ describe('NgxWhatsNewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgxWhatsNewComponent, CommonModule, A11yModule, NoopAnimationsModule],
+      imports: [NgxWhatsNewComponent, CommonModule, A11yModule],
     }).compileComponents();
   });
 
@@ -489,6 +488,64 @@ describe('NgxWhatsNewComponent', () => {
 
       // Restore the original console.warn implementation
       consoleWarnSpy.mockRestore();
+    });
+  });
+
+  describe('Content animation', () => {
+    let debugElement: DebugElement;
+
+    /**
+     * Returns the animation class variant currently applied to the modal body,
+     * asserting that exactly one of the two is present.
+     */
+    const getAnimationVariant = (): string => {
+      const body = debugElement.query(By.css('.wn-modal-body')).nativeElement as HTMLElement;
+      const variants = ['wn-content-animate-a', 'wn-content-animate-b'].filter(variant =>
+        body.classList.contains(variant)
+      );
+
+      expect(variants).toHaveLength(1);
+      return variants[0];
+    };
+
+    beforeEach(fakeAsync(() => {
+      component.items = [{ title: 'Item 1' }, { title: 'Item 2' }, { title: 'Item 3' }];
+      component.open();
+      tick(); // Resolve open() method pending Promise
+
+      debugElement = fixture.debugElement;
+      fixture.detectChanges();
+    }));
+
+    // The two class variants exist solely so that the computed `animation-name`
+    // changes on every navigation, which is what restarts the CSS animation.
+    // A single class would only animate every other item change.
+    it('should alternate the animation class on every forward navigation', () => {
+      const first = getAnimationVariant();
+
+      component.goToNext();
+      fixture.detectChanges();
+      const second = getAnimationVariant();
+      expect(second).not.toBe(first);
+
+      component.goToNext();
+      fixture.detectChanges();
+      expect(getAnimationVariant()).not.toBe(second);
+    });
+
+    it('should alternate the animation class when navigating backwards', () => {
+      component.navigateTo(2);
+      fixture.detectChanges();
+      const atLastItem = getAnimationVariant();
+
+      component.navigateTo(1);
+      fixture.detectChanges();
+      const afterGoingBack = getAnimationVariant();
+      expect(afterGoingBack).not.toBe(atLastItem);
+
+      component.navigateTo(0);
+      fixture.detectChanges();
+      expect(getAnimationVariant()).not.toBe(afterGoingBack);
     });
   });
 });

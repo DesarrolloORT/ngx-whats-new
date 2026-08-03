@@ -3,3 +3,15 @@
     --#{$name}: #{$value};
   }
 }
+
+/// Turns off the animation of the rule this is included in when the user has
+/// asked for reduced motion.
+///
+/// Include it inside the rule that declares the `animation` so the override
+/// inherits the exact same selector, and therefore the same specificity, while
+/// being emitted after it.
+@mixin disable-animation-on-reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
