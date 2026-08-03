@@ -1,9 +1,11 @@
 import { A11yModule } from '@angular/cdk/a11y';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   OnDestroy,
   Output,
@@ -11,7 +13,6 @@ import {
   ViewChild,
   ViewChildren,
   ViewEncapsulation,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 
@@ -34,7 +35,9 @@ const DEFAULT_OPTIONS: DialogOptions = {
   animations: ngxWhatsNewAnimations,
 })
 export class NgxWhatsNewComponent implements AfterViewInit, OnDestroy {
-  constructor(private readonly _self: ElementRef) {
+  private readonly _self = inject(ElementRef);
+
+  constructor() {
     // Initialize component as hidden by default to avoid blocking content underneath
     // Showing the component will be handled by the open() method
     this._self.nativeElement.style.display = 'none';

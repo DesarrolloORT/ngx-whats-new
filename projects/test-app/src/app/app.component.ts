@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import {
   DialogOptions,
   NavigationEvent,
